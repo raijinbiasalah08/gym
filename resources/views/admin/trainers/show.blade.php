@@ -4,148 +4,216 @@
 
 @section('content')
 <div class="py-6">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-semibold text-gray-900">Trainer Details</h1>
-            <div class="space-x-2">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Trainer Details</h1>
+                <p class="text-sm text-gray-600 mt-1">Complete trainer profile and activity</p>
+            </div>
+            <div class="flex space-x-3">
                 <a href="{{ route('admin.trainers.index') }}" 
-                   class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition">
-                    <i class="fas fa-arrow-left mr-2"></i>Back to Trainers
+                   class="px-4 py-2 glass-card text-gray-700 font-medium rounded-lg hover:bg-white hover:bg-opacity-60 transition">
+                    <i class="fas fa-arrow-left mr-2"></i>Back
                 </a>
                 <a href="{{ route('admin.trainers.edit', $trainer) }}" 
-                   class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                   class="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                     <i class="fas fa-edit mr-2"></i>Edit Trainer
                 </a>
             </div>
         </div>
 
-        @if(session('success'))
-            <div class="mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-                {{ session('success') }}
+        <!-- Trainer Header Card -->
+        <div class="glass-card rounded-xl p-6 mb-6">
+            <div class="flex items-center space-x-6">
+                <div class="flex-shrink-0">
+                    <div class="h-24 w-24 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center shadow-lg">
+                        <span class="text-white font-bold text-4xl">{{ substr($trainer->name, 0, 1) }}</span>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <h2 class="text-2xl font-bold text-gray-900">{{ $trainer->name }}</h2>
+                    <p class="text-gray-600 mt-1">{{ $trainer->email }}</p>
+                    <div class="flex items-center space-x-3 mt-3">
+                        @if($trainer->is_active)
+                            <span class="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                                Active
+                            </span>
+                        @else
+                            <span class="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                                Inactive
+                            </span>
+                        @endif
+                        <span class="bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                            {{ $trainer->specialization ?? 'General' }}
+                        </span>
+                    </div>
+                </div>
             </div>
-        @endif
+        </div>
 
-        <div class="mt-6 bg-white shadow overflow-hidden sm:rounded-lg">
-            <!-- Header -->
-            <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">Trainer Information</h3>
-                <p class="mt-1 text-sm text-gray-500">Personal details and professional information.</p>
-            </div>
-
-            <div class="px-4 py-5 sm:p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Personal Information -->
-                    <div class="space-y-4">
-                        <h4 class="text-lg font-medium text-gray-900">Personal Information</h4>
-                        
-                        <div class="space-y-3">
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Full Name</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $trainer->name }}</p>
-                            </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Email Address</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $trainer->email }}</p>
-                            </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Phone Number</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $trainer->phone }}</p>
-                            </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Address</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $trainer->address ?? 'Not provided' }}</p>
-                            </div>
+        <!-- Statistics Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+            <div class="glass-card rounded-xl p-6 hover:shadow-lg transition">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-3 shadow-lg">
+                            <i class="fas fa-users text-2xl text-white"></i>
                         </div>
                     </div>
+                    <div class="ml-4">
+                        <div class="text-2xl font-bold text-gray-900">{{ $clientsCount }}</div>
+                        <div class="text-sm text-gray-600">Total Clients</div>
+                    </div>
+                </div>
+            </div>
 
-                    <!-- Professional Information -->
-                    <div class="space-y-4">
-                        <h4 class="text-lg font-medium text-gray-900">Professional Information</h4>
-                        
-                        <div class="space-y-3">
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Specialization</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $trainer->specialization }}</p>
-                            </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Experience</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $trainer->experience_years }} years</p>
-                            </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Hourly Rate</label>
-                                <p class="mt-1 text-sm text-gray-900">${{ number_format($trainer->hourly_rate, 2) }}</p>
-                            </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Status</label>
-                                <p class="mt-1">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                        @if($trainer->is_active) bg-green-100 text-green-800 @else bg-red-100 text-red-800 @endif">
-                                        {{ $trainer->is_active ? 'Active' : 'Inactive' }}
-                                    </span>
-                                </p>
-                            </div>
+            <div class="glass-card rounded-xl p-6 hover:shadow-lg transition">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="rounded-xl bg-gradient-to-br from-green-500 to-green-600 p-3 shadow-lg">
+                            <i class="fas fa-calendar-check text-2xl text-white"></i>
                         </div>
                     </div>
-                </div>
-
-                <!-- Certifications -->
-                @if($trainer->certifications)
-                <div class="mt-6">
-                    <label class="text-sm font-medium text-gray-500">Certifications</label>
-                    <p class="mt-1 text-sm text-gray-900">{{ $trainer->certifications }}</p>
-                </div>
-                @endif
-
-                <!-- Statistics -->
-                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <div class="text-2xl font-bold text-blue-600">{{ $trainer->trainer_bookings_count }}</div>
-                        <div class="text-sm text-gray-500">Total Bookings</div>
-                    </div>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <div class="text-2xl font-bold text-green-600">{{ $trainer->workout_plans_count }}</div>
-                        <div class="text-sm text-gray-500">Workout Plans</div>
-                    </div>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <div class="text-2xl font-bold text-purple-600">{{ $trainer->experience_years }}</div>
-                        <div class="text-sm text-gray-500">Years Experience</div>
+                    <div class="ml-4">
+                        <div class="text-2xl font-bold text-gray-900">{{ $sessionsCount }}</div>
+                        <div class="text-sm text-gray-600">Total Sessions</div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Recent Activity -->
-                <div class="mt-8">
-                    <h4 class="text-lg font-medium text-gray-900 mb-4">Recent Bookings</h4>
-                    @if($trainer->trainerBookings && $trainer->trainerBookings->count() > 0)
-                        <div class="space-y-3">
-                            @foreach($trainer->trainerBookings->take(5) as $booking)
-                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+            <div class="glass-card rounded-xl p-6 hover:shadow-lg transition">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-3 shadow-lg">
+                            <i class="fas fa-clipboard-list text-2xl text-white"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-2xl font-bold text-gray-900">{{ $workoutPlansCount }}</div>
+                        <div class="text-sm text-gray-600">Workout Plans</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-xl p-6 hover:shadow-lg transition">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="rounded-xl bg-gradient-to-br from-yellow-500 to-yellow-600 p-3 shadow-lg">
+                            <i class="fas fa-star text-2xl text-white"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-2xl font-bold text-gray-900">{{ $trainer->experience_years ?? 0 }}</div>
+                        <div class="text-sm text-gray-600">Years Experience</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Personal Information -->
+            <div class="glass-card rounded-xl p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-user text-green-600 mr-2"></i>
+                    Personal Information
+                </h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600">Full Name</label>
+                        <p class="mt-1 text-gray-900">{{ $trainer->name }}</p>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600">Email Address</label>
+                        <p class="mt-1 text-gray-900">{{ $trainer->email }}</p>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600">Phone Number</label>
+                        <p class="mt-1 text-gray-900">{{ $trainer->phone ?? 'Not provided' }}</p>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600">Date of Birth</label>
+                        <p class="mt-1 text-gray-900">{{ $trainer->date_of_birth ? $trainer->date_of_birth->format('M d, Y') . ' (' . $trainer->date_of_birth->age . ' years)' : 'Not provided' }}</p>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600">Address</label>
+                        <p class="mt-1 text-gray-900">{{ $trainer->address ?? 'Not provided' }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Information -->
+            <div class="glass-card rounded-xl p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-dumbbell text-purple-600 mr-2"></i>
+                    Professional Information
+                </h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600">Specialization</label>
+                        <p class="mt-1 text-gray-900">{{ $trainer->specialization ?? 'General' }}</p>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600">Years of Experience</label>
+                        <p class="mt-1 text-gray-900">{{ $trainer->experience_years ?? 0 }} years</p>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600">Certifications</label>
+                        <p class="mt-1 text-gray-900">{{ $trainer->certifications ?? 'Not provided' }}</p>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600">Bio</label>
+                        <p class="mt-1 text-gray-900">{{ $trainer->bio ?? 'Not provided' }}</p>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-gray-600">Joined Date</label>
+                        <p class="mt-1 text-gray-900">{{ $trainer->created_at->format('M d, Y') }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Sessions -->
+            <div class="glass-card rounded-xl p-6 lg:col-span-2">
+                <h3 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-calendar-alt text-blue-600 mr-2"></i>
+                    Recent Sessions
+                </h3>
+                @if(isset($trainer->bookings) && $trainer->bookings->count() > 0)
+                    <div class="space-y-3">
+                        @foreach($trainer->bookings->take(5) as $booking)
+                        <div class="flex justify-between items-center p-4 bg-white bg-opacity-40 rounded-lg hover:bg-opacity-60 transition">
+                            <div class="flex items-center space-x-4">
+                                <div class="h-10 w-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-md">
+                                    <i class="fas fa-user text-white"></i>
+                                </div>
                                 <div>
-                                    <p class="text-sm font-medium text-gray-900">{{ $booking->member->name }}</p>
-                                    <p class="text-sm text-gray-500">
+                                    <p class="text-sm font-semibold text-gray-900">{{ $booking->member->name ?? 'No Member' }}</p>
+                                    <p class="text-xs text-gray-600">
                                         {{ $booking->booking_date->format('M d, Y') }} at {{ $booking->start_time }}
                                     </p>
                                 </div>
-                                <span class="px-2 py-1 text-xs rounded-full 
-                                    @if($booking->status === 'confirmed') bg-green-100 text-green-800
-                                    @elseif($booking->status === 'pending') bg-yellow-100 text-yellow-800
-                                    @elseif($booking->status === 'cancelled') bg-red-100 text-red-800
-                                    @else bg-gray-100 text-gray-800 @endif">
-                                    {{ ucfirst($booking->status) }}
-                                </span>
                             </div>
-                            @endforeach
+                            @if($booking->status === 'confirmed')
+                                <span class="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                                    Confirmed
+                                </span>
+                            @elseif($booking->status === 'pending')
+                                <span class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                                    Pending
+                                </span>
+                            @else
+                                <span class="bg-gradient-to-r from-gray-500 to-gray-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm capitalize">
+                                    {{ $booking->status }}
+                                </span>
+                            @endif
                         </div>
-                    @else
-                        <p class="text-sm text-gray-500">No recent bookings found.</p>
-                    @endif
-                </div>
-
-                <!-- Created Date -->
-                <div class="mt-6 pt-6 border-t border-gray-200">
-                    <p class="text-xs text-gray-500">
-                        Trainer joined on {{ $trainer->created_at->format('M d, Y') }}
-                    </p>
-                </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-calendar-times text-4xl mb-2 opacity-50"></i>
+                        <p>No recent sessions found</p>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

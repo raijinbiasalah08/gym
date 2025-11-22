@@ -4,55 +4,72 @@
 
 @section('content')
 <div class="py-6">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-2xl font-semibold text-gray-900">Record Payment</h1>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-6">
+            <div class="flex items-center space-x-3 mb-2">
+                <a href="{{ route('admin.payments.index') }}" class="text-gray-600 hover:text-gray-900 transition">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h1 class="text-3xl font-bold text-gray-900">Record Payment</h1>
+            </div>
+            <p class="text-sm text-gray-600">Create a new payment record for a member</p>
+        </div>
 
-        <div class="mt-6 bg-white shadow sm:rounded-lg">
-            <div class="px-4 py-5 sm:p-6">
-                <form action="{{ route('admin.payments.store') }}" method="POST">
-                    @csrf
+        <div class="glass-card rounded-xl p-6">
+            <form action="{{ route('admin.payments.store') }}" method="POST" class="space-y-6">
+                @csrf
+                
+                <!-- Member Selection -->
+                <div class="glass-card rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-user text-blue-600 mr-2"></i>
+                        Member Information
+                    </h3>
                     
-                    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                        <!-- Member Selection -->
-                        <div class="md:col-span-2">
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">Member Information</h3>
-                        </div>
+                    <div>
+                        <label for="member_id" class="block text-sm font-semibold text-gray-700 mb-2">Select Member <span class="text-red-500">*</span></label>
+                        <select name="member_id" id="member_id" required
+                                class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all @error('member_id') ring-2 ring-red-500 @enderror">
+                            <option value="">Select a member</option>
+                            @foreach($members as $member)
+                                <option value="{{ $member->id }}" {{ old('member_id') == $member->id ? 'selected' : '' }}>
+                                    {{ $member->name }} - {{ $member->email }} ({{ ucfirst($member->membership_type) }})
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('member_id')
+                            <p class="mt-2 text-sm text-red-600 flex items-center">
+                                <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+                </div>
 
-                        <div class="md:col-span-2">
-                            <label for="member_id" class="block text-sm font-medium text-gray-700">Select Member *</label>
-                            <select name="member_id" id="member_id" required
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                <option value="">Select a member</option>
-                                @foreach($members as $member)
-                                    <option value="{{ $member->id }}" {{ old('member_id') == $member->id ? 'selected' : '' }}>
-                                        {{ $member->name }} - {{ $member->email }} ({{ ucfirst($member->membership_type) }})
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('member_id')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+                <!-- Payment Details -->
+                <div class="glass-card rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-credit-card text-green-600 mr-2"></i>
+                        Payment Details
+                    </h3>
 
-                        <!-- Payment Details -->
-                        <div class="md:col-span-2">
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">Payment Details</h3>
-                        </div>
-
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="amount" class="block text-sm font-medium text-gray-700">Amount ($) *</label>
+                            <label for="amount" class="block text-sm font-semibold text-gray-700 mb-2">Amount ($) <span class="text-red-500">*</span></label>
                             <input type="number" name="amount" id="amount" required min="0" step="0.01"
                                    value="{{ old('amount') }}"
-                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                   class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all @error('amount') ring-2 ring-red-500 @enderror">
                             @error('amount')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                                </p>
                             @enderror
                         </div>
 
                         <div>
-                            <label for="payment_method" class="block text-sm font-medium text-gray-700">Payment Method *</label>
+                            <label for="payment_method" class="block text-sm font-semibold text-gray-700 mb-2">Payment Method <span class="text-red-500">*</span></label>
                             <select name="payment_method" id="payment_method" required
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                    class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all @error('payment_method') ring-2 ring-red-500 @enderror">
                                 <option value="">Select method</option>
                                 <option value="cash" {{ old('payment_method') == 'cash' ? 'selected' : '' }}>Cash</option>
                                 <option value="card" {{ old('payment_method') == 'card' ? 'selected' : '' }}>Card</option>
@@ -60,92 +77,110 @@
                                 <option value="online" {{ old('payment_method') == 'online' ? 'selected' : '' }}>Online</option>
                             </select>
                             @error('payment_method')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                                </p>
                             @enderror
                         </div>
 
                         <div>
-                            <label for="payment_date" class="block text-sm font-medium text-gray-700">Payment Date *</label>
+                            <label for="payment_date" class="block text-sm font-semibold text-gray-700 mb-2">Payment Date <span class="text-red-500">*</span></label>
                             <input type="date" name="payment_date" id="payment_date" required
                                    value="{{ old('payment_date', now()->format('Y-m-d')) }}"
-                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                   class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
                             @error('payment_date')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                                </p>
                             @enderror
                         </div>
 
                         <div>
-                            <label for="due_date" class="block text-sm font-medium text-gray-700">Due Date *</label>
+                            <label for="due_date" class="block text-sm font-semibold text-gray-700 mb-2">Due Date <span class="text-red-500">*</span></label>
                             <input type="date" name="due_date" id="due_date" required
                                    value="{{ old('due_date') }}"
-                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                   class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
                             @error('due_date')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                                </p>
                             @enderror
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Membership Details -->
-                        <div class="md:col-span-2">
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">Membership Details</h3>
-                        </div>
+                <!-- Membership Details -->
+                <div class="glass-card rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-id-card text-purple-600 mr-2"></i>
+                        Membership Details
+                    </h3>
 
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
-                            <label for="membership_type" class="block text-sm font-medium text-gray-700">Membership Type *</label>
+                            <label for="membership_type" class="block text-sm font-semibold text-gray-700 mb-2">Membership Type <span class="text-red-500">*</span></label>
                             <select name="membership_type" id="membership_type" required
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                    class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all @error('membership_type') ring-2 ring-red-500 @enderror">
                                 <option value="basic" {{ old('membership_type') == 'basic' ? 'selected' : '' }}>Basic</option>
                                 <option value="premium" {{ old('membership_type') == 'premium' ? 'selected' : '' }}>Premium</option>
                                 <option value="vip" {{ old('membership_type') == 'vip' ? 'selected' : '' }}>VIP</option>
                             </select>
                             @error('membership_type')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                                </p>
                             @enderror
                         </div>
 
                         <div>
-                            <label for="period_start" class="block text-sm font-medium text-gray-700">Period Start *</label>
+                            <label for="period_start" class="block text-sm font-semibold text-gray-700 mb-2">Period Start <span class="text-red-500">*</span></label>
                             <input type="date" name="period_start" id="period_start" required
                                    value="{{ old('period_start') }}"
-                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                   class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
                             @error('period_start')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                                </p>
                             @enderror
                         </div>
 
                         <div>
-                            <label for="period_end" class="block text-sm font-medium text-gray-700">Period End *</label>
+                            <label for="period_end" class="block text-sm font-semibold text-gray-700 mb-2">Period End <span class="text-red-500">*</span></label>
                             <input type="date" name="period_end" id="period_end" required
                                    value="{{ old('period_end') }}"
-                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                   class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
                             @error('period_end')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                                </p>
                             @enderror
                         </div>
 
-                        <!-- Description -->
-                        <div class="md:col-span-2">
-                            <label for="description" class="block text-sm font-medium text-gray-700">Description *</label>
+                        <div class="md:col-span-3">
+                            <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">Description <span class="text-red-500">*</span></label>
                             <textarea name="description" id="description" rows="3" required
                                       placeholder="e.g., Monthly membership fee, Personal training sessions, etc."
-                                      class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">{{ old('description') }}</textarea>
+                                      class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">{{ old('description') }}</textarea>
                             @error('description')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                                </p>
                             @enderror
                         </div>
                     </div>
+                </div>
 
-                    <div class="mt-6 flex justify-end space-x-3">
-                        <a href="{{ route('admin.payments.index') }}" 
-                           class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            Cancel
-                        </a>
-                        <button type="submit" 
-                                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            Record Payment
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <div class="flex justify-end space-x-4 pt-4">
+                    <a href="{{ route('admin.payments.index') }}" 
+                       class="px-6 py-3 glass-card text-gray-700 font-medium rounded-lg hover:bg-white hover:bg-opacity-60 transition">
+                        <i class="fas fa-times mr-2"></i>Cancel
+                    </a>
+                    <button type="submit" 
+                            class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                        <i class="fas fa-save mr-2"></i>Record Payment
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

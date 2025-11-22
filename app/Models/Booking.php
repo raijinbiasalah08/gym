@@ -28,6 +28,8 @@ class Booking extends Model
         'price' => 'decimal:2',
     ];
 
+    protected $appends = ['duration', 'is_upcoming', 'is_today'];
+
     // Relationships
     public function member()
     {
@@ -43,7 +45,9 @@ class Booking extends Model
     public function scopeUpcoming($query)
     {
         return $query->where('booking_date', '>=', now())
-                    ->where('status', 'confirmed');
+                    ->where('status', 'confirmed')
+                    ->orderBy('booking_date')
+                    ->orderBy('start_time');
     }
 
     public function scopeCompleted($query)
@@ -54,5 +58,61 @@ class Booking extends Model
     public function scopePending($query)
     {
         return $query->where('status', 'pending');
+    }
+
+    public function scopeConfirmed($query)
+    {
+        return $query->where('status', 'confirmed');
+    }
+
+    public function scopeForTrainer($query, $trainerId)
+    {
+        return $query->where('trainer_id', $trainerId);
+    }
+
+    public function scopeThisWeek($query)
+    {
+        return $query->whereBetween('booking_date', [now()->startOfWeek(), now()->endOfWeek()]);
+    }
+
+    public function scopeToday($query)
+    {
+        return $query->whereDate('booking_date', today());
+    }
+
+    // Accessors
+    public function getDurationAttribute()
+    {
+        $start = \Carbon\Carbon::parse($this->start_time);
+        $end = \Carbon\Carbon::parse($this->end_time);
+        return $start->diffInMinutes($end);
+    }
+
+    public function getIsUpcomingAttribute()
+    {
+        return $this->booking_date->isFuture() && $this->status === 'confirmed';
+    }
+
+    public function getIsTodayAttribute()
+    {
+        return $this->booking_date->isToday() && $this->status === 'confirmed';
+    }
+
+    public function getFormattedTimeAttribute()
+    {
+        return \Carbon\Carbon::parse($this->start_time)->format('g:i A') . ' - ' . 
+               \Carbon\Carbon::parse($this->end_time)->format('g:i A');
+    }
+
+    // Methods
+    public function canBeCancelled()
+    {
+        return in_array($this->status, ['pending', 'confirmed']) && 
+               $this->booking_date->isFuture();
+    }
+
+    public function canBeConfirmed()
+    {
+        return $this->status === 'pending' && $this->booking_date->isFuture();
     }
 }

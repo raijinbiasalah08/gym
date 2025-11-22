@@ -5,48 +5,52 @@
 @section('content')
 <div class="py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-semibold text-gray-900">Manage Members</h1>
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Manage Members</h1>
+                <p class="text-sm text-gray-600 mt-1">View and manage all gym members</p>
+            </div>
             <a href="{{ route('admin.members.create') }}" 
-               class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
-                <i class="fas fa-plus mr-2"></i>Add New Member
+                class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                <i class="fas fa-user-plus mr-2"></i>Add New Member
             </a>
         </div>
 
-        @if(session('success'))
-            <div class="mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-                {{ session('success') }}
-            </div>
-        @endif
-
         <!-- Stats Cards -->
-        <div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-3">
-            <div class="bg-white overflow-hidden shadow rounded-lg">
-                <div class="p-5">
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-8">
+            <!-- Total Members -->
+            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
+                <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <i class="fas fa-users text-2xl text-blue-600"></i>
+                            <div class="rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fas fa-users text-2xl text-white"></i>
+                            </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Total Members</dt>
-                                <dd class="text-lg font-medium text-gray-900">{{ $members->total() }}</dd>
+                                <dt class="text-sm font-medium text-gray-600 truncate">Total Members</dt>
+                                <dd class="text-2xl font-bold text-gray-900 mt-1">{{ $members->total() }}</dd>
                             </dl>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white overflow-hidden shadow rounded-lg">
-                <div class="p-5">
+            <!-- Active Members -->
+            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
+                <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <i class="fas fa-check-circle text-2xl text-green-600"></i>
+                            <div class="rounded-xl bg-gradient-to-br from-green-500 to-green-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fas fa-check-circle text-2xl text-white"></i>
+                            </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Active Members</dt>
-                                <dd class="text-lg font-medium text-gray-900">
+                                <dt class="text-sm font-medium text-gray-600 truncate">Active Members</dt>
+                                <dd class="text-2xl font-bold text-gray-900 mt-1">
                                     {{ $members->where('is_active', true)->count() }}
                                 </dd>
                             </dl>
@@ -55,16 +59,19 @@
                 </div>
             </div>
 
-            <div class="bg-white overflow-hidden shadow rounded-lg">
-                <div class="p-5">
+            <!-- VIP Members -->
+            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
+                <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <i class="fas fa-crown text-2xl text-purple-600"></i>
+                            <div class="rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fas fa-crown text-2xl text-white"></i>
+                            </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">VIP Members</dt>
-                                <dd class="text-lg font-medium text-gray-900">
+                                <dt class="text-sm font-medium text-gray-600 truncate">VIP Members</dt>
+                                <dd class="text-2xl font-bold text-gray-900 mt-1">
                                     {{ $members->where('membership_type', 'vip')->count() }}
                                 </dd>
                             </dl>
@@ -74,101 +81,143 @@
             </div>
         </div>
 
+        <!-- Search & Filter Bar -->
+        <div class="glass-card rounded-xl p-4 mb-6">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <div class="relative">
+                        <input type="text" 
+                            id="searchMembers"
+                            placeholder="Search members by name, email, or phone..." 
+                            class="w-full px-4 py-3 pl-10 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <select class="px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                    <select class="px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                        <option value="">All Types</option>
+                        <option value="basic">Basic</option>
+                        <option value="premium">Premium</option>
+                        <option value="vip">VIP</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <!-- Members Table -->
-        <div class="mt-6 bg-white shadow overflow-hidden sm:rounded-md">
-            <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">Members List</h3>
-                <p class="mt-1 text-sm text-gray-500">All registered gym members and their details.</p>
+        <div class="glass-card rounded-xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200 border-opacity-50">
+                <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                    <i class="fas fa-list text-blue-600 mr-2"></i>
+                    Members List
+                </h3>
+                <p class="mt-1 text-sm text-gray-600">All registered gym members and their details</p>
             </div>
 
             @if($members->count() > 0)
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
+                    <table class="min-w-full divide-y divide-gray-200 divide-opacity-30">
+                        <thead class="bg-white bg-opacity-40">
                             <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Member
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Membership
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Contact
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Activity
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Status
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Actions
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="divide-y divide-gray-200 divide-opacity-30">
                             @foreach($members as $member)
-                            <tr class="hover:bg-gray-50">
+                            <tr class="hover:bg-white hover:bg-opacity-30 transition">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10">
-                                            <i class="fas fa-user-circle text-2xl text-gray-400"></i>
+                                        <div class="flex-shrink-0">
+                                            <div class="h-12 w-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-md">
+                                                <span class="text-white font-bold text-lg">{{ substr($member->name, 0, 1) }}</span>
+                                            </div>
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900">
+                                            <div class="text-sm font-semibold text-gray-900">
                                                 {{ $member->name }}
                                             </div>
-                                            <div class="text-sm text-gray-500">
+                                            <div class="text-sm text-gray-600">
                                                 {{ $member->email }}
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900 capitalize">
+                                    <div class="text-sm font-semibold text-gray-900 capitalize">
                                         {{ $member->membership_type }}
                                     </div>
-                                    <div class="text-sm text-gray-500">
+                                    <div class="text-xs text-gray-600">
                                         Expires: {{ $member->membership_expiry ? $member->membership_expiry->format('M d, Y') : 'N/A' }}
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">
-                                        {{ $member->phone }}
+                                        {{ $member->phone ?? 'N/A' }}
                                     </div>
-                                    <div class="text-sm text-gray-500">
+                                    <div class="text-xs text-gray-600">
                                         {{ $member->date_of_birth ? $member->date_of_birth->age . ' years' : 'Age not set' }}
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">
+                                        <i class="fas fa-calendar-check text-blue-600 mr-1"></i>
                                         {{ $member->bookings_count }} bookings
                                     </div>
-                                    <div class="text-sm text-gray-500">
+                                    <div class="text-xs text-gray-600">
+                                        <i class="fas fa-dollar-sign text-green-600 mr-1"></i>
                                         {{ $member->payments_count }} payments
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                        @if($member->is_active) bg-green-100 text-green-800 @else bg-red-100 text-red-800 @endif">
-                                        {{ $member->is_active ? 'Active' : 'Inactive' }}
-                                    </span>
-                                    <div class="text-xs text-gray-500 mt-1">
+                                    @if($member->is_active)
+                                        <span class="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                                            Active
+                                        </span>
+                                    @else
+                                        <span class="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                                            Inactive
+                                        </span>
+                                    @endif
+                                    <div class="text-xs text-gray-600 mt-1">
                                         @if($member->membership_expiry && $member->membership_expiry->isFuture())
-                                            <span class="text-green-600">Valid</span>
+                                            <span class="text-green-600">✓ Valid</span>
                                         @else
-                                            <span class="text-red-600">Expired</span>
+                                            <span class="text-red-600">✗ Expired</span>
                                         @endif
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
                                         <a href="{{ route('admin.members.show', $member) }}" 
-                                           class="text-blue-600 hover:text-blue-900">
+                                           class="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white hover:scale-110 transition-transform shadow-sm"
+                                           title="View Details">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="{{ route('admin.members.edit', $member) }}" 
-                                           class="text-green-600 hover:text-green-900">
+                                           class="p-2 rounded-lg bg-gradient-to-br from-green-500 to-green-600 text-white hover:scale-110 transition-transform shadow-sm"
+                                           title="Edit Member">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <form action="{{ route('admin.members.destroy', $member) }}" method="POST" 
@@ -176,7 +225,9 @@
                                               class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900">
+                                            <button type="submit" 
+                                                    class="p-2 rounded-lg bg-gradient-to-br from-red-500 to-red-600 text-white hover:scale-110 transition-transform shadow-sm"
+                                                    title="Delete Member">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
@@ -189,25 +240,40 @@
                 </div>
                 
                 <!-- Pagination -->
-                <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+                <div class="px-6 py-4 border-t border-gray-200 border-opacity-50">
                     {{ $members->links() }}
                 </div>
             @else
-                <div class="text-center py-12">
-                    <i class="fas fa-users text-4xl text-gray-400 mb-4"></i>
-                    <h3 class="text-lg font-medium text-gray-900">No members found</h3>
-                    <p class="mt-2 text-sm text-gray-500">
-                        Get started by adding your first member.
-                    </p>
-                    <div class="mt-6">
-                        <a href="{{ route('admin.members.create') }}" 
-                           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
-                            <i class="fas fa-plus mr-2"></i>Add New Member
-                        </a>
+                <div class="text-center py-16">
+                    <div class="bg-gradient-to-br from-gray-100 to-gray-200 rounded-full p-6 w-24 h-24 flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-users text-4xl text-gray-400"></i>
                     </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">No members found</h3>
+                    <p class="text-sm text-gray-600 mb-6">
+                        Get started by adding your first member to the system.
+                    </p>
+                    <a href="{{ route('admin.members.create') }}" 
+                       class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                        <i class="fas fa-user-plus mr-2"></i>Add Your First Member
+                    </a>
                 </div>
             @endif
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    // Simple client-side search
+    document.getElementById('searchMembers')?.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('tbody tr');
+        
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+    });
+</script>
+@endpush
 @endsection

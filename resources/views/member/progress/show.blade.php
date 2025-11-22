@@ -5,99 +5,109 @@
 @section('content')
 <div class="py-6">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-semibold text-gray-900">Progress Details</h1>
-            <div class="space-x-2">
-                <a href="{{ route('member.progress.index') }}" 
-                   class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition">
-                    <i class="fas fa-arrow-left mr-2"></i>Back to Progress
+        <!-- Header -->
+        <div class="mb-6">
+            <div class="flex items-center space-x-3 mb-2">
+                <a href="{{ route('member.progress.index') }}" class="text-gray-600 hover:text-gray-900 transition">
+                    <i class="fas fa-arrow-left"></i>
                 </a>
-                <a href="{{ route('member.dashboard') }}" 
-                   class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
-                    <i class="fas fa-home mr-2"></i>Dashboard
-                </a>
+                <h1 class="text-3xl font-bold text-gray-900">Progress Details</h1>
             </div>
+            <p class="text-sm text-gray-600">Detailed view of your measurements on {{ \Carbon\Carbon::parse($progress->record_date)->format('F d, Y') }}</p>
         </div>
 
-        <div class="mt-6 bg-white shadow overflow-hidden sm:rounded-lg">
-            <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
-                    Progress Record - {{ \Carbon\Carbon::parse($progress->record_date)->format('F d, Y') }}
+        <div class="glass-card rounded-xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200 border-opacity-50 flex justify-between items-center bg-blue-50 bg-opacity-30">
+                <h3 class="text-lg font-bold text-gray-900 flex items-center">
+                    <i class="fas fa-calendar-check text-blue-600 mr-2"></i>
+                    Record Date: {{ \Carbon\Carbon::parse($progress->record_date)->format('M d, Y') }}
                 </h3>
+                <span class="text-sm text-gray-500">
+                    ID: #{{ $progress->id }}
+                </span>
             </div>
 
-            <div class="px-4 py-5 sm:p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-6 space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Basic Measurements -->
-                    <div class="space-y-4">
-                        <h4 class="text-lg font-medium text-gray-900">Basic Measurements</h4>
+                    <div class="glass-card rounded-lg p-6 bg-white bg-opacity-40">
+                        <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-weight text-green-600 mr-2"></i>
+                            Basic Stats
+                        </h4>
                         
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Weight</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $progress->weight }} kg</p>
+                        <dl class="space-y-4">
+                            <div class="flex justify-between items-center border-b border-gray-200 border-opacity-50 pb-2">
+                                <dt class="text-sm font-medium text-gray-600">Weight</dt>
+                                <dd class="text-lg font-bold text-gray-900">{{ $progress->weight }} kg</dd>
                             </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Height</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $progress->height }} cm</p>
+                            <div class="flex justify-between items-center border-b border-gray-200 border-opacity-50 pb-2">
+                                <dt class="text-sm font-medium text-gray-600">Height</dt>
+                                <dd class="text-lg font-bold text-gray-900">{{ $progress->height }} cm</dd>
                             </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">BMI</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $progress->bmi ?? 'N/A' }}</p>
+                            <div class="flex justify-between items-center border-b border-gray-200 border-opacity-50 pb-2">
+                                <dt class="text-sm font-medium text-gray-600">BMI</dt>
+                                <dd class="text-lg font-bold text-gray-900">{{ $progress->bmi ?? 'N/A' }}</dd>
                             </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Body Fat %</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $progress->body_fat_percentage }}%</p>
+                            <div class="flex justify-between items-center border-b border-gray-200 border-opacity-50 pb-2">
+                                <dt class="text-sm font-medium text-gray-600">Body Fat</dt>
+                                <dd class="text-lg font-bold text-gray-900">{{ $progress->body_fat_percentage }}%</dd>
                             </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Muscle Mass</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $progress->muscle_mass }} kg</p>
+                            <div class="flex justify-between items-center pt-2">
+                                <dt class="text-sm font-medium text-gray-600">Muscle Mass</dt>
+                                <dd class="text-lg font-bold text-gray-900">{{ $progress->muscle_mass }} kg</dd>
                             </div>
-                        </div>
+                        </dl>
                     </div>
 
                     <!-- Body Measurements -->
-                    <div class="space-y-4">
-                        <h4 class="text-lg font-medium text-gray-900">Body Measurements</h4>
+                    <div class="glass-card rounded-lg p-6 bg-white bg-opacity-40">
+                        <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-ruler-combined text-purple-600 mr-2"></i>
+                            Body Measurements
+                        </h4>
                         
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Chest</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $progress->chest_measurement }} cm</p>
+                        <dl class="space-y-4">
+                            <div class="flex justify-between items-center border-b border-gray-200 border-opacity-50 pb-2">
+                                <dt class="text-sm font-medium text-gray-600">Chest</dt>
+                                <dd class="text-lg font-bold text-gray-900">{{ $progress->chest_measurement }} cm</dd>
                             </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Waist</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $progress->waist_measurement }} cm</p>
+                            <div class="flex justify-between items-center border-b border-gray-200 border-opacity-50 pb-2">
+                                <dt class="text-sm font-medium text-gray-600">Waist</dt>
+                                <dd class="text-lg font-bold text-gray-900">{{ $progress->waist_measurement }} cm</dd>
                             </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Hips</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $progress->hip_measurement }} cm</p>
+                            <div class="flex justify-between items-center border-b border-gray-200 border-opacity-50 pb-2">
+                                <dt class="text-sm font-medium text-gray-600">Hips</dt>
+                                <dd class="text-lg font-bold text-gray-900">{{ $progress->hip_measurement }} cm</dd>
                             </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Arms</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $progress->arm_measurement }} cm</p>
+                            <div class="flex justify-between items-center border-b border-gray-200 border-opacity-50 pb-2">
+                                <dt class="text-sm font-medium text-gray-600">Arms</dt>
+                                <dd class="text-lg font-bold text-gray-900">{{ $progress->arm_measurement }} cm</dd>
                             </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Thighs</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $progress->thigh_measurement }} cm</p>
+                            <div class="flex justify-between items-center pt-2">
+                                <dt class="text-sm font-medium text-gray-600">Thighs</dt>
+                                <dd class="text-lg font-bold text-gray-900">{{ $progress->thigh_measurement }} cm</dd>
                             </div>
-                        </div>
+                        </dl>
                     </div>
                 </div>
 
                 <!-- Notes -->
                 @if($progress->notes)
-                <div class="mt-6">
-                    <label class="text-sm font-medium text-gray-500">Notes</label>
-                    <p class="mt-1 text-sm text-gray-900">{{ $progress->notes }}</p>
+                <div class="glass-card rounded-lg p-6 bg-yellow-50 bg-opacity-30 border border-yellow-100">
+                    <h4 class="text-lg font-bold text-yellow-800 mb-2 flex items-center">
+                        <i class="fas fa-sticky-note mr-2"></i> Notes
+                    </h4>
+                    <p class="text-gray-800 leading-relaxed">{{ $progress->notes }}</p>
                 </div>
                 @endif
 
-                <!-- Record Date -->
-                <div class="mt-6 pt-6 border-t border-gray-200">
-                    <p class="text-xs text-gray-500">
-                        Record created on {{ $progress->created_at->format('M d, Y \\a\\t h:i A') }}
-                    </p>
+                <!-- Footer -->
+                <div class="pt-4 border-t border-gray-200 border-opacity-50 flex justify-between items-center text-sm text-gray-500">
+                    <span>
+                        <i class="far fa-clock mr-1"></i>
+                        Recorded on {{ $progress->created_at->format('M d, Y \\a\\t h:i A') }}
+                    </span>
                 </div>
             </div>
         </div>

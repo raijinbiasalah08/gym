@@ -5,48 +5,50 @@
 @section('content')
 <div class="py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-semibold text-gray-900">Manage Trainers</h1>
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Manage Trainers</h1>
+                <p class="text-sm text-gray-600 mt-1">View and manage all gym trainers</p>
+            </div>
             <a href="{{ route('admin.trainers.create') }}" 
-               class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
-                <i class="fas fa-plus mr-2"></i>Add New Trainer
+                class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                <i class="fas fa-user-plus mr-2"></i>Add New Trainer
             </a>
         </div>
 
-        @if(session('success'))
-            <div class="mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        <!-- Stats Cards - FIXED: Using trainers data -->
-        <div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-3">
-            <div class="bg-white overflow-hidden shadow rounded-lg">
-                <div class="p-5">
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-8">
+            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
+                <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <i class="fas fa-dumbbell text-2xl text-blue-600"></i>
+                            <div class="rounded-xl bg-gradient-to-br from-green-500 to-green-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fas fa-user-tie text-2xl text-white"></i>
+                            </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Total Trainers</dt>
-                                <dd class="text-lg font-medium text-gray-900">{{ $trainers->total() }}</dd>
+                                <dt class="text-sm font-medium text-gray-600 truncate">Total Trainers</dt>
+                                <dd class="text-2xl font-bold text-gray-900 mt-1">{{ $trainers->total() }}</dd>
                             </dl>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white overflow-hidden shadow rounded-lg">
-                <div class="p-5">
+            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
+                <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <i class="fas fa-check-circle text-2xl text-green-600"></i>
+                            <div class="rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fas fa-check-circle text-2xl text-white"></i>
+                            </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Active Trainers</dt>
-                                <dd class="text-lg font-medium text-gray-900">
+                                <dt class="text-sm font-medium text-gray-600 truncate">Active Trainers</dt>
+                                <dd class="text-2xl font-bold text-gray-900 mt-1">
                                     {{ $trainers->where('is_active', true)->count() }}
                                 </dd>
                             </dl>
@@ -55,17 +57,19 @@
                 </div>
             </div>
 
-            <div class="bg-white overflow-hidden shadow rounded-lg">
-                <div class="p-5">
+            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
+                <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <i class="fas fa-chart-line text-2xl text-purple-600"></i>
+                            <div class="rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fas fa-star text-2xl text-white"></i>
+                            </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Avg. Experience</dt>
-                                <dd class="text-lg font-medium text-gray-900">
-                                    {{ number_format($trainers->avg('experience_years') ?? 0, 1) }} years
+                                <dt class="text-sm font-medium text-gray-600 truncate">Specializations</dt>
+                                <dd class="text-2xl font-bold text-gray-900 mt-1">
+                                    {{ $trainers->pluck('specialization')->unique()->count() }}
                                 </dd>
                             </dl>
                         </div>
@@ -74,94 +78,128 @@
             </div>
         </div>
 
+        <!-- Search Bar -->
+        <div class="glass-card rounded-xl p-4 mb-6">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <div class="relative">
+                        <input type="text" 
+                            id="searchTrainers"
+                            placeholder="Search trainers by name, email, or specialization..." 
+                            class="w-full px-4 py-3 pl-10 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-all">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </div>
+                <select class="px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-all">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+        </div>
+
         <!-- Trainers Table -->
-        <div class="mt-6 bg-white shadow overflow-hidden sm:rounded-md">
-            <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">Trainers List</h3>
-                <p class="mt-1 text-sm text-gray-500">All registered gym trainers and their details.</p>
+        <div class="glass-card rounded-xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200 border-opacity-50">
+                <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                    <i class="fas fa-list text-green-600 mr-2"></i>
+                    Trainers List
+                </h3>
+                <p class="mt-1 text-sm text-gray-600">All registered gym trainers and their details</p>
             </div>
 
             @if($trainers->count() > 0)
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
+                    <table class="min-w-full divide-y divide-gray-200 divide-opacity-30">
+                        <thead class="bg-white bg-opacity-40">
                             <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Trainer
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Specialization
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Experience & Rate
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Contact
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Activity
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Status
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Actions
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="divide-y divide-gray-200 divide-opacity-30">
                             @foreach($trainers as $trainer)
-                            <tr class="hover:bg-gray-50">
+                            <tr class="hover:bg-white hover:bg-opacity-30 transition">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10">
-                                            <i class="fas fa-user-tie text-2xl text-gray-400"></i>
+                                        <div class="flex-shrink-0">
+                                            <div class="h-12 w-12 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center shadow-md">
+                                                <span class="text-white font-bold text-lg">{{ substr($trainer->name, 0, 1) }}</span>
+                                            </div>
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900">
+                                            <div class="text-sm font-semibold text-gray-900">
                                                 {{ $trainer->name }}
                                             </div>
-                                            <div class="text-sm text-gray-500">
+                                            <div class="text-sm text-gray-600">
                                                 {{ $trainer->email }}
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">
-                                        {{ $trainer->specialization }}
+                                    <div class="text-sm font-semibold text-gray-900">
+                                        {{ $trainer->specialization ?? 'General' }}
                                     </div>
-                                    <div class="text-sm text-gray-500">
-                                        {{ Str::limit($trainer->certifications, 30) ?: 'No certifications' }}
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">
-                                        {{ $trainer->experience_years }} years
-                                    </div>
-                                    <div class="text-sm text-gray-500">
-                                        ${{ number_format($trainer->hourly_rate) }}/hour
+                                    <div class="text-xs text-gray-600">
+                                        {{ $trainer->experience_years ?? 0 }} years exp.
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">
-                                        {{ $trainer->trainer_bookings_count }} bookings
+                                        {{ $trainer->phone ?? 'N/A' }}
                                     </div>
-                                    <div class="text-sm text-gray-500">
-                                        {{ $trainer->workout_plans_count }} plans
+                                    <div class="text-xs text-gray-600">
+                                        Joined {{ $trainer->created_at->format('M Y') }}
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                        @if($trainer->is_active) bg-green-100 text-green-800 @else bg-red-100 text-red-800 @endif">
-                                        {{ $trainer->is_active ? 'Active' : 'Inactive' }}
-                                    </span>
+                                    <div class="text-sm text-gray-900">
+                                        <i class="fas fa-users text-blue-600 mr-1"></i>
+                                        {{ $trainer->bookings_count ?? 0 }} sessions
+                                    </div>
+                                    <div class="text-xs text-gray-600">
+                                        <i class="fas fa-clipboard-list text-purple-600 mr-1"></i>
+                                        {{ $trainer->workout_plans_count ?? 0 }} plans
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @if($trainer->is_active)
+                                        <span class="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                                            Active
+                                        </span>
+                                    @else
+                                        <span class="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                                            Inactive
+                                        </span>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
                                         <a href="{{ route('admin.trainers.show', $trainer) }}" 
-                                           class="text-blue-600 hover:text-blue-900">
+                                           class="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white hover:scale-110 transition-transform shadow-sm"
+                                           title="View Details">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="{{ route('admin.trainers.edit', $trainer) }}" 
-                                           class="text-green-600 hover:text-green-900">
+                                           class="p-2 rounded-lg bg-gradient-to-br from-green-500 to-green-600 text-white hover:scale-110 transition-transform shadow-sm"
+                                           title="Edit Trainer">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <form action="{{ route('admin.trainers.destroy', $trainer) }}" method="POST" 
@@ -169,7 +207,9 @@
                                               class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900">
+                                            <button type="submit" 
+                                                    class="p-2 rounded-lg bg-gradient-to-br from-red-500 to-red-600 text-white hover:scale-110 transition-transform shadow-sm"
+                                                    title="Delete Trainer">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
@@ -182,25 +222,39 @@
                 </div>
                 
                 <!-- Pagination -->
-                <div class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+                <div class="px-6 py-4 border-t border-gray-200 border-opacity-50">
                     {{ $trainers->links() }}
                 </div>
             @else
-                <div class="text-center py-12">
-                    <i class="fas fa-dumbbell text-4xl text-gray-400 mb-4"></i>
-                    <h3 class="text-lg font-medium text-gray-900">No trainers found</h3>
-                    <p class="mt-2 text-sm text-gray-500">
-                        Get started by adding your first trainer.
-                    </p>
-                    <div class="mt-6">
-                        <a href="{{ route('admin.trainers.create') }}" 
-                           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
-                            <i class="fas fa-plus mr-2"></i>Add New Trainer
-                        </a>
+                <div class="text-center py-16">
+                    <div class="bg-gradient-to-br from-gray-100 to-gray-200 rounded-full p-6 w-24 h-24 flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-tie text-4xl text-gray-400"></i>
                     </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">No trainers found</h3>
+                    <p class="text-sm text-gray-600 mb-6">
+                        Get started by adding your first trainer to the system.
+                    </p>
+                    <a href="{{ route('admin.trainers.create') }}" 
+                       class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                        <i class="fas fa-user-plus mr-2"></i>Add Your First Trainer
+                    </a>
                 </div>
             @endif
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    document.getElementById('searchTrainers')?.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('tbody tr');
+        
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+    });
+</script>
+@endpush
 @endsection

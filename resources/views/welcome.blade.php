@@ -1,137 +1,193 @@
 @extends('layouts.app')
 
-@section('title', 'Welcome - GymSystem')
+@section('title', 'Welcome to TitansGym')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100">
-    <!-- Hero Section -->
-    <div class="relative bg-white overflow-hidden">
-        <div class="max-w-7xl mx-auto">
-            <div class="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
-                <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-                    <div class="sm:text-center lg:text-left">
-                        <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                            <span class="block xl:inline">Welcome to</span>
-                            <span class="block text-blue-600 xl:inline">GymSystem</span>
-                        </h1>
-                        <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                            Professional gym management system designed to streamline your fitness center operations. 
-                            Manage members, trainers, bookings, and payments all in one place.
-                        </p>
-                        <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-                            @auth
-                                <div class="rounded-md shadow">
-                                    <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : (auth()->user()->isTrainer() ? route('trainer.dashboard') : route('member.dashboard')) }}" 
-                                       class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10">
-                                        Go to Dashboard
-                                    </a>
-                                </div>
-                            @else
-                                <div class="rounded-md shadow">
-                                    <a href="{{ route('register') }}" 
-                                       class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10">
-                                        Get Started
-                                    </a>
-                                </div>
-                                <div class="mt-3 sm:mt-0 sm:ml-3">
-                                    <a href="{{ route('login') }}" 
-                                       class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 md:py-4 md:text-lg md:px-10">
-                                        Sign In
-                                    </a>
-                                </div>
-                            @endauth
-                        </div>
-                    </div>
-                </main>
-            </div>
-        </div>
-        <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
-            <div class="h-56 w-full bg-gradient-to-r from-blue-400 to-blue-600 sm:h-72 md:h-96 lg:w-full lg:h-full flex items-center justify-center">
-                <i class="fas fa-dumbbell text-white text-8xl opacity-50"></i>
-            </div>
-        </div>
+<!-- Hero Section -->
+<div class="relative overflow-hidden">
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+        <div class="absolute top-40 right-10 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
     </div>
 
-    <!-- Features Section -->
-    <div class="py-12 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Features</h2>
-                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                    Everything you need to manage your gym
-                </p>
-            </div>
-
-            <div class="mt-10">
-                <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                    <!-- Feature 1 -->
-                    <div class="text-center">
-                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mx-auto">
-                            <i class="fas fa-users text-xl"></i>
-                        </div>
-                        <h3 class="mt-5 text-lg leading-6 font-medium text-gray-900">Member Management</h3>
-                        <p class="mt-2 text-base text-gray-500">
-                            Easily manage member profiles, memberships, and attendance records.
-                        </p>
-                    </div>
-
-                    <!-- Feature 2 -->
-                    <div class="text-center">
-                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-green-500 text-white mx-auto">
-                            <i class="fas fa-dumbbell text-xl"></i>
-                        </div>
-                        <h3 class="mt-5 text-lg leading-6 font-medium text-gray-900">Trainer Management</h3>
-                        <p class="mt-2 text-base text-gray-500">
-                            Manage trainer schedules, specializations, and client assignments.
-                        </p>
-                    </div>
-
-                    <!-- Feature 3 -->
-                    <div class="text-center">
-                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white mx-auto">
-                            <i class="fas fa-calendar-alt text-xl"></i>
-                        </div>
-                        <h3 class="mt-5 text-lg leading-6 font-medium text-gray-900">Booking System</h3>
-                        <p class="mt-2 text-base text-gray-500">
-                            Streamlined session booking with real-time availability checking.
-                        </p>
-                    </div>
-
-                    <!-- Feature 4 -->
-                    <div class="text-center">
-                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-yellow-500 text-white mx-auto">
-                            <i class="fas fa-chart-line text-xl"></i>
-                        </div>
-                        <h3 class="mt-5 text-lg leading-6 font-medium text-gray-900">Progress Tracking</h3>
-                        <p class="mt-2 text-base text-gray-500">
-                            Monitor member progress with detailed metrics and analytics.
-                        </p>
-                    </div>
-
-                    <!-- Feature 5 -->
-                    <div class="text-center">
-                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-red-500 text-white mx-auto">
-                            <i class="fas fa-money-bill-wave text-xl"></i>
-                        </div>
-                        <h3 class="mt-5 text-lg leading-6 font-medium text-gray-900">Payment Processing</h3>
-                        <p class="mt-2 text-base text-gray-500">
-                            Handle payments, invoices, and membership renewals efficiently.
-                        </p>
-                    </div>
-
-                    <!-- Feature 6 -->
-                    <div class="text-center">
-                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white mx-auto">
-                            <i class="fas fa-clipboard-list text-xl"></i>
-                        </div>
-                        <h3 class="mt-5 text-lg leading-6 font-medium text-gray-900">Workout Plans</h3>
-                        <p class="mt-2 text-base text-gray-500">
-                            Create and manage personalized workout plans for members.
-                        </p>
-                    </div>
-                </div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="text-center">
+            <h1 class="text-5xl md:text-7xl font-display font-bold text-gray-900 mb-6 animate-fade-in">
+                Welcome to <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">TitansGym</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto animate-fade-in" style="animation-delay: 0.1s;">
+                The modern, all-in-one platform for managing your gym, trainers, members, and everything in between.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style="animation-delay: 0.2s;">
+                @guest
+                    <a href="{{ route('login') }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Sign In
+                    </a>
+                    <a href="{{ route('register') }}" class="inline-flex items-center px-8 py-4 glass-card text-gray-900 font-semibold rounded-xl hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        Get Started
+                    </a>
+                @else
+                    <a href="{{ route('dashboard') }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
+                        <i class="fas fa-tachometer-alt mr-2"></i>
+                        Go to Dashboard
+                    </a>
+                @endguest
             </div>
         </div>
     </div>
 </div>
+
+<!-- Features Section -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="text-center mb-16">
+        <h2 class="text-4xl font-display font-bold text-gray-900 mb-4">
+            Everything You Need to Run Your Gym
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            Powerful features designed to streamline operations and enhance member experience
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <div class="glass-card rounded-2xl p-8 hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 group">
+            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                <i class="fas fa-users text-2xl text-white"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Member Management</h3>
+            <p class="text-gray-600">
+                Effortlessly manage member profiles, track memberships, and monitor attendance with our intuitive dashboard.
+            </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="glass-card rounded-2xl p-8 hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 group">
+            <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                <i class="fas fa-dumbbell text-2xl text-white"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Trainer Coordination</h3>
+            <p class="text-gray-600">
+                Empower trainers with tools to create workout plans, track client progress, and manage their schedules.
+            </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="glass-card rounded-2xl p-8 hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 group">
+            <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                <i class="fas fa-calendar-check text-2xl text-white"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Smart Booking</h3>
+            <p class="text-gray-600">
+                Streamline session bookings with our intelligent scheduling system that prevents conflicts and maximizes efficiency.
+            </p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="glass-card rounded-2xl p-8 hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 group">
+            <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                <i class="fas fa-dollar-sign text-2xl text-white"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Payment Processing</h3>
+            <p class="text-gray-600">
+                Track payments, generate invoices, and manage subscriptions all in one place with detailed financial reports.
+            </p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="glass-card rounded-2xl p-8 hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 group">
+            <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                <i class="fas fa-chart-line text-2xl text-white"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Progress Tracking</h3>
+            <p class="text-gray-600">
+                Monitor member progress with detailed metrics, body measurements, and achievement milestones.
+            </p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="glass-card rounded-2xl p-8 hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 group">
+            <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
+                <i class="fas fa-chart-bar text-2xl text-white"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Analytics & Reports</h3>
+            <p class="text-gray-600">
+                Make data-driven decisions with comprehensive reports on revenue, attendance, and member engagement.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div class="bg-gradient-to-r from-blue-600 to-purple-600 py-16 my-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center text-white">
+            <div class="animate-fade-in">
+                <div class="text-5xl font-bold mb-2">10K+</div>
+                <div class="text-xl opacity-90">Active Members</div>
+            </div>
+            <div class="animate-fade-in" style="animation-delay: 0.1s;">
+                <div class="text-5xl font-bold mb-2">500+</div>
+                <div class="text-xl opacity-90">Certified Trainers</div>
+            </div>
+            <div class="animate-fade-in" style="animation-delay: 0.2s;">
+                <div class="text-5xl font-bold mb-2">99.9%</div>
+                <div class="text-xl opacity-90">Uptime Guarantee</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+    <div class="glass-card rounded-3xl p-12">
+        <h2 class="text-4xl font-display font-bold text-gray-900 mb-4">
+            Ready to Transform Your Gym?
+        </h2>
+        <p class="text-lg text-gray-600 mb-8">
+            Join thousands of gyms already using TitansGym to streamline their operations and delight their members.
+        </p>
+        @guest
+            <a href="{{ route('register') }}" class="inline-flex items-center px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg rounded-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
+                <i class="fas fa-rocket mr-3"></i>
+                Start Free Trial
+            </a>
+        @else
+            <a href="{{ route('dashboard') }}" class="inline-flex items-center px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg rounded-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
+                <i class="fas fa-tachometer-alt mr-3"></i>
+                Go to Dashboard
+            </a>
+        @endguest
+    </div>
+</div>
+
+<style>
+    @keyframes blob {
+        0%, 100% {
+            transform: translate(0, 0) scale(1);
+        }
+        33% {
+            transform: translate(30px, -50px) scale(1.1);
+        }
+        66% {
+            transform: translate(-20px, 20px) scale(0.9);
+        }
+    }
+    
+    .animate-blob {
+        animation: blob 7s infinite;
+    }
+    
+    .animation-delay-2000 {
+        animation-delay: 2s;
+    }
+    
+    .animation-delay-4000 {
+        animation-delay: 4s;
+    }
+</style>
 @endsection

@@ -45,6 +45,8 @@ class User extends Authenticatable
         'hourly_rate' => 'decimal:2',
     ];
 
+    protected $appends = ['age', 'membership_days_remaining', 'membership_status'];
+
     // Relationships
     public function bookings()
     {
@@ -73,12 +75,12 @@ class User extends Authenticatable
 
     public function attendance()
     {
-        return $this->hasMany(Attendance::class);
+        return $this->hasMany(Attendance::class, 'member_id');
     }
 
     public function progress()
     {
-        return $this->hasMany(Progress::class);
+        return $this->hasMany(Progress::class, 'member_id');
     }
 
     // Scopes
@@ -102,6 +104,11 @@ class User extends Authenticatable
         return $query->where('is_active', true);
     }
 
+    public function scopeExpiringSoon($query, $days = 30)
+    {
+        return $query->whereBetween('membership_expiry', [now(), now()->addDays($days)]);
+    }
+
     // Methods
     public function isAdmin()
     {
@@ -118,12 +125,45 @@ class User extends Authenticatable
         return $this->role === 'member';
     }
 
+    // Accessors
+    public function getAgeAttribute()
+    {
+        return $this->date_of_birth ? $this->date_of_birth->age : null;
+    }
+
+    public function getMembershipDaysRemainingAttribute()
+    {
+        if (!$this->membership_expiry) {
+            return 0;
+        }
+        
+        return now()->diffInDays($this->membership_expiry, false);
+    }
+
     public function getMembershipStatusAttribute()
     {
         if (!$this->membership_expiry) {
             return 'inactive';
         }
 
-        return $this->membership_expiry->isFuture() ? 'active' : 'expired';
+        if ($this->membership_expiry->isPast()) {
+            return 'expired';
+        }
+
+        if ($this->membership_days_remaining <= 7) {
+            return 'expiring_soon';
+        }
+
+        return 'active';
+    }
+
+    public function getTotalSpentAttribute()
+    {
+        return $this->payments()->paid()->sum('amount');
+    }
+
+    public function getLastAttendanceAttribute()
+    {
+        return $this->attendance()->latest()->first();
     }
 }

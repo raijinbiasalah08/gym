@@ -20,8 +20,8 @@ class PaymentController extends Controller
         }
 
         $payments = $query->latest()->paginate(10);
-
-        return response()->json($payments);
+        
+        return view('member.payments.index', compact('payments'));
     }
 
     public function show(Payment $payment)

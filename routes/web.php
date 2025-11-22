@@ -6,10 +6,12 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\MemberController as AdminMemberController;
 use App\Http\Controllers\Admin\TrainerController as AdminTrainerController;
 use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Trainer\DashboardController as TrainerDashboardController;
 use App\Http\Controllers\Trainer\WorkoutPlanController as TrainerWorkoutPlanController;
 use App\Http\Controllers\Trainer\AttendanceController as TrainerAttendanceController;
 use App\Http\Controllers\Trainer\ProgressController as TrainerProgressController;
+use App\Http\Controllers\Trainer\BookingController as TrainerBookingController;
 use App\Http\Controllers\Member\DashboardController as MemberDashboardController;
 use App\Http\Controllers\Member\BookingController as MemberBookingController;
 use App\Http\Controllers\Member\PaymentController as MemberPaymentController;
@@ -19,6 +21,17 @@ use App\Http\Controllers\Member\ProgressController as MemberProgressController;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+// Design Showcase (for development/reference)
+Route::get('/design-showcase', function () {
+    return view('design-showcase');
+})->name('design.showcase');
+
+// Static Pages
+Route::get('/about', [App\Http\Controllers\PageController::class, 'about'])->name('about');
+Route::get('/contact', [App\Http\Controllers\PageController::class, 'contact'])->name('contact');
+Route::get('/privacy-policy', [App\Http\Controllers\PageController::class, 'privacy'])->name('privacy');
+Route::get('/terms-of-service', [App\Http\Controllers\PageController::class, 'terms'])->name('terms');
 
 // Auth routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -44,6 +57,7 @@ Route::middleware('auth')->group(function () {
     // Admin routes
     Route::prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('/dashboard/revenue', [AdminDashboardController::class, 'monthlyRevenue'])->name('admin.dashboard.revenue');
         
         // Members management
         Route::get('/members', [AdminMemberController::class, 'index'])->name('admin.members.index');
@@ -69,6 +83,29 @@ Route::middleware('auth')->group(function () {
         Route::post('/payments', [AdminPaymentController::class, 'store'])->name('admin.payments.store');
         Route::patch('/payments/{payment}/status', [AdminPaymentController::class, 'updateStatus'])->name('admin.payments.updateStatus');
         Route::delete('/payments/{payment}', [AdminPaymentController::class, 'destroy'])->name('admin.payments.destroy');
+        
+        // Reports
+        Route::get('/reports', [AdminReportController::class, 'index'])->name('admin.reports.index');
+        Route::get('/reports/financial', [AdminReportController::class, 'financialReport'])->name('admin.reports.financial');
+        Route::get('/reports/financial/export', [AdminReportController::class, 'financialReportExport'])->name('admin.reports.financial.export');
+        Route::get('/reports/attendance', [AdminReportController::class, 'attendanceReport'])->name('admin.reports.attendance');
+        Route::get('/reports/attendance/export', [AdminReportController::class, 'attendanceReportExport'])->name('admin.reports.attendance.export');
+        Route::get('/reports/membership', [AdminReportController::class, 'membershipReport'])->name('admin.reports.membership');
+        Route::get('/reports/membership/export', [AdminReportController::class, 'membershipReportExport'])->name('admin.reports.membership.export');
+        Route::get('/reports/trainer-performance', [AdminReportController::class, 'trainerPerformanceReport'])->name('admin.reports.trainer-performance');
+        Route::get('/reports/trainer-performance/export', [AdminReportController::class, 'trainerPerformanceExport'])->name('admin.reports.trainer-performance.export');
+        Route::get('/reports/booking-analytics', [AdminReportController::class, 'bookingAnalyticsReport'])->name('admin.reports.booking-analytics');
+        Route::get('/reports/booking-analytics/export', [AdminReportController::class, 'bookingAnalyticsExport'])->name('admin.reports.booking-analytics.export');
+        Route::get('/reports/progress-tracking', [AdminReportController::class, 'progressTrackingReport'])->name('admin.reports.progress-tracking');
+        Route::get('/reports/progress-tracking/export', [AdminReportController::class, 'progressTrackingExport'])->name('admin.reports.progress-tracking.export');
+        Route::get('/reports/class-utilization', [AdminReportController::class, 'classUtilizationReport'])->name('admin.reports.class-utilization');
+        Route::get('/reports/class-utilization/export', [AdminReportController::class, 'classUtilizationExport'])->name('admin.reports.class-utilization.export');
+        Route::get('/reports/revenue-by-trainer', [AdminReportController::class, 'revenueByTrainerReport'])->name('admin.reports.revenue-by-trainer');
+        Route::get('/reports/revenue-by-trainer/export', [AdminReportController::class, 'revenueByTrainerExport'])->name('admin.reports.revenue-by-trainer.export');
+        Route::get('/reports/member-retention', [AdminReportController::class, 'memberRetentionReport'])->name('admin.reports.member-retention');
+        Route::get('/reports/member-retention/export', [AdminReportController::class, 'memberRetentionExport'])->name('admin.reports.member-retention.export');
+        Route::get('/reports/upcoming-expirations', [AdminReportController::class, 'upcomingExpirationsReport'])->name('admin.reports.upcoming-expirations');
+        Route::get('/reports/upcoming-expirations/export', [AdminReportController::class, 'upcomingExpirationsExport'])->name('admin.reports.upcoming-expirations.export');
     });
 
     // Trainer routes
@@ -85,6 +122,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/attendance', [TrainerAttendanceController::class, 'index'])->name('trainer.attendance.index');
         Route::get('/attendance/create', [TrainerAttendanceController::class, 'create'])->name('trainer.attendance.create');
         Route::post('/attendance', [TrainerAttendanceController::class, 'store'])->name('trainer.attendance.store');
+        
+        // Bookings
+        Route::get('/bookings', [TrainerBookingController::class, 'index'])->name('trainer.bookings.index');
+        Route::get('/bookings/{booking}', [TrainerBookingController::class, 'show'])->name('trainer.bookings.show');
+        Route::get('/bookings/calendar', [TrainerBookingController::class, 'calendar'])->name('trainer.bookings.calendar');
+        Route::patch('/bookings/{booking}/status', [TrainerBookingController::class, 'updateStatus'])->name('trainer.bookings.update-status');
+        
+        // Progress Tracking
+        Route::resource('progress', TrainerProgressController::class)->names('trainer.progress');
     });
 
     // Member routes
@@ -101,5 +147,15 @@ Route::middleware('auth')->group(function () {
         // Progress
         Route::get('/progress', [MemberProgressController::class, 'index'])->name('member.progress.index');
         Route::get('/progress/{progress}', [MemberProgressController::class, 'show'])->name('member.progress.show');
+        // Attendance (member view)
+        Route::get('/attendance', [MemberDashboardController::class, 'attendanceIndex'])->name('member.attendance.index');
+        Route::get('/attendance/export', [MemberDashboardController::class, 'attendanceExport'])->name('member.attendance.export');
+        
+        // Membership page
+        Route::get('/membership', [MemberDashboardController::class, 'membershipPage'])->name('member.membership');
+
+        // Payments
+        Route::get('/payments', [MemberPaymentController::class, 'index'])->name('member.payments.index');
+        Route::get('/payments/history', [MemberPaymentController::class, 'paymentHistory'])->name('member.payments.history');
     });
 });

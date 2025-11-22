@@ -24,7 +24,13 @@ class ProgressController extends Controller
 
         $progress = $query->orderBy('record_date', 'desc')->paginate(10);
 
-        return response()->json($progress);
+        return view('trainer.progress.index', compact('progress'));
+    }
+
+    public function create()
+    {
+        $members = User::where('role', 'member')->get();
+        return view('trainer.progress.create', compact('members'));
     }
 
     public function store(Request $request)
@@ -47,19 +53,22 @@ class ProgressController extends Controller
         // Calculate BMI
         $validated['bmi'] = $this->calculateBMI($validated['weight'], $validated['height']);
 
-        $progress = Progress::create($validated);
+        Progress::create($validated);
 
-        return response()->json([
-            'message' => 'Progress recorded successfully',
-            'progress' => $progress
-        ], 201);
+        return redirect()->route('trainer.progress.index')
+            ->with('success', 'Progress recorded successfully');
     }
 
     public function show(Progress $progress)
     {
         $progress->load('member');
+        return view('trainer.progress.show', compact('progress'));
+    }
 
-        return response()->json($progress);
+    public function edit(Progress $progress)
+    {
+        $members = User::where('role', 'member')->get();
+        return view('trainer.progress.edit', compact('progress', 'members'));
     }
 
     public function update(Request $request, Progress $progress)
@@ -83,17 +92,16 @@ class ProgressController extends Controller
 
         $progress->update($validated);
 
-        return response()->json([
-            'message' => 'Progress updated successfully',
-            'progress' => $progress
-        ]);
+        return redirect()->route('trainer.progress.index')
+            ->with('success', 'Progress updated successfully');
     }
 
     public function destroy(Progress $progress)
     {
         $progress->delete();
 
-        return response()->json(['message' => 'Progress record deleted successfully']);
+        return redirect()->route('trainer.progress.index')
+            ->with('success', 'Progress record deleted successfully');
     }
 
     public function memberProgress($memberId)

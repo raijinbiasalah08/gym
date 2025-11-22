@@ -1,165 +1,162 @@
 @extends('layouts.app')
 
-@section('title', 'Book a Session - GymSystem')
+@section('title', 'Book Session - GymSystem')
 
 @section('content')
 <div class="py-6">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-2xl font-semibold text-gray-900">Book a Training Session</h1>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-6">
+            <div class="flex items-center space-x-3 mb-2">
+                <a href="{{ route('member.bookings.index') }}" class="text-gray-600 hover:text-gray-900 transition">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h1 class="text-3xl font-bold text-gray-900">Book a Session</h1>
+            </div>
+            <p class="text-sm text-gray-600">Schedule a training session with an expert trainer</p>
+        </div>
 
         @if(session('error'))
-            <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            <div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg flex items-center shadow-sm">
+                <i class="fas fa-exclamation-circle mr-2"></i>
                 {{ session('error') }}
             </div>
         @endif
 
-        <div class="mt-6 bg-white shadow sm:rounded-lg">
-            <div class="px-4 py-5 sm:p-6">
-                <form action="{{ route('member.bookings.store') }}" method="POST">
-                    @csrf
+        <div class="glass-card rounded-xl p-6">
+            <form action="{{ route('member.bookings.store') }}" method="POST" class="space-y-6">
+                @csrf
+                
+                <!-- Trainer Selection -->
+                <div class="glass-card rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-user-tie text-blue-600 mr-2"></i>
+                        Select Trainer
+                    </h3>
                     
-                    <div class="grid grid-cols-1 gap-6">
-                        <!-- Trainer Selection -->
-                        <div>
-                            <label for="trainer_id" class="block text-sm font-medium text-gray-700">
-                                Select Trainer *
-                            </label>
-                            <select id="trainer_id" name="trainer_id" required
-                                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                <option value="">Choose a trainer</option>
-                                @foreach($trainers as $trainer)
-                                    <option value="{{ $trainer->id }}" 
-                                            {{ old('trainer_id') == $trainer->id ? 'selected' : '' }}>
-                                        {{ $trainer->name }} - {{ $trainer->specialization }} 
-                                        (${{ number_format($trainer->hourly_rate, 2) }}/hour)
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('trainer_id')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        @foreach($trainers as $trainer)
+                        <label class="relative flex items-start p-4 cursor-pointer glass-card rounded-lg hover:bg-blue-50 transition border-2 border-transparent hover:border-blue-200">
+                            <div class="flex items-center h-5">
+                                <input type="radio" name="trainer_id" value="{{ $trainer->id }}" 
+                                       {{ old('trainer_id') == $trainer->id ? 'checked' : '' }}
+                                       class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+                            </div>
+                            <div class="ml-3">
+                                <span class="block text-sm font-medium text-gray-900">{{ $trainer->name }}</span>
+                                <span class="block text-sm text-gray-500">{{ $trainer->specialization }}</span>
+                                <span class="block text-xs text-blue-600 mt-1">${{ number_format($trainer->hourly_rate, 2) }}/hr</span>
+                            </div>
+                        </label>
+                        @endforeach
+                    </div>
+                    @error('trainer_id')
+                        <p class="mt-2 text-sm text-red-600 flex items-center">
+                            <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                        </p>
+                    @enderror
+                </div>
 
-                        <!-- Session Type -->
+                <!-- Session Details -->
+                <div class="glass-card rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-clock text-green-600 mr-2"></i>
+                        Session Details
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="session_type" class="block text-sm font-medium text-gray-700">
-                                Session Type *
-                            </label>
-                            <select id="session_type" name="session_type" required
-                                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                <option value="">Select session type</option>
-                                <option value="personal_training" {{ old('session_type') == 'personal_training' ? 'selected' : '' }}>
-                                    Personal Training
-                                </option>
-                                <option value="group_session" {{ old('session_type') == 'group_session' ? 'selected' : '' }}>
-                                    Group Session
-                                </option>
-                                <option value="consultation" {{ old('session_type') == 'consultation' ? 'selected' : '' }}>
-                                    Consultation
-                                </option>
+                            <label for="session_type" class="block text-sm font-semibold text-gray-700 mb-2">Session Type <span class="text-red-500">*</span></label>
+                            <select name="session_type" id="session_type" required
+                                    class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all @error('session_type') ring-2 ring-red-500 @enderror">
+                                <option value="">Select Type</option>
+                                <option value="personal_training" {{ old('session_type') == 'personal_training' ? 'selected' : '' }}>Personal Training (Standard Rate)</option>
+                                <option value="group_session" {{ old('session_type') == 'group_session' ? 'selected' : '' }}>Group Session (40% Off)</option>
+                                <option value="consultation" {{ old('session_type') == 'consultation' ? 'selected' : '' }}>Consultation (50% Off)</option>
                             </select>
                             @error('session_type')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                                </p>
                             @enderror
                         </div>
 
-                        <!-- Booking Date -->
                         <div>
-                            <label for="booking_date" class="block text-sm font-medium text-gray-700">
-                                Session Date *
-                            </label>
-                            <input type="date" id="booking_date" name="booking_date" required
-                                   min="{{ \Carbon\Carbon::tomorrow()->format('Y-m-d') }}"
+                            <label for="booking_date" class="block text-sm font-semibold text-gray-700 mb-2">Date <span class="text-red-500">*</span></label>
+                            <input type="date" name="booking_date" id="booking_date" required
+                                   min="{{ date('Y-m-d', strtotime('+1 day')) }}"
                                    value="{{ old('booking_date') }}"
-                                   class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                   class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all @error('booking_date') ring-2 ring-red-500 @enderror">
                             @error('booking_date')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                                </p>
                             @enderror
                         </div>
 
-                        <!-- Start Time -->
                         <div>
-                            <label for="start_time" class="block text-sm font-medium text-gray-700">
-                                Start Time *
-                            </label>
-                            <input type="time" id="start_time" name="start_time" required
+                            <label for="start_time" class="block text-sm font-semibold text-gray-700 mb-2">Start Time <span class="text-red-500">*</span></label>
+                            <input type="time" name="start_time" id="start_time" required
                                    value="{{ old('start_time') }}"
-                                   class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                   class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all @error('start_time') ring-2 ring-red-500 @enderror">
                             @error('start_time')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                                </p>
                             @enderror
                         </div>
 
-                        <!-- End Time -->
                         <div>
-                            <label for="end_time" class="block text-sm font-medium text-gray-700">
-                                End Time *
-                            </label>
-                            <input type="time" id="end_time" name="end_time" required
+                            <label for="end_time" class="block text-sm font-semibold text-gray-700 mb-2">End Time <span class="text-red-500">*</span></label>
+                            <input type="time" name="end_time" id="end_time" required
                                    value="{{ old('end_time') }}"
-                                   class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                   class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all @error('end_time') ring-2 ring-red-500 @enderror">
                             @error('end_time')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                                </p>
                             @enderror
                         </div>
 
-                        <!-- Notes -->
-                        <div>
-                            <label for="notes" class="block text-sm font-medium text-gray-700">
-                                Additional Notes
-                            </label>
-                            <textarea id="notes" name="notes" rows="3"
-                                      class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                                      placeholder="Any specific goals or requirements...">{{ old('notes') }}</textarea>
-                            @error('notes')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                        <div class="md:col-span-2">
+                            <label for="notes" class="block text-sm font-semibold text-gray-700 mb-2">Notes (Optional)</label>
+                            <textarea name="notes" id="notes" rows="3"
+                                      placeholder="Any specific goals or injuries the trainer should know about?"
+                                      class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">{{ old('notes') }}</textarea>
                         </div>
                     </div>
+                </div>
 
-                    <div class="mt-6 flex justify-end space-x-3">
-                        <a href="{{ route('member.bookings.index') }}" 
-                           class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            Cancel
-                        </a>
-                        <button type="submit" 
-                                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            Book Session
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <div class="flex justify-end space-x-4 pt-4">
+                    <a href="{{ route('member.bookings.index') }}" 
+                       class="px-6 py-3 glass-card text-gray-700 font-medium rounded-lg hover:bg-white hover:bg-opacity-60 transition">
+                        <i class="fas fa-times mr-2"></i>Cancel
+                    </a>
+                    <button type="submit" 
+                            class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                        <i class="fas fa-check mr-2"></i>Confirm Booking
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Set minimum time to current time + 1 hour for today's date
-    const now = new Date();
-    const minTime = now.getHours().toString().padStart(2, '0') + ':' + 
-                   (now.getMinutes() + 60).toString().padStart(2, '0');
-    
-    const startTimeInput = document.getElementById('start_time');
-    const endTimeInput = document.getElementById('end_time');
-    const dateInput = document.getElementById('booking_date');
-    
-    // Update time validation when date changes
-    dateInput.addEventListener('change', function() {
-        const selectedDate = new Date(this.value);
-        const today = new Date();
-        
-        if (selectedDate.toDateString() === today.toDateString()) {
-            startTimeInput.min = minTime;
-        } else {
-            startTimeInput.removeAttribute('min');
+    // Simple script to auto-set end time to 1 hour after start time
+    document.getElementById('start_time')?.addEventListener('change', function(e) {
+        const startTime = e.target.value;
+        if(startTime) {
+            const [hours, minutes] = startTime.split(':');
+            const date = new Date();
+            date.setHours(parseInt(hours) + 1);
+            date.setMinutes(parseInt(minutes));
+            
+            const endHours = String(date.getHours()).padStart(2, '0');
+            const endMinutes = String(date.getMinutes()).padStart(2, '0');
+            
+            document.getElementById('end_time').value = `${endHours}:${endMinutes}`;
         }
     });
-    
-    // Update end time minimum when start time changes
-    startTimeInput.addEventListener('change', function() {
-        endTimeInput.min = this.value;
-    });
-});
 </script>
 @endsection
