@@ -27,7 +27,7 @@
                                 {{ $payment->created_at->format('M d, Y') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                ${{ number_format($payment->amount, 2) }}
+                                ₱{{ number_format($payment->amount, 2) }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">
                                 {{ str_replace('_', ' ', $payment->payment_method) }}

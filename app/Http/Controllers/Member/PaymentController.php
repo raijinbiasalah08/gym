@@ -46,7 +46,7 @@ class PaymentController extends Controller
         }
 
         $request->validate([
-            'payment_method' => 'required|in:cash,card,bank_transfer,online',
+            'payment_method' => 'required|in:cash,credit_card,debit_card,bank_transfer,online,face_to_face,mobile_money,check,e_wallet',
         ]);
 
         $payment->update([

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lottie Exercise Animations - TitansGym</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-orange-50 to-red-50 min-h-screen">
+    <div class="container mx-auto px-4 py-12">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-bold text-gray-900 mb-4">🏋️ Exercise Animations</h1>
+            <p class="text-xl text-gray-600">Real human Lottie animations for your fitness dashboard</p>
+        </div>
+
+        <!-- Instructions -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">📥 How to Get Free Lottie Animations</h2>
+            <div class="space-y-4">
+                <div class="flex items-start gap-4">
+                    <div
+                        class="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">
+                        1</div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Visit LottieFiles</h3>
+                        <p class="text-gray-600">Go to <a
+                                href="https://lottiefiles.com/search?q=fitness&category=animations" target="_blank"
+                                class="text-orange-600 hover:underline">lottiefiles.com/search?q=fitness</a></p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div
+                        class="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">
+                        2</div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Search for Exercises</h3>
+                        <p class="text-gray-600">Search: "push up", "squat", "bicep curl", "plank", "lunge", "yoga"</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div
+                        class="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">
+                        3</div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Download JSON</h3>
+                        <p class="text-gray-600">Click animation → Download → Lottie JSON → Save to <code
+                                class="bg-gray-100 px-2 py-1 rounded">public/lottie/exercises/</code></p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div
+                        class="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">
+                        4</div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Use Component</h3>
+                        <p class="text-gray-600">In Blade: <code
+                                class="bg-gray-100 px-2 py-1 rounded">&lt;x-exercise-animation exercise="pushup" /&gt;</code>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example Animations (Using CDN URLs) -->
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Example Animations</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            <!-- Push-Up -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition">
+                <div class="h-64 bg-gradient-to-br from-orange-100 to-red-100 flex items-center justify-center">
+                    <lottie-player src="https://lottie.host/4d3c5f4e-63dc-4c8e-a9c5-2b5e8f9d1a3c/xK9Qy7Zw8M.json"
+                        background="transparent" speed="1" style="width: 250px; height: 250px;" loop autoplay>
+                    </lottie-player>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Push-Ups</h3>
+                    <p class="text-gray-600 text-sm mb-4">Upper body strength exercise</p>
+                    <a href="https://lottiefiles.com/search?q=push%20up&category=animations" target="_blank"
+                        class="inline-block bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition text-sm">
+                        Find Similar →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Squat -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition">
+                <div class="h-64 bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center">
+                    <lottie-player src="https://lottie.host/embed/a5b8c9d0-1e2f-3a4b-5c6d-7e8f9a0b1c2d/xyz123.json"
+                        background="transparent" speed="1" style="width: 250px; height: 250px;" loop autoplay>
+                    </lottie-player>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Squats</h3>
+                    <p class="text-gray-600 text-sm mb-4">Lower body compound movement</p>
+                    <a href="https://lottiefiles.com/search?q=squat&category=animations" target="_blank"
+                        class="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition text-sm">
+                        Find Similar →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Yoga/Stretch -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition">
+                <div class="h-64 bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
+                    <lottie-player src="https://lottie.host/embed/b6c7d8e9-2f3a-4b5c-6d7e-8f9a0b1c2d3e/abc456.json"
+                        background="transparent" speed="1" style="width: 250px; height: 250px;" loop autoplay>
+                    </lottie-player>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Yoga/Flexibility</h3>
+                    <p class="text-gray-600 text-sm mb-4">Stretching and flexibility</p>
+                    <a href="https://lottiefiles.com/search?q=yoga&category=animations" target="_blank"
+                        class="inline-block bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition text-sm">
+                        Find Similar →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">🔗 Quick Search Links</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <a href="https://lottiefiles.com/search?q=push%20up&category=animations" target="_blank"
+                    class="flex items-center gap-3 p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition">
+                    <span class="text-2xl">💪</span>
+                    <div>
+                        <div class="font-semibold text-gray-900">Push-Ups</div>
+                        <div class="text-sm text-gray-600">Upper body</div>
+                    </div>
+                </a>
+                <a href="https://lottiefiles.com/search?q=squat&category=animations" target="_blank"
+                    class="flex items-center gap-3 p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition">
+                    <span class="text-2xl">🦵</span>
+                    <div>
+                        <div class="font-semibold text-gray-900">Squats</div>
+                        <div class="text-sm text-gray-600">Lower body</div>
+                    </div>
+                </a>
+                <a href="https://lottiefiles.com/search?q=bicep%20curl&category=animations" target="_blank"
+                    class="flex items-center gap-3 p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition">
+                    <span class="text-2xl">💪</span>
+                    <div>
+                        <div class="font-semibold text-gray-900">Bicep Curls</div>
+                        <div class="text-sm text-gray-600">Arms</div>
+                    </div>
+                </a>
+                <a href="https://lottiefiles.com/search?q=plank&category=animations" target="_blank"
+                    class="flex items-center gap-3 p-4 bg-green-50 rounded-lg hover:bg-green-100 transition">
+                    <span class="text-2xl">🧘</span>
+                    <div>
+                        <div class="font-semibold text-gray-900">Planks</div>
+                        <div class="text-sm text-gray-600">Core</div>
+                    </div>
+                </a>
+                <a href="https://lottiefiles.com/search?q=lunge&category=animations" target="_blank"
+                    class="flex items-center gap-3 p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition">
+                    <span class="text-2xl">🏃</span>
+                    <div>
+                        <div class="font-semibold text-gray-900">Lunges</div>
+                        <div class="text-sm text-gray-600">Legs</div>
+                    </div>
+                </a>
+                <a href="https://lottiefiles.com/search?q=yoga&category=animations" target="_blank"
+                    class="flex items-center gap-3 p-4 bg-pink-50 rounded-lg hover:bg-pink-100 transition">
+                    <span class="text-2xl">🧘‍♀️</span>
+                    <div>
+                        <div class="font-semibold text-gray-900">Yoga</div>
+                        <div class="text-sm text-gray-600">Flexibility</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Code Example -->
+        <div class="bg-gray-900 rounded-2xl shadow-xl p-8 mt-12 text-white">
+            <h2 class="text-2xl font-bold mb-6">💻 Usage Example</h2>
+            <pre class="bg-gray-800 p-6 rounded-lg overflow-x-auto"><code class="text-sm">&lt;!-- In your Blade template --&gt;
+&lt;x-exercise-animation 
+    exercise="pushup" 
+    size="300" 
+    speed="1" 
+/&gt;
+
+&lt;!-- Or use directly --&gt;
+&lt;lottie-player
+    src="{{ asset('lottie/exercises/pushup.json') }}"
+    background="transparent"
+    speed="1"
+    style="width: 300px; height: 300px;"
+    loop
+    autoplay&gt;
+&lt;/lottie-player&gt;</code></pre>
+        </div>
+    </div>
+</body>
+
+</html>

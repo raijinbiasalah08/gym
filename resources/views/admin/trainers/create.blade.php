@@ -104,10 +104,29 @@
 
                     <div>
                         <label for="experience_years" class="block text-sm font-semibold text-gray-700 mb-2">
-                            Years of Experience
+                            Years of Experience <span class="text-red-500">*</span>
                         </label>
-                        <input type="number" name="experience_years" id="experience_years" min="0" value="{{ old('experience_years') }}"
-                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-all">
+                        <input type="number" name="experience_years" id="experience_years" min="0" required value="{{ old('experience_years') }}"
+                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-all @error('experience_years') ring-2 ring-red-500 @enderror">
+                        @error('experience_years')
+                            <p class="mt-2 text-sm text-red-600 flex items-center">
+                                <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="hourly_rate" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Hourly Rate ($) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" name="hourly_rate" id="hourly_rate" min="0" step="0.01" required value="{{ old('hourly_rate') }}"
+                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-all @error('hourly_rate') ring-2 ring-red-500 @enderror"
+                               placeholder="50.00">
+                        @error('hourly_rate')
+                            <p class="mt-2 text-sm text-red-600 flex items-center">
+                                <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
+                            </p>
+                        @enderror
                     </div>
 
                     <div class="md:col-span-2">
@@ -130,7 +149,7 @@
 
             <div class="glass-card rounded-xl p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
-                    <i class="fas fa-lock text-blue-600 mr-2"></i>
+                    <i class="fas fa-lock text-orange-600 mr-2"></i>
                     Account Information
                 </h3>
                 

@@ -1,0 +1,43 @@
+<!-- Animated Stick Figure: Squat -->
+<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="exercise-animation">
+    <style>
+        @keyframes squat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+        .squat-body { animation: squat 2.5s ease-in-out infinite; }
+        .squat-legs { animation: squat 2.5s ease-in-out infinite; }
+    </style>
+    
+    <!-- Ground -->
+    <line x1="5" y1="55" x2="55" y2="55" stroke="#cbd5e0" stroke-width="2"/>
+    
+    <!-- Stick Figure -->
+    <g class="squat-body">
+        <!-- Head -->
+        <circle cx="30" cy="12" r="5" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+        
+        <!-- Body -->
+        <line x1="30" y1="17" x2="30" y2="32" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+        
+        <!-- Arms (extended forward) -->
+        <line x1="30" y1="22" x2="18" y2="22" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="30" y1="22" x2="42" y2="22" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+        
+        <!-- Hands -->
+        <circle cx="18" cy="22" r="2" fill="#f97316"/>
+        <circle cx="42" cy="22" r="2" fill="#f97316"/>
+    </g>
+    
+    <g class="squat-legs">
+        <!-- Legs (bent) -->
+        <line x1="30" y1="32" x2="22" y2="45" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="30" y1="32" x2="38" y2="45" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="22" y1="45" x2="20" y2="55" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="38" y1="45" x2="40" y2="55" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+        
+        <!-- Feet -->
+        <circle cx="20" cy="55" r="2" fill="#f97316"/>
+        <circle cx="40" cy="55" r="2" fill="#f97316"/>
+    </g>
+</svg>

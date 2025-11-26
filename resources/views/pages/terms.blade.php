@@ -58,7 +58,7 @@
                 </p>
                 <p class="mt-4">
                     <strong>TitansGym</strong><br>
-                    <a href="mailto:legal@titansgym.com" class="text-blue-600 hover:underline">legal@titansgym.com</a>
+                    <a href="mailto:legal@titansgym.com" class="text-orange-600 hover:underline">legal@titansgym.com</a>
                 </p>
             </div>
         </div>

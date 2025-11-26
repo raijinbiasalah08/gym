@@ -28,7 +28,7 @@
                             <label for="start_date" class="block text-sm font-medium text-gray-700">Start Date</label>
                             <input type="date" name="start_date" id="start_date" required
                                    value="{{ request('start_date', now()->subMonth()->format('Y-m-d')) }}"
-                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-600 focus:border-blue-600 sm:text-sm">
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-600 focus:border-orange-600 sm:text-sm">
                         </div>
 
                         <div>
@@ -61,7 +61,7 @@
                         <div class="ml-5 w-0 flex-1">
                             <dl>
                                 <dt class="text-sm font-medium text-gray-500 truncate">Total Revenue</dt>
-                                <dd class="text-lg font-medium text-gray-900">${{ number_format($totalRevenue, 2) }}</dd>
+                                <dd class="text-lg font-medium text-gray-900">₱{{ number_format($totalRevenue, 2) }}</dd>
                             </dl>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
             <div class="glass-card overflow-hidden rounded-xl">
                 <div class="p-5">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-3 shadow-md">
+                        <div class="flex-shrink-0 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg p-3 shadow-md">
                             <i class="fas fa-credit-card text-2xl text-white"></i>
                         </div>
                         <div class="ml-5 w-0 flex-1">
@@ -87,7 +87,7 @@
             <div class="glass-card overflow-hidden rounded-xl">
                 <div class="p-5">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-3 shadow-md">
+                        <div class="flex-shrink-0 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg p-3 shadow-md">
                             <i class="fas fa-user-friends text-2xl text-white"></i>
                         </div>
                         <div class="ml-5 w-0 flex-1">
@@ -116,7 +116,7 @@
                                 <span class="text-sm font-medium text-gray-900 capitalize">{{ $method->payment_method }}</span>
                             </div>
                             <div class="text-right">
-                                <div class="text-sm font-medium text-gray-900">${{ number_format($method->total, 2) }}</div>
+                                <div class="text-sm font-medium text-gray-900">₱{{ number_format($method->total, 2) }}</div>
                                 <div class="text-sm text-gray-500">{{ $method->count }} transactions</div>
                             </div>
                         </div>
@@ -138,7 +138,7 @@
                                 {{ \Carbon\Carbon::createFromDate($revenue->year, $revenue->month, 1)->format('M Y') }}
                             </div>
                             <div class="text-sm font-medium text-gray-900">
-                                ${{ number_format($revenue->total, 2) }}
+                                ₱{{ number_format($revenue->total, 2) }}
                             </div>
                         </div>
                         @endforeach
@@ -195,7 +195,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">
-                                    ${{ number_format($member->total_spent, 2) }}
+                                    ₱{{ number_format($member->total_spent, 2) }}
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">

@@ -12,7 +12,7 @@
                 <p class="text-sm text-gray-600 mt-1">Track and manage all financial transactions</p>
             </div>
             <a href="{{ route('admin.payments.create') }}" 
-                class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                 <i class="fas fa-plus mr-2"></i>Record Payment
             </a>
         </div>
@@ -32,7 +32,7 @@
                             <dl>
                                 <dt class="text-sm font-medium text-gray-600 truncate">Total Revenue</dt>
                                 <dd class="text-lg font-bold text-gray-900 mt-1">
-                                    ${{ number_format($payments->where('status', 'paid')->sum('amount'), 2) }}
+                                    ₱{{ number_format($payments->where('status', 'paid')->sum('amount'), 2) }}
                                 </dd>
                             </dl>
                         </div>
@@ -66,7 +66,7 @@
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
                                 <i class="fas fa-check-circle text-2xl text-white"></i>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
         <div class="glass-card rounded-xl overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200 border-opacity-50">
                 <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                    <i class="fas fa-list text-blue-600 mr-2"></i>
+                    <i class="fas fa-list text-orange-600 mr-2"></i>
                     Payments List
                 </h3>
                 <p class="mt-1 text-sm text-gray-600">All payment records and transactions</p>
@@ -156,7 +156,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0">
-                                            <div class="h-8 w-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-sm">
+                                            <div class="h-8 w-8 rounded-full bg-gradient-to-br from-orange-400 to-red-600 flex items-center justify-center shadow-sm">
                                                 <span class="text-white font-bold text-xs">{{ substr($payment->member->name, 0, 1) }}</span>
                                             </div>
                                         </div>
@@ -172,7 +172,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-bold text-gray-900">
-                                        ${{ number_format($payment->amount, 2) }}
+                                        ₱{{ number_format($payment->amount, 2) }}
                                     </div>
                                     <div class="text-xs text-gray-600 capitalize">
                                         {{ $payment->membership_type }}
@@ -264,7 +264,7 @@
                         Get started by recording your first payment.
                     </p>
                     <a href="{{ route('admin.payments.create') }}" 
-                       class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                       class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                         <i class="fas fa-plus mr-2"></i>Record Payment
                     </a>
                 </div>

@@ -5,7 +5,7 @@
 @section('content')
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="mb-6 flex justify-between items-center">
-        <a href="{{ route('trainer.progress.index') }}" class="text-blue-600 hover:text-blue-800 flex items-center">
+        <a href="{{ route('trainer.progress.index') }}" class="text-orange-600 hover:text-orange-800 flex items-center">
             <i class="fas fa-arrow-left mr-2"></i> Back to List
         </a>
         <div class="flex space-x-3">

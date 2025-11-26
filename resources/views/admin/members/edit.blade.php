@@ -24,7 +24,7 @@
             <!-- Personal Information -->
             <div class="glass-card rounded-xl p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
-                    <i class="fas fa-user text-blue-600 mr-2"></i>
+                    <i class="fas fa-user text-orange-600 mr-2"></i>
                     Personal Information
                 </h3>
                 
@@ -35,7 +35,7 @@
                         </label>
                         <input type="text" name="name" id="name" required
                                value="{{ old('name', $member->name) }}"
-                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all @error('name') ring-2 ring-red-500 @enderror">
+                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all @error('name') ring-2 ring-red-500 @enderror">
                         @error('name')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
                                 <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
@@ -49,7 +49,7 @@
                         </label>
                         <input type="email" name="email" id="email" required
                                value="{{ old('email', $member->email) }}"
-                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all @error('email') ring-2 ring-red-500 @enderror">
+                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all @error('email') ring-2 ring-red-500 @enderror">
                         @error('email')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
                                 <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
@@ -63,7 +63,7 @@
                         </label>
                         <input type="tel" name="phone" id="phone" required
                                value="{{ old('phone', $member->phone) }}"
-                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all @error('phone') ring-2 ring-red-500 @enderror">
+                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all @error('phone') ring-2 ring-red-500 @enderror">
                         @error('phone')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
                                 <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
@@ -77,7 +77,7 @@
                         </label>
                         <input type="date" name="date_of_birth" id="date_of_birth"
                                value="{{ old('date_of_birth', $member->date_of_birth?->format('Y-m-d')) }}"
-                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">
                         @error('date_of_birth')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
                                 <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
@@ -90,7 +90,7 @@
                             Address
                         </label>
                         <textarea name="address" id="address" rows="3"
-                                  class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">{{ old('address', $member->address) }}</textarea>
+                                  class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">{{ old('address', $member->address) }}</textarea>
                         @error('address')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
                                 <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
@@ -113,7 +113,7 @@
                             Membership Type <span class="text-red-500">*</span>
                         </label>
                         <select name="membership_type" id="membership_type" required
-                                class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all @error('membership_type') ring-2 ring-red-500 @enderror">
+                                class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all @error('membership_type') ring-2 ring-red-500 @enderror">
                             <option value="basic" {{ old('membership_type', $member->membership_type) == 'basic' ? 'selected' : '' }}>Basic</option>
                             <option value="premium" {{ old('membership_type', $member->membership_type) == 'premium' ? 'selected' : '' }}>Premium</option>
                             <option value="vip" {{ old('membership_type', $member->membership_type) == 'vip' ? 'selected' : '' }}>VIP</option>
@@ -131,7 +131,7 @@
                         </label>
                         <input type="date" name="membership_expiry" id="membership_expiry" required
                                value="{{ old('membership_expiry', $member->membership_expiry?->format('Y-m-d')) }}"
-                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all @error('membership_expiry') ring-2 ring-red-500 @enderror">
+                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all @error('membership_expiry') ring-2 ring-red-500 @enderror">
                         @error('membership_expiry')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
                                 <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
@@ -155,7 +155,7 @@
                         </label>
                         <input type="number" name="height" id="height" step="0.1"
                                value="{{ old('height', $member->height) }}"
-                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">
                         @error('height')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
                                 <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
@@ -169,7 +169,7 @@
                         </label>
                         <input type="number" name="weight" id="weight" step="0.1"
                                value="{{ old('weight', $member->weight) }}"
-                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">
                         @error('weight')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
                                 <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
@@ -183,7 +183,7 @@
                         </label>
                         <input type="text" name="emergency_contact" id="emergency_contact"
                                value="{{ old('emergency_contact', $member->emergency_contact) }}"
-                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                               class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">
                         @error('emergency_contact')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
                                 <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
@@ -196,7 +196,7 @@
                             Health Notes
                         </label>
                         <textarea name="health_notes" id="health_notes" rows="3"
-                                  class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">{{ old('health_notes', $member->health_notes) }}</textarea>
+                                  class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">{{ old('health_notes', $member->health_notes) }}</textarea>
                         @error('health_notes')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
                                 <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
@@ -216,7 +216,7 @@
                 <div class="flex items-center">
                     <input type="checkbox" name="is_active" id="is_active" value="1"
                            {{ old('is_active', $member->is_active) ? 'checked' : '' }}
-                           class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                           class="h-5 w-5 text-orange-600 focus:ring-orange-500 border-gray-300 rounded">
                     <label for="is_active" class="ml-3 block text-sm font-medium text-gray-900">
                         Active Member
                     </label>

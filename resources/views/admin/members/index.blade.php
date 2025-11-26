@@ -12,7 +12,7 @@
                 <p class="text-sm text-gray-600 mt-1">View and manage all gym members</p>
             </div>
             <a href="{{ route('admin.members.create') }}" 
-                class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                 <i class="fas fa-user-plus mr-2"></i>Add New Member
             </a>
         </div>
@@ -24,7 +24,7 @@
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
                                 <i class="fas fa-users text-2xl text-white"></i>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
                                 <i class="fas fa-crown text-2xl text-white"></i>
                             </div>
                         </div>
@@ -89,17 +89,17 @@
                         <input type="text" 
                             id="searchMembers"
                             placeholder="Search members by name, email, or phone..." 
-                            class="w-full px-4 py-3 pl-10 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                            class="w-full px-4 py-3 pl-10 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">
                         <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                     </div>
                 </div>
                 <div class="flex gap-2">
-                    <select class="px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                    <select class="px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">
                         <option value="">All Status</option>
                         <option value="active">Active</option>
                         <option value="inactive">Inactive</option>
                     </select>
-                    <select class="px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                    <select class="px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">
                         <option value="">All Types</option>
                         <option value="basic">Basic</option>
                         <option value="premium">Premium</option>
@@ -113,7 +113,7 @@
         <div class="glass-card rounded-xl overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200 border-opacity-50">
                 <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                    <i class="fas fa-list text-blue-600 mr-2"></i>
+                    <i class="fas fa-list text-orange-600 mr-2"></i>
                     Members List
                 </h3>
                 <p class="mt-1 text-sm text-gray-600">All registered gym members and their details</p>
@@ -150,7 +150,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0">
-                                            <div class="h-12 w-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-md">
+                                            <div class="h-12 w-12 rounded-full bg-gradient-to-br from-orange-400 to-red-600 flex items-center justify-center shadow-md">
                                                 <span class="text-white font-bold text-lg">{{ substr($member->name, 0, 1) }}</span>
                                             </div>
                                         </div>
@@ -182,7 +182,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">
-                                        <i class="fas fa-calendar-check text-blue-600 mr-1"></i>
+                                        <i class="fas fa-calendar-check text-orange-600 mr-1"></i>
                                         {{ $member->bookings_count }} bookings
                                     </div>
                                     <div class="text-xs text-gray-600">
@@ -211,10 +211,15 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
                                         <a href="{{ route('admin.members.show', $member) }}" 
-                                           class="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white hover:scale-110 transition-transform shadow-sm"
+                                           class="p-2 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 text-white hover:scale-110 transition-transform shadow-sm"
                                            title="View Details">
                                             <i class="fas fa-eye"></i>
                                         </a>
+                                        <button onclick="toggleMemberStatus({{ $member->id }}, this)" 
+                                                class="p-2 rounded-lg {{ $member->is_active ? 'bg-gradient-to-br from-yellow-500 to-yellow-600' : 'bg-gradient-to-br from-blue-500 to-blue-600' }} text-white hover:scale-110 transition-transform shadow-sm"
+                                                title="{{ $member->is_active ? 'Deactivate' : 'Activate' }} Member">
+                                            <i class="fas fa-{{ $member->is_active ? 'ban' : 'check-circle' }}"></i>
+                                        </button>
                                         <a href="{{ route('admin.members.edit', $member) }}" 
                                            class="p-2 rounded-lg bg-gradient-to-br from-green-500 to-green-600 text-white hover:scale-110 transition-transform shadow-sm"
                                            title="Edit Member">
@@ -253,7 +258,7 @@
                         Get started by adding your first member to the system.
                     </p>
                     <a href="{{ route('admin.members.create') }}" 
-                       class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                       class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                         <i class="fas fa-user-plus mr-2"></i>Add Your First Member
                     </a>
                 </div>
@@ -274,6 +279,50 @@
             row.style.display = text.includes(searchTerm) ? '' : 'none';
         });
     });
+
+    // Toggle member status
+    function toggleMemberStatus(memberId, button) {
+        if (!confirm('Are you sure you want to change this member\'s status?')) {
+            return;
+        }
+
+        fetch(`/admin/members/${memberId}/toggle-status`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.is_active) {
+                button.className = 'p-2 rounded-lg bg-gradient-to-br from-yellow-500 to-yellow-600 text-white hover:scale-110 transition-transform shadow-sm';
+                button.title = 'Deactivate Member';
+                button.querySelector('i').className = 'fas fa-ban';
+            } else {
+                button.className = 'p-2 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white hover:scale-110 transition-transform shadow-sm';
+                button.title = 'Activate Member';
+                button.querySelector('i').className = 'fas fa-check-circle';
+            }
+            
+            // Update status badge
+            const row = button.closest('tr');
+            const statusBadge = row.querySelector('td:nth-child(5) span');
+            if (data.is_active) {
+                statusBadge.className = 'bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm';
+                statusBadge.textContent = 'Active';
+            } else {
+                statusBadge.className = 'bg-gradient-to-r from-red-500 to-red-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm';
+                statusBadge.textContent = 'Inactive';
+            }
+
+            window.showToast(data.message, 'success');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            window.showToast('Failed to update member status', 'error');
+        });
+    }
 </script>
 @endpush
 @endsection

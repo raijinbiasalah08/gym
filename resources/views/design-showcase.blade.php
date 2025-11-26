@@ -7,7 +7,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="text-center mb-12">
-            <h1 class="text-5xl font-display font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+            <h1 class="text-5xl font-display font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-4">
                 Design System Showcase
             </h1>
             <p class="text-xl text-gray-600">
@@ -20,7 +20,7 @@
             <h2 class="text-3xl font-bold text-gray-900 mb-6">Color Palette</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 <div class="glass-card rounded-xl p-4 text-center">
-                    <div class="h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg mb-3"></div>
+                    <div class="h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg mb-3"></div>
                     <p class="text-sm font-semibold">Blue</p>
                 </div>
                 <div class="glass-card rounded-xl p-4 text-center">
@@ -28,7 +28,7 @@
                     <p class="text-sm font-semibold">Green</p>
                 </div>
                 <div class="glass-card rounded-xl p-4 text-center">
-                    <div class="h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg mb-3"></div>
+                    <div class="h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg mb-3"></div>
                     <p class="text-sm font-semibold">Purple</p>
                 </div>
                 <div class="glass-card rounded-xl p-4 text-center">
@@ -53,7 +53,7 @@
                 <div class="space-y-4">
                     <div>
                         <p class="text-sm font-semibold text-gray-600 mb-2">Primary Button</p>
-                        <button class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                        <button class="px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 text-white font-semibold rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                             <i class="fas fa-check mr-2"></i>Primary Action
                         </button>
                     </div>
@@ -66,7 +66,7 @@
                     <div>
                         <p class="text-sm font-semibold text-gray-600 mb-2">Icon Buttons</p>
                         <div class="flex space-x-3">
-                            <button class="p-3 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white hover:scale-110 transition-transform shadow-lg">
+                            <button class="p-3 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 text-white hover:scale-110 transition-transform shadow-lg">
                                 <i class="fas fa-heart"></i>
                             </button>
                             <button class="p-3 rounded-lg bg-gradient-to-br from-green-500 to-green-600 text-white hover:scale-110 transition-transform shadow-lg">
@@ -90,7 +90,7 @@
                     <div class="p-6">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <div class="rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                                <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
                                     <i class="fas fa-users text-2xl text-white"></i>
                                 </div>
                             </div>
@@ -117,7 +117,7 @@
                 <div class="glass-card rounded-xl p-6">
                     <h3 class="text-lg font-bold text-gray-900 mb-3">Information Card</h3>
                     <p class="text-gray-600 mb-4">Simple card with glassmorphism background.</p>
-                    <button class="text-blue-600 font-semibold hover:text-blue-700">
+                    <button class="text-orange-600 font-semibold hover:text-orange-700">
                         Learn More <i class="fas fa-arrow-right ml-1"></i>
                     </button>
                 </div>
@@ -132,7 +132,7 @@
                     <span class="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
                         Active
                     </span>
-                    <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                    <span class="bg-gradient-to-r from-orange-500 to-red-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
                         Premium
                     </span>
                     <span class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
@@ -141,7 +141,7 @@
                     <span class="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
                         Expired
                     </span>
-                    <span class="bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                    <span class="bg-gradient-to-r from-orange-500 to-red-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
                         Featured
                     </span>
                     <span class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
@@ -158,11 +158,11 @@
                 <div class="space-y-4 max-w-md">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Text Input</label>
-                        <input type="text" placeholder="Enter text..." class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                        <input type="text" placeholder="Enter text..." class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Select Dropdown</label>
-                        <select class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                        <select class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">
                             <option>Option 1</option>
                             <option>Option 2</option>
                             <option>Option 3</option>
@@ -170,7 +170,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Textarea</label>
-                        <textarea rows="3" placeholder="Enter message..." class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"></textarea>
+                        <textarea rows="3" placeholder="Enter message..." class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all"></textarea>
                     </div>
                 </div>
             </div>
@@ -181,7 +181,7 @@
             <h2 class="text-3xl font-bold text-gray-900 mb-6">Icon Styles</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div class="glass-card rounded-xl p-6 text-center">
-                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-full p-4 w-16 h-16 flex items-center justify-center mx-auto mb-3 shadow-lg">
+                    <div class="bg-gradient-to-br from-orange-500 to-red-600 rounded-full p-4 w-16 h-16 flex items-center justify-center mx-auto mb-3 shadow-lg">
                         <i class="fas fa-users text-2xl text-white"></i>
                     </div>
                     <p class="text-sm font-semibold">Users</p>
@@ -193,7 +193,7 @@
                     <p class="text-sm font-semibold">Fitness</p>
                 </div>
                 <div class="glass-card rounded-xl p-6 text-center">
-                    <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-full p-4 w-16 h-16 flex items-center justify-center mx-auto mb-3 shadow-lg">
+                    <div class="bg-gradient-to-br from-orange-500 to-red-600 rounded-full p-4 w-16 h-16 flex items-center justify-center mx-auto mb-3 shadow-lg">
                         <i class="fas fa-calendar text-2xl text-white"></i>
                     </div>
                     <p class="text-sm font-semibold">Schedule</p>
@@ -221,7 +221,7 @@
                     <button onclick="showToast('Warning! Please check this.', 'warning')" class="px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all">
                         Warning Toast
                     </button>
-                    <button onclick="showToast('Info: Here is some information.', 'info')" class="px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all">
+                    <button onclick="showToast('Info: Here is some information.', 'info')" class="px-4 py-3 bg-gradient-to-r from-orange-500 to-red-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all">
                         Info Toast
                     </button>
                 </div>

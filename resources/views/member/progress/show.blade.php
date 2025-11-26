@@ -19,7 +19,7 @@
         <div class="glass-card rounded-xl overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200 border-opacity-50 flex justify-between items-center bg-blue-50 bg-opacity-30">
                 <h3 class="text-lg font-bold text-gray-900 flex items-center">
-                    <i class="fas fa-calendar-check text-blue-600 mr-2"></i>
+                    <i class="fas fa-calendar-check text-orange-600 mr-2"></i>
                     Record Date: {{ \Carbon\Carbon::parse($progress->record_date)->format('M d, Y') }}
                 </h3>
                 <span class="text-sm text-gray-500">

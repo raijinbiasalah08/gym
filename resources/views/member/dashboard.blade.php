@@ -12,7 +12,7 @@
                 <p class="text-sm text-gray-600 mt-1">Overview of your bookings, progress, and upcoming sessions.</p>
             </div>
             <div class="flex items-center space-x-3">
-                <a href="{{ route('member.bookings.create') }}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                <a href="{{ route('member.bookings.create') }}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-600 to-red-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                     <i class="fas fa-calendar-plus mr-2"></i>Book Session
                 </a>
                 <a href="{{ route('member.progress.index') }}" class="inline-flex items-center px-4 py-2 glass-card text-gray-700 text-sm font-medium rounded-lg hover:bg-white hover:bg-opacity-60 transition">
@@ -24,11 +24,11 @@
         <!-- Stats Grid -->
         <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
             <!-- Upcoming Sessions -->
-            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
+            <div class="neuro-stat group">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
                                 <i class="fas fa-calendar-alt text-2xl text-white"></i>
                             </div>
                         </div>
@@ -62,11 +62,11 @@
             </div>
 
             <!-- Total Workouts -->
-            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
+            <div class="neuro-stat group">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
                                 <i class="fas fa-dumbbell text-2xl text-white"></i>
                             </div>
                         </div>
@@ -103,14 +103,14 @@
         <!-- Membership & Payments -->
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 mb-8">
             <!-- Membership Card -->
-            <div class="glass-card rounded-xl p-6">
+            <div class="neuro-card p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                    <i class="fas fa-id-card text-blue-600 mr-2"></i>
+                    <i class="fas fa-id-card text-orange-600 mr-2"></i>
                     Membership
                 </h3>
                 <div class="space-y-3">
                     <div>
-                        <div class="text-2xl font-bold text-gray-900">{{ auth()->user()->membership_type ?? 'Standard' }}</div>
+                        <div class="text-2xl font-bold text-gray-900 capitalize">{{ ucfirst(auth()->user()->membership_type ?? 'Standard') }}</div>
                         <div class="text-sm text-gray-600 mt-1">
                             Status: 
                             @php $status = auth()->user()->membership_status ?? 'active'; @endphp
@@ -127,10 +127,10 @@
                     </div>
                     <div class="pt-3 border-t border-gray-200 border-opacity-50">
                         <div class="flex space-x-2">
-                            <a href="{{ route('member.progress.index') }}" class="flex-1 inline-flex items-center justify-center px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-lg hover:shadow-lg transition">
-                                <i class="fas fa-chart-line mr-1"></i>Progress
+                            <a href="{{ route('member.membership') }}" class="flex-1 inline-flex items-center justify-center px-3 py-2 bg-gradient-to-r from-orange-500 to-red-600 text-white text-sm font-medium rounded-lg hover:shadow-lg transition">
+                                <i class="fas fa-id-card mr-1"></i>Membership
                             </a>
-                            <a href="{{ route('member.bookings.index') }}" class="flex-1 inline-flex items-center justify-center px-3 py-2 glass-card text-gray-700 text-sm font-medium rounded-lg hover:bg-white hover:bg-opacity-60 transition">
+                            <a href="{{ route('member.bookings.index') }}" class="flex-1 inline-flex items-center justify-center px-3 py-2 neuro-btn text-gray-700 text-sm font-medium">
                                 <i class="fas fa-calendar mr-1"></i>Bookings
                             </a>
                         </div>
@@ -139,13 +139,13 @@
             </div>
 
             <!-- Recent Payments -->
-            <div class="glass-card rounded-xl lg:col-span-2 overflow-hidden">
+            <div class="neuro-card lg:col-span-2 overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-200 border-opacity-50 flex items-center justify-between">
                     <h3 class="text-lg font-semibold text-gray-900 flex items-center">
                         <i class="fas fa-receipt text-green-600 mr-2"></i>
                         Recent Payments
                     </h3>
-                    <a href="{{ route('member.payments.index') }}" class="text-sm text-blue-600 hover:text-blue-700 font-medium">View all →</a>
+                    <a href="{{ route('member.payments.index') }}" class="text-sm text-orange-600 hover:text-orange-700 font-medium">View all →</a>
                 </div>
                 <div class="p-6">
                     @if(isset($recentPayments) && $recentPayments->count() > 0)
@@ -163,7 +163,7 @@
                                 @foreach($recentPayments as $p)
                                 <tr class="hover:bg-white hover:bg-opacity-30 transition">
                                     <td class="px-4 py-3 text-sm text-gray-900">{{ \Carbon\Carbon::parse($p->created_at)->format('M d, Y') }}</td>
-                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">${{ number_format($p->amount, 2) }}</td>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">₱{{ number_format($p->amount, 2) }}</td>
                                     <td class="px-4 py-3 text-sm">
                                         @if($p->status == 'paid')
                                             <span class="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-2 py-1 rounded-full font-medium">Paid</span>
@@ -172,7 +172,7 @@
                                         @endif
                                     </td>
                                     <td class="px-4 py-3 text-right text-sm">
-                                        <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">Receipt</a>
+                                        <a href="#" class="text-orange-600 hover:text-orange-700 font-medium">Receipt</a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -192,17 +192,17 @@
         <!-- Today's Session & Recent Progress -->
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <!-- Today's Session -->
-            <div class="glass-card rounded-xl overflow-hidden">
+            <div class="neuro-card overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-200 border-opacity-50">
                     <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                        <i class="fas fa-clock text-blue-600 mr-2"></i>
+                        <i class="fas fa-clock text-orange-600 mr-2"></i>
                         Today's Session
                     </h3>
                 </div>
                 <div class="p-6">
                     @if(isset($todaySession) && $todaySession)
                     <div class="text-center">
-                        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-full p-4 w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-lg">
+                        <div class="bg-gradient-to-br from-orange-500 to-red-600 rounded-full p-4 w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-lg">
                             <i class="fas fa-dumbbell text-2xl text-white"></i>
                         </div>
                         <h4 class="text-xl font-bold text-gray-900">{{ $todaySession->session_type }}</h4>
@@ -221,7 +221,7 @@
                     <div class="text-center py-8 text-gray-500">
                         <i class="fas fa-calendar-times text-4xl mb-3 opacity-50"></i>
                         <p class="mb-3">No session scheduled for today</p>
-                        <a href="{{ route('member.bookings.create') }}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-lg hover:shadow-lg transition">
+                        <a href="{{ route('member.bookings.create') }}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-500 to-red-600 text-white text-sm font-medium rounded-lg hover:shadow-lg transition">
                             <i class="fas fa-plus mr-2"></i>Book a Session
                         </a>
                     </div>
@@ -230,7 +230,7 @@
             </div>
 
             <!-- Recent Progress & Attendance -->
-            <div class="glass-card rounded-xl overflow-hidden">
+            <div class="neuro-card overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-200 border-opacity-50">
                     <h3 class="text-lg font-semibold text-gray-900 flex items-center">
                         <i class="fas fa-chart-line text-purple-600 mr-2"></i>
@@ -268,7 +268,7 @@
                             <i class="fas fa-clipboard-check text-green-600 mr-2"></i>
                             Recent Attendance
                         </h4>
-                        <a href="{{ route('member.attendance.index') }}" class="text-sm text-blue-600 hover:text-blue-700 font-medium">View all →</a>
+                        <a href="{{ route('member.attendance.index') }}" class="text-sm text-orange-600 hover:text-orange-700 font-medium">View all →</a>
                     </div>
                     @if(isset($recentAttendance) && $recentAttendance->count() > 0)
                     <div class="space-y-2">

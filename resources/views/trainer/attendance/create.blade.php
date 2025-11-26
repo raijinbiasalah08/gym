@@ -32,7 +32,7 @@
                     <div>
                         <label for="member_id" class="block text-sm font-medium text-gray-700">Member *</label>
                         <select name="member_id" id="member_id" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500">
                             <option value="">Select a member</option>
                             @foreach($members as $member)
                                 <option value="{{ $member->id }}" {{ old('member_id') == $member->id ? 'selected' : '' }}>
@@ -46,7 +46,7 @@
                     <div>
                         <label for="date" class="block text-sm font-medium text-gray-700">Date *</label>
                         <input type="date" name="date" id="date" required value="{{ old('date', date('Y-m-d')) }}"
-                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500">
                     </div>
 
                     <!-- Check In/Out Times -->
@@ -54,13 +54,13 @@
                         <div>
                             <label for="check_in" class="block text-sm font-medium text-gray-700">Check In Time *</label>
                             <input type="time" name="check_in" id="check_in" required value="{{ old('check_in') }}"
-                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500">
                         </div>
 
                         <div>
                             <label for="check_out" class="block text-sm font-medium text-gray-700">Check Out Time *</label>
                             <input type="time" name="check_out" id="check_out" required value="{{ old('check_out') }}"
-                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500">
                         </div>
                     </div>
 
@@ -68,7 +68,7 @@
                     <div>
                         <label for="notes" class="block text-sm font-medium text-gray-700">Notes</label>
                         <textarea name="notes" id="notes" rows="3" placeholder="Optional notes about the workout session"
-                                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{ old('notes') }}</textarea>
+                                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500">{{ old('notes') }}</textarea>
                     </div>
 
                     <!-- Form Actions -->
@@ -78,7 +78,7 @@
                             Cancel
                         </a>
                         <button type="submit" 
-                                class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                                class="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700 transition">
                             Record Attendance
                         </button>
                     </div>

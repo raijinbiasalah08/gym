@@ -1,0 +1,195 @@
+/* Exercise Animation Styles */
+
+/* Pulsing animation for exercise items */
+@keyframes pulse-exercise {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+/* Bounce animation */
+@keyframes bounce-light {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Rotation animation for icons */
+@keyframes rotate-icon {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Squat animation */
+@keyframes squat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(8px);
+    }
+}
+
+/* Push-up animation */
+@keyframes pushup {
+    0%, 100% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(0.9);
+    }
+}
+
+/* Curl animation */
+@keyframes curl {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(-30deg);
+    }
+}
+
+/* Running animation */
+@keyframes running {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+}
+
+/* Heartbeat animation */
+@keyframes heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.1);
+    }
+    50% {
+        transform: scale(1);
+    }
+    75% {
+        transform: scale(1.05);
+    }
+}
+
+/* Exercise item hover animation */
+.exercise-item {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.exercise-item:hover {
+    animation: pulse-exercise 0.6s ease-in-out;
+}
+
+/* Category icon animations */
+.category-icon-chest {
+    animation: pushup 2s ease-in-out infinite;
+}
+
+.category-icon-shoulders {
+    animation: bounce-light 2s ease-in-out infinite;
+}
+
+.category-icon-back {
+    animation: squat 2.5s ease-in-out infinite;
+}
+
+.category-icon-arms {
+    animation: curl 2s ease-in-out infinite;
+}
+
+.category-icon-legs {
+    animation: squat 2s ease-in-out infinite;
+}
+
+.category-icon-core {
+    animation: rotate-icon 8s linear infinite;
+}
+
+.category-icon-glutes {
+    animation: squat 2.5s ease-in-out infinite;
+}
+
+.category-icon-cardio {
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+/* Exercise indicator dot */
+.exercise-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f97316, #dc2626);
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.exercise-item:hover .exercise-indicator {
+    opacity: 1;
+    animation: pulse-exercise 1s ease-in-out infinite;
+}
+
+/* Simple stick figure animation on hover */
+.exercise-item::before {
+    content: '🏋️';
+    position: absolute;
+    left: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.exercise-item:hover::before {
+    opacity: 1;
+    left: -25px;
+}
+
+/* Specific exercise type indicators */
+.exercise-item[data-type="strength"]::before {
+    content: '💪';
+}
+
+.exercise-item[data-type="cardio"]::before {
+    content: '🏃';
+}
+
+.exercise-item[data-type="flexibility"]::before {
+    content: '🧘';
+}
+
+/* Loading animation for exercise cards */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.exercise-loading {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}

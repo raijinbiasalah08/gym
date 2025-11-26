@@ -161,7 +161,8 @@ class DashboardController extends Controller
 
     public function membershipPage()
     {
-        $member = Auth::user();
+        // Fetch fresh data from database to avoid cached values
+        $member = Auth::user()->fresh();
 
         $payments = Payment::where('member_id', $member->id)
             ->latest()
@@ -169,5 +170,32 @@ class DashboardController extends Controller
             ->get();
 
         return view('member.membership', compact('member', 'payments'));
+    }
+
+    public function updateMembership(Request $request)
+    {
+        $request->validate([
+            'membership_type' => 'required|in:basic,premium,vip',
+        ]);
+
+        $member = Auth::user();
+        
+        // Update membership type
+        $member->membership_type = $request->membership_type;
+        
+        // Extend membership by 30 days from now or from current expiry (whichever is later)
+        if ($member->membership_expiry && $member->membership_expiry->isFuture()) {
+            $member->membership_expiry = $member->membership_expiry->addDays(30);
+        } else {
+            $member->membership_expiry = now()->addDays(30);
+        }
+        
+        $member->save();
+        
+        // Refresh the user instance to get updated data
+        $member->fresh();
+
+        return redirect()->route('member.membership')
+            ->with('success', 'Membership plan updated successfully! Your new plan is now active.');
     }
 }

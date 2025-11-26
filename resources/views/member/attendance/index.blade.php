@@ -27,7 +27,7 @@
                 <input type="date" name="end_date" value="{{ request('end_date') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
             </div>
             <div>
-                <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700">Filter</button>
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-orange-600 text-white text-sm rounded-md hover:bg-orange-700">Filter</button>
             </div>
             <div>
                 <a href="{{ route('member.attendance.export', request()->only(['start_date','end_date'])) }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-200 text-sm rounded-md hover:bg-gray-50">Download CSV</a>

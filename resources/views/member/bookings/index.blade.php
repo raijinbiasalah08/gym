@@ -12,7 +12,7 @@
                 <p class="text-sm text-gray-600 mt-1">Manage your training sessions and appointments</p>
             </div>
             <a href="{{ route('member.bookings.create') }}" 
-               class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+               class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                 <i class="fas fa-plus mr-2"></i>Book New Session
             </a>
         </div>
@@ -37,7 +37,7 @@
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
                                 <i class="fas fa-calendar-check text-2xl text-white"></i>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
             <div class="glass-card rounded-xl overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-200 border-opacity-50">
                     <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                        <i class="fas fa-list text-blue-600 mr-2"></i>
+                        <i class="fas fa-list text-orange-600 mr-2"></i>
                         Booking History
                     </h3>
                 </div>
@@ -131,7 +131,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-10 w-10">
-                                            <div class="h-10 w-10 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold shadow-sm">
+                                            <div class="h-10 w-10 rounded-full bg-gradient-to-br from-orange-400 to-red-600 flex items-center justify-center text-white font-bold shadow-sm">
                                                 {{ substr($booking->trainer->name, 0, 1) }}
                                             </div>
                                         </div>
@@ -146,7 +146,7 @@
                                         {{ str_replace('_', ' ', $booking->session_type) }}
                                     </div>
                                     <div class="text-xs text-gray-600">
-                                        ${{ number_format($booking->price, 2) }}
+                                        ₱{{ number_format($booking->price, 2) }}
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -180,7 +180,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
                                         <a href="{{ route('member.bookings.show', $booking) }}" 
-                                           class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg transition">
+                                           class="text-orange-600 hover:text-orange-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg transition">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         
@@ -211,7 +211,7 @@
             </div>
         @else
             <div class="text-center py-16 glass-card rounded-xl">
-                <div class="bg-gradient-to-br from-blue-100 to-blue-200 rounded-full p-6 w-24 h-24 flex items-center justify-center mx-auto mb-4 shadow-inner">
+                <div class="bg-gradient-to-br from-orange-100 to-red-200 rounded-full p-6 w-24 h-24 flex items-center justify-center mx-auto mb-4 shadow-inner">
                     <i class="fas fa-calendar-plus text-4xl text-blue-500"></i>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-2">No bookings found</h3>
@@ -219,7 +219,7 @@
                     You haven't booked any sessions yet. Start your journey by booking a session with one of our expert trainers.
                 </p>
                 <a href="{{ route('member.bookings.create') }}" 
-                   class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-base font-bold rounded-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
+                   class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-orange-600 to-red-600 text-white text-base font-bold rounded-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
                     <i class="fas fa-plus mr-2"></i>Book Your First Session
                 </a>
             </div>

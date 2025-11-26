@@ -12,7 +12,7 @@
                 <p class="text-sm text-gray-600 mt-1">Manage workout routines for your clients</p>
             </div>
             <a href="{{ route('trainer.workout-plans.create') }}" 
-               class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+               class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
                 <i class="fas fa-plus mr-2"></i>Create New Plan
             </a>
         </div>
@@ -30,7 +30,7 @@
                 <div class="glass-card rounded-xl overflow-hidden hover:shadow-xl transition duration-300 group">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
-                            <h3 class="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition">{{ $plan->title }}</h3>
+                            <h3 class="text-lg font-bold text-gray-900 group-hover:text-orange-600 transition">{{ $plan->title }}</h3>
                             <span class="px-3 py-1 text-xs font-semibold rounded-full shadow-sm
                                 @if($plan->status === 'active') bg-gradient-to-r from-green-400 to-green-600 text-white
                                 @elseif($plan->status === 'inactive') bg-gray-200 text-gray-600
@@ -66,7 +66,7 @@
                                 {{ $plan->created_at->diffForHumans() }}
                             </span>
                             <a href="{{ route('trainer.workout-plans.show', $plan) }}" 
-                               class="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium transition">
+                               class="inline-flex items-center text-orange-600 hover:text-orange-800 text-sm font-medium transition">
                                 View Details <i class="fas fa-arrow-right ml-1 transform group-hover:translate-x-1 transition-transform"></i>
                             </a>
                         </div>
@@ -81,7 +81,7 @@
             </div>
         @else
             <div class="text-center py-16 glass-card rounded-xl">
-                <div class="bg-gradient-to-br from-blue-100 to-blue-200 rounded-full p-6 w-24 h-24 flex items-center justify-center mx-auto mb-4 shadow-inner">
+                <div class="bg-gradient-to-br from-orange-100 to-red-200 rounded-full p-6 w-24 h-24 flex items-center justify-center mx-auto mb-4 shadow-inner">
                     <i class="fas fa-dumbbell text-4xl text-blue-500"></i>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-2">No workout plans found</h3>
@@ -89,7 +89,7 @@
                     You haven't created any workout plans yet. Start by creating a personalized routine for your clients.
                 </p>
                 <a href="{{ route('trainer.workout-plans.create') }}" 
-                   class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-base font-bold rounded-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
+                   class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-orange-600 to-red-600 text-white text-base font-bold rounded-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
                     <i class="fas fa-plus mr-2"></i>Create Your First Plan
                 </a>
             </div>

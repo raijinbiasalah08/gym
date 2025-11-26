@@ -7,7 +7,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h1 class="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-6">
-                Get in <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Touch</span>
+                Get in <span class="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Touch</span>
             </h1>
             <p class="text-xl text-gray-600 max-w-2xl mx-auto">
                 Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
@@ -22,22 +22,22 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label for="first_name" class="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
-                            <input type="text" id="first_name" name="first_name" class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" placeholder="John">
+                            <input type="text" id="first_name" name="first_name" class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all" placeholder="John">
                         </div>
                         <div>
                             <label for="last_name" class="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
-                            <input type="text" id="last_name" name="last_name" class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" placeholder="Doe">
+                            <input type="text" id="last_name" name="last_name" class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all" placeholder="Doe">
                         </div>
                     </div>
 
                     <div>
                         <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
-                        <input type="email" id="email" name="email" class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" placeholder="you@example.com">
+                        <input type="email" id="email" name="email" class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all" placeholder="you@example.com">
                     </div>
 
                     <div>
                         <label for="subject" class="block text-sm font-semibold text-gray-700 mb-2">Subject</label>
-                        <select id="subject" name="subject" class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                        <select id="subject" name="subject" class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">
                             <option value="">Select a topic</option>
                             <option value="support">Technical Support</option>
                             <option value="sales">Sales Inquiry</option>
@@ -48,10 +48,10 @@
 
                     <div>
                         <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">Message</label>
-                        <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" placeholder="How can we help you?"></textarea>
+                        <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all" placeholder="How can we help you?"></textarea>
                     </div>
 
-                    <button type="button" onclick="alert('This is a demo form. In a real application, this would send an email.')" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-3 px-6 rounded-lg hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+                    <button type="button" onclick="alert('This is a demo form. In a real application, this would send an email.')" class="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold py-3 px-6 rounded-lg hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
                         Send Message
                     </button>
                 </form>
@@ -62,7 +62,7 @@
                 <div class="glass-card p-8 rounded-2xl hover:shadow-lg transition-shadow">
                     <div class="flex items-start">
                         <div class="bg-blue-100 rounded-full p-4 mr-6">
-                            <i class="fas fa-map-marker-alt text-2xl text-blue-600"></i>
+                            <i class="fas fa-map-marker-alt text-2xl text-orange-600"></i>
                         </div>
                         <div>
                             <h3 class="text-xl font-bold text-gray-900 mb-2">Visit Us</h3>
@@ -83,7 +83,7 @@
                         <div>
                             <h3 class="text-xl font-bold text-gray-900 mb-2">Call Us</h3>
                             <p class="text-gray-600 mb-2">Mon-Fri from 8am to 5pm.</p>
-                            <a href="tel:+1234567890" class="text-blue-600 font-semibold hover:text-blue-800 transition">+1 (234) 567-890</a>
+                            <a href="tel:+1234567890" class="text-orange-600 font-semibold hover:text-orange-800 transition">+1 (234) 567-890</a>
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                         <div>
                             <h3 class="text-xl font-bold text-gray-900 mb-2">Email Us</h3>
                             <p class="text-gray-600 mb-2">We'll get back to you within 24 hours.</p>
-                            <a href="mailto:info@titansgym.com" class="text-blue-600 font-semibold hover:text-blue-800 transition">info@titansgym.com</a>
+                            <a href="mailto:info@titansgym.com" class="text-orange-600 font-semibold hover:text-orange-800 transition">info@titansgym.com</a>
                         </div>
                     </div>
                 </div>

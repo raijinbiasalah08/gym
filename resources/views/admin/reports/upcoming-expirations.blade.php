@@ -28,11 +28,11 @@
                         <div>
                             <label for="days" class="block text-sm font-medium text-gray-700">Next (days)</label>
                             <input type="number" name="days" id="days" min="1" value="{{ request('days', $days ?? 30) }}"
-                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-600 focus:border-blue-600 sm:text-sm">
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-600 focus:border-orange-600 sm:text-sm">
                         </div>
 
                         <div class="flex items-end md:col-span-2">
-                            <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button type="submit" class="w-full bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700 transition focus:outline-none focus:ring-2 focus:ring-orange-500">
                                 <i class="fas fa-filter mr-2"></i>Show Expirations
                             </button>
                         </div>
@@ -92,7 +92,7 @@
             <div class="glass-card overflow-hidden rounded-xl">
                 <div class="p-5">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-3 shadow-md">
+                        <div class="flex-shrink-0 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg p-3 shadow-md">
                             <i class="fas fa-user-friends text-2xl text-white"></i>
                         </div>
                         <div class="ml-5 w-0 flex-1">

@@ -26,7 +26,7 @@
                             <dl>
                                 <dt class="text-sm font-medium text-gray-600 truncate">Monthly Revenue</dt>
                                 <dd class="text-lg font-bold text-gray-900 mt-1">
-                                    ${{ number_format(\App\Models\Payment::paid()->whereMonth('payment_date', now()->month)->sum('amount'), 2) }}
+                                    ₱{{ number_format(\App\Models\Payment::paid()->whereMonth('payment_date', now()->month)->sum('amount'), 2) }}
                                 </dd>
                             </dl>
                         </div>
@@ -38,7 +38,7 @@
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
                                 <i class="fas fa-users text-2xl text-white"></i>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
                                 <i class="fas fa-clipboard-check text-2xl text-white"></i>
                             </div>
                         </div>
@@ -118,7 +118,7 @@
             <!-- Attendance Report Card -->
             <div class="glass-card rounded-xl p-6 hover:shadow-xl transition duration-300">
                 <div class="flex items-center mb-4">
-                    <div class="flex-shrink-0 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-3 shadow-md">
+                    <div class="flex-shrink-0 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg p-3 shadow-md">
                         <i class="fas fa-clipboard-list text-xl text-white"></i>
                     </div>
                     <div class="ml-4">
@@ -128,7 +128,7 @@
                 </div>
                 <div class="mt-4">
                     <a href="{{ route('admin.reports.attendance') }}" class="block w-full text-center px-4 py-2 bg-white bg-opacity-50 hover:bg-opacity-80 text-gray-800 font-medium rounded-lg transition border border-gray-200">
-                        <i class="fas fa-calendar-check mr-2 text-blue-600"></i>Generate Report
+                        <i class="fas fa-calendar-check mr-2 text-orange-600"></i>Generate Report
                     </a>
                 </div>
             </div>
@@ -136,7 +136,7 @@
             <!-- Membership Report Card -->
             <div class="glass-card rounded-xl p-6 hover:shadow-xl transition duration-300">
                 <div class="flex items-center mb-4">
-                    <div class="flex-shrink-0 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-3 shadow-md">
+                    <div class="flex-shrink-0 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg p-3 shadow-md">
                         <i class="fas fa-users text-xl text-white"></i>
                     </div>
                     <div class="ml-4">

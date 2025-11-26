@@ -68,13 +68,13 @@
                 <!-- Trainer Info -->
                 <div class="flex items-start">
                     <div class="flex-shrink-0">
-                        <div class="h-16 w-16 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-2xl font-bold shadow-md">
+                        <div class="h-16 w-16 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white text-2xl font-bold shadow-md">
                             {{ substr($booking->trainer->name, 0, 1) }}
                         </div>
                     </div>
                     <div class="ml-5">
                         <h3 class="text-xl font-bold text-gray-900">{{ $booking->trainer->name }}</h3>
-                        <p class="text-blue-600 font-medium">{{ $booking->trainer->specialization }}</p>
+                        <p class="text-orange-600 font-medium">{{ $booking->trainer->specialization }}</p>
                         <div class="mt-2 flex items-center text-sm text-gray-500">
                             <i class="fas fa-envelope mr-2 w-4"></i> {{ $booking->trainer->email }}
                         </div>
@@ -100,7 +100,7 @@
                             <div>
                                 <dt class="text-xs text-gray-500">Price</dt>
                                 <dd class="text-base font-medium text-gray-900">
-                                    ${{ number_format($booking->price, 2) }}
+                                    ₱{{ number_format($booking->price, 2) }}
                                 </dd>
                             </div>
                         </dl>
@@ -127,7 +127,7 @@
                 </div>
 
                 @if($booking->notes)
-                <div class="bg-blue-50 bg-opacity-50 rounded-lg p-4 border border-blue-100">
+                <div class="bg-blue-50 bg-opacity-50 rounded-lg p-4 border border-orange-100">
                     <h4 class="text-sm font-bold text-blue-800 mb-2">Notes</h4>
                     <p class="text-sm text-blue-900">{{ $booking->notes }}</p>
                 </div>

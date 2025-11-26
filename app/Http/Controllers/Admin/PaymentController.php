@@ -50,7 +50,7 @@ class PaymentController extends Controller
             'amount' => 'required|numeric|min:0',
             'payment_date' => 'required|date',
             'due_date' => 'required|date|after:payment_date',
-            'payment_method' => 'required|in:cash,card,bank_transfer,online',
+            'payment_method' => 'required|in:cash,credit_card,debit_card,bank_transfer,online,face_to_face,mobile_money,check,e_wallet',
             'description' => 'required|string|max:500',
             'membership_type' => 'required|in:basic,premium,vip',
             'period_start' => 'required|date',

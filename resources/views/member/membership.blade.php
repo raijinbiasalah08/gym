@@ -19,11 +19,11 @@
 
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
             <!-- Current Plan Card -->
-            <div class="glass-card rounded-xl p-6 relative overflow-hidden">
-                <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full opacity-20 blur-xl"></div>
+            <div class="neuro-card p-6 relative overflow-hidden">
+                <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-gradient-to-br from-orange-500 to-red-600 rounded-full opacity-20 blur-xl"></div>
                 
                 <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                    <i class="fas fa-id-card text-blue-600 mr-2"></i>
+                    <i class="fas fa-id-card text-orange-600 mr-2"></i>
                     Current Plan
                 </h3>
 
@@ -37,7 +37,7 @@
                             <i class="fas fa-user text-4xl text-blue-500"></i>
                         @endif
                     </div>
-                    <h2 class="text-3xl font-extrabold text-gray-900 capitalize">{{ $member->membership_type ?? 'Basic' }}</h2>
+                    <h2 class="text-3xl font-extrabold text-gray-900 capitalize">{{ ucfirst($member->membership_type ?? 'Basic') }}</h2>
                     <p class="text-sm text-gray-500 mt-1">Membership Tier</p>
                 </div>
 
@@ -56,28 +56,28 @@
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-sm text-gray-600">Days Remaining</span>
-                        <span class="text-sm font-medium {{ ($member->membership_expiry && $member->membership_expiry->diffInDays(now()) < 7) ? 'text-red-600' : 'text-green-600' }}">
-                            {{ $member->membership_expiry ? $member->membership_expiry->diffInDays(now()) . ' days' : '-' }}
+                        <span class="text-sm font-medium {{ ($member->membership_expiry && $member->membership_expiry->isFuture() && $member->membership_expiry->diffInDays(now()) < 7) ? 'text-red-600' : ($member->membership_expiry && $member->membership_expiry->isFuture() ? 'text-green-600' : 'text-gray-600') }}">
+                            {{ $member->membership_expiry && $member->membership_expiry->isFuture() ? $member->membership_expiry->diffInDays(now()) . ' days' : ($member->membership_expiry ? 'Expired' : 'N/A') }}
                         </span>
                     </div>
                 </div>
 
                 <div class="mt-6">
                     <button onclick="document.getElementById('upgrade-modal').classList.remove('hidden')" 
-                            class="w-full py-2 px-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+                            class="w-full py-2 px-4 bg-gradient-to-r from-orange-600 to-red-600 text-white font-medium rounded-lg hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
                         Change Plan
                     </button>
                 </div>
             </div>
 
             <!-- Payment History -->
-            <div class="lg:col-span-2 glass-card rounded-xl overflow-hidden">
+            <div class="lg:col-span-2 neuro-card overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-200 border-opacity-50 flex justify-between items-center">
                     <h3 class="text-lg font-bold text-gray-900 flex items-center">
                         <i class="fas fa-history text-green-600 mr-2"></i>
                         Payment History
                     </h3>
-                    <button class="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                    <button class="text-sm text-orange-600 hover:text-orange-800 font-medium">
                         <i class="fas fa-download mr-1"></i> Export
                     </button>
                 </div>
@@ -101,7 +101,7 @@
                                     {{ $p->created_at->format('M d, Y') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    ${{ number_format($p->amount, 2) }}
+                                    ₱{{ number_format($p->amount, 2) }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 capitalize">
                                     {{ str_replace('_', ' ', $p->payment_method ?? 'card') }}
@@ -116,7 +116,7 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="#" class="text-blue-600 hover:text-blue-900">
+                                    <a href="#" class="text-orange-600 hover:text-orange-900">
                                         <i class="fas fa-file-invoice"></i>
                                     </a>
                                 </td>
@@ -146,57 +146,61 @@
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
         <div class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full glass-card">
-            <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div class="sm:flex sm:items-start">
-                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
-                        <i class="fas fa-arrow-up text-blue-600"></i>
-                    </div>
-                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                            Change Membership Plan
-                        </h3>
-                        <div class="mt-4 space-y-4">
-                            <p class="text-sm text-gray-500 mb-4">Select a new plan to upgrade or downgrade your membership.</p>
-                            
-                            <!-- Basic Plan -->
-                            <label class="relative flex items-center p-4 border rounded-lg cursor-pointer hover:bg-blue-50 transition {{ ($member->membership_type ?? 'basic') == 'basic' ? 'border-blue-500 ring-1 ring-blue-500 bg-blue-50' : 'border-gray-200' }}">
-                                <input type="radio" name="new_plan" value="basic" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" {{ ($member->membership_type ?? 'basic') == 'basic' ? 'checked' : '' }}>
-                                <div class="ml-3 block">
-                                    <span class="block text-sm font-medium text-gray-900">Basic Plan</span>
-                                    <span class="block text-xs text-gray-500">$29.99/month - Access to gym equipment</span>
-                                </div>
-                            </label>
+            <form action="{{ route('member.membership.update') }}" method="POST" id="membership-form">
+                @csrf
+                <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <i class="fas fa-arrow-up text-orange-600"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                                Change Membership Plan
+                            </h3>
+                            <div class="mt-4 space-y-4">
+                                <p class="text-sm text-gray-500 mb-4">Select a new plan to upgrade or downgrade your membership.</p>
+                                
+                                <!-- Basic Plan -->
+                                <label class="relative flex items-center p-4 border rounded-lg cursor-pointer hover:bg-blue-50 transition {{ ($member->membership_type ?? 'basic') == 'basic' ? 'border-orange-500 ring-1 ring-orange-500 bg-blue-50' : 'border-gray-200' }}">
+                                    <input type="radio" name="membership_type" value="basic" class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300" {{ ($member->membership_type ?? 'basic') == 'basic' ? 'checked' : '' }}>
+                                    <div class="ml-3 block">
+                                        <span class="block text-sm font-medium text-gray-900">Basic Plan</span>
+                                        <span class="block text-xs text-gray-500">₱1,499/month - Access to gym equipment</span>
+                                    </div>
+                                </label>
 
-                            <!-- Premium Plan -->
-                            <label class="relative flex items-center p-4 border rounded-lg cursor-pointer hover:bg-purple-50 transition {{ ($member->membership_type ?? 'basic') == 'premium' ? 'border-purple-500 ring-1 ring-purple-500 bg-purple-50' : 'border-gray-200' }}">
-                                <input type="radio" name="new_plan" value="premium" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300" {{ ($member->membership_type ?? 'basic') == 'premium' ? 'checked' : '' }}>
-                                <div class="ml-3 block">
-                                    <span class="block text-sm font-medium text-gray-900">Premium Plan</span>
-                                    <span class="block text-xs text-gray-500">$59.99/month - Classes + Sauna access</span>
-                                </div>
-                            </label>
+                                <!-- Premium Plan -->
+                                <label class="relative flex items-center p-4 border rounded-lg cursor-pointer hover:bg-purple-50 transition {{ ($member->membership_type ?? 'basic') == 'premium' ? 'border-purple-500 ring-1 ring-purple-500 bg-purple-50' : 'border-gray-200' }}">
+                                    <input type="radio" name="membership_type" value="premium" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300" {{ ($member->membership_type ?? 'basic') == 'premium' ? 'checked' : '' }}>
+                                    <div class="ml-3 block">
+                                        <span class="block text-sm font-medium text-gray-900">Premium Plan</span>
+                                        <span class="block text-xs text-gray-500">₱2,999/month - Classes + Sauna access</span>
+                                    </div>
+                                </label>
 
-                            <!-- VIP Plan -->
-                            <label class="relative flex items-center p-4 border rounded-lg cursor-pointer hover:bg-yellow-50 transition {{ ($member->membership_type ?? 'basic') == 'vip' ? 'border-yellow-500 ring-1 ring-yellow-500 bg-yellow-50' : 'border-gray-200' }}">
-                                <input type="radio" name="new_plan" value="vip" class="h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300" {{ ($member->membership_type ?? 'basic') == 'vip' ? 'checked' : '' }}>
-                                <div class="ml-3 block">
-                                    <span class="block text-sm font-medium text-gray-900">VIP Plan</span>
-                                    <span class="block text-xs text-gray-500">$99.99/month - All access + Personal Trainer</span>
-                                </div>
-                            </label>
+                                <!-- VIP Plan -->
+                                <label class="relative flex items-center p-4 border rounded-lg cursor-pointer hover:bg-yellow-50 transition {{ ($member->membership_type ?? 'basic') == 'vip' ? 'border-yellow-500 ring-1 ring-yellow-500 bg-yellow-50' : 'border-gray-200' }}">
+                                    <input type="radio" name="membership_type" value="vip" class="h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300" {{ ($member->membership_type ?? 'basic') == 'vip' ? 'checked' : '' }}>
+                                    <div class="ml-3 block">
+                                        <span class="block text-sm font-medium text-gray-900">VIP Plan</span>
+                                        <span class="block text-xs text-gray-500">₱4,999/month - All access + Personal Trainer</span>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="bg-gray-50 bg-opacity-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" onclick="alert('This feature would connect to a payment gateway in a production environment.'); document.getElementById('upgrade-modal').classList.add('hidden')">
-                    Confirm Change
-                </button>
-                <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="document.getElementById('upgrade-modal').classList.add('hidden')">
-                    Cancel
-                </button>
-            </div>
+                <div class="bg-gray-50 bg-opacity-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-600 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        Confirm Change
+                    </button>
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="document.getElementById('upgrade-modal').classList.add('hidden')">
+                        Cancel
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 @endsection
+

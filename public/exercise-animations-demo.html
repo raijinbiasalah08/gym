@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Animations Demo - TitansGym</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        }
+        
+        .card h2 {
+            color: #1f2937;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .animation-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+        
+        .animation-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .info {
+            background: rgba(249, 115, 22, 0.1);
+            border-left: 4px solid #f97316;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .info h3 {
+            color: #f97316;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info p {
+            color: #6b7280;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .features {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .features h2 {
+            color: #1f2937;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: start;
+            gap: 15px;
+        }
+        
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .feature-content h3 {
+            color: #1f2937;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-content p {
+            color: #6b7280;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏋️ Exercise Animations</h1>
+        <p class="subtitle">Professional animated demonstrations for your fitness dashboard</p>
+        
+        <div class="grid">
+            <!-- Bench Press -->
+            <div class="card">
+                <h2>Bench Press</h2>
+                <div class="animation-container">
+                    <img src="/svg/exercises/bench-press-animated.svg" alt="Bench Press Animation">
+                </div>
+                <div class="info">
+                    <h3>Movement Pattern</h3>
+                    <p>Lower the barbell to chest, pause, then press back up. Smooth 4-second loop with directional arrows showing down and press phases.</p>
+                </div>
+            </div>
+            
+            <!-- Squat -->
+            <div class="card">
+                <h2>Squat</h2>
+                <div class="animation-container">
+                    <img src="/svg/exercises/squat-animated.svg" alt="Squat Animation">
+                </div>
+                <div class="info">
+                    <h3>Movement Pattern</h3>
+                    <p>Sit back into squat position, then drive up through heels. Features extended arms for balance and clear up/down indicators.</p>
+                </div>
+            </div>
+            
+            <!-- Deadlift -->
+            <div class="card">
+                <h2>Deadlift</h2>
+                <div class="animation-container">
+                    <img src="/svg/exercises/deadlift-animated.svg" alt="Deadlift Animation">
+                </div>
+                <div class="info">
+                    <h3>Movement Pattern</h3>
+                    <p>Hip hinge to grip barbell, then lift with proper form. Shows complete range of motion with lift and lower arrows.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Features Section -->
+        <div class="features">
+            <h2>✨ Animation Features</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-content">
+                        <h3>Smooth Transitions</h3>
+                        <p>4-second seamless loops with ease-in-out timing for natural movement</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">➡️</div>
+                    <div class="feature-content">
+                        <h3>Directional Arrows</h3>
+                        <p>Color-coded arrows (orange for down, green for up) show movement direction</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">🎨</div>
+                    <div class="feature-content">
+                        <h3>Clean Design</h3>
+                    <p>Professional styling with gradients, distinct body posture, and clear labels</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-content">
+                        <h3>Lightweight</h3>
+                        <p>SVG format ensures fast loading and perfect scaling at any size</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">🔄</div>
+                    <div class="feature-content">
+                        <h3>Auto-Loop</h3>
+                        <p>Animations play automatically and loop infinitely without user interaction</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-content">
+                        <h3>Responsive</h3>
+                        <p>Works perfectly on all devices and screen sizes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -13,7 +13,7 @@
                     <i class="fas fa-arrow-left mr-2"></i>Back to Reports
                 </a>
                 <a href="{{ route('admin.reports.membership.export') }}"
-                   class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700">
+                   class="inline-flex items-center px-4 py-2 bg-orange-600 text-white text-sm rounded-md hover:bg-orange-700">
                     <i class="fas fa-file-csv mr-2"></i>Download CSV
                 </a>
             </div>

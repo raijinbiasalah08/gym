@@ -43,7 +43,7 @@
                                 Inactive
                             </span>
                         @endif
-                        <span class="bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                        <span class="bg-gradient-to-r from-orange-500 to-red-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
                             {{ $trainer->specialization ?? 'General' }}
                         </span>
                     </div>
@@ -56,7 +56,7 @@
             <div class="glass-card rounded-xl p-6 hover:shadow-lg transition">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <div class="rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-3 shadow-lg">
+                        <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg">
                             <i class="fas fa-users text-2xl text-white"></i>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
             <div class="glass-card rounded-xl p-6 hover:shadow-lg transition">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <div class="rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-3 shadow-lg">
+                        <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg">
                             <i class="fas fa-clipboard-list text-2xl text-white"></i>
                         </div>
                     </div>
@@ -174,7 +174,7 @@
             <!-- Recent Sessions -->
             <div class="glass-card rounded-xl p-6 lg:col-span-2">
                 <h3 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
-                    <i class="fas fa-calendar-alt text-blue-600 mr-2"></i>
+                    <i class="fas fa-calendar-alt text-orange-600 mr-2"></i>
                     Recent Sessions
                 </h3>
                 @if(isset($trainer->bookings) && $trainer->bookings->count() > 0)
@@ -182,7 +182,7 @@
                         @foreach($trainer->bookings->take(5) as $booking)
                         <div class="flex justify-between items-center p-4 bg-white bg-opacity-40 rounded-lg hover:bg-opacity-60 transition">
                             <div class="flex items-center space-x-4">
-                                <div class="h-10 w-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-md">
+                                <div class="h-10 w-10 rounded-full bg-gradient-to-br from-orange-400 to-red-600 flex items-center justify-center shadow-md">
                                     <i class="fas fa-user text-white"></i>
                                 </div>
                                 <div>

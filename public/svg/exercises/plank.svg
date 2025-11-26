@@ -1,0 +1,35 @@
+<!-- Animated Stick Figure: Plank -->
+<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="exercise-animation">
+    <style>
+        @keyframes plank-hold {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(1px); }
+        }
+        .plank-body { animation: plank-hold 3s ease-in-out infinite; }
+    </style>
+    
+    <!-- Ground -->
+    <line x1="5" y1="50" x2="55" y2="50" stroke="#cbd5e0" stroke-width="2"/>
+    
+    <g class="plank-body">
+        <!-- Head -->
+        <circle cx="15" cy="28" r="4" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+        
+        <!-- Body (horizontal) -->
+        <line x1="19" y1="30" x2="42" y2="30" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+        
+        <!-- Arms (supporting) -->
+        <line x1="19" y1="30" x2="12" y2="45" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="25" y1="30" x2="18" y2="45" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+        
+        <!-- Legs (extended) -->
+        <line x1="42" y1="30" x2="45" y2="45" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="42" y1="30" x2="48" y2="45" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+        
+        <!-- Elbows/Feet -->
+        <circle cx="12" cy="45" r="2" fill="#f97316"/>
+        <circle cx="18" cy="45" r="2" fill="#f97316"/>
+        <circle cx="45" cy="45" r="2" fill="#f97316"/>
+        <circle cx="48" cy="45" r="2" fill="#f97316"/>
+    </g>
+</svg>

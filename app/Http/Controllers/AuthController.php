@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -50,6 +52,9 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|in:member,trainer',
             'phone' => 'required|string|max:20',
+            'sex' => 'required|in:male,female',
+            'date_of_birth' => 'required|date|before:-13 years',
+            'membership_type' => 'required_if:role,member|in:basic,premium,vip',
         ]);
 
         if ($validator->fails()) {
@@ -62,12 +67,14 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role' => $request->role,
             'phone' => $request->phone,
+            'sex' => $request->sex,
+            'date_of_birth' => $request->date_of_birth,
             'is_active' => $request->role === 'member' ? true : false,
         ];
 
         // Add role-specific fields
         if ($request->role === 'member') {
-            $userData['membership_type'] = 'basic';
+            $userData['membership_type'] = $request->membership_type ?? 'basic';
             $userData['membership_expiry'] = now()->addMonth();
         } elseif ($request->role === 'trainer') {
             $userData['specialization'] = $request->specialization;
@@ -90,6 +97,53 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function showForgotPasswordForm()
+    {
+        return view('auth.forgot-password');
+    }
+
+    public function sendResetLinkEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with(['status' => __($status)])
+            : back()->withErrors(['email' => __($status)]);
+    }
+
+    public function showResetPasswordForm($token)
+    {
+        return view('auth.reset-password', ['token' => $token, 'email' => request('email')]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? redirect()->route('login')->with('status', __($status))
+            : back()->withErrors(['email' => [__($status)]]);
     }
 
     private function getDashboardRoute($role)

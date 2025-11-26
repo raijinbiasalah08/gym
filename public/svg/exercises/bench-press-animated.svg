@@ -1,0 +1,182 @@
+<!-- Enhanced Bench Press Animation with Directional Arrows -->
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Gradient for figure -->
+        <linearGradient id="figureGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#f97316;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#ea580c;stop-opacity:1" />
+        </linearGradient>
+        
+        <!-- Gradient for barbell -->
+        <linearGradient id="barbellGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#6b7280;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#9ca3af;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#6b7280;stop-opacity:1" />
+        </linearGradient>
+        
+        <!-- Arrow marker -->
+        <marker id="arrowDown" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 L 3 5 Z" fill="#f97316" />
+        </marker>
+        <marker id="arrowUp" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+            <path d="M 10 0 L 0 5 L 10 10 L 7 5 Z" fill="#10b981" />
+        </marker>
+    </defs>
+    
+    <style>
+        /* Smooth bench press animation */
+        @keyframes benchPress {
+            0% {
+                transform: translateY(0);
+            }
+            25% {
+                transform: translateY(20px);
+            }
+            50% {
+                transform: translateY(20px);
+            }
+            75% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+        
+        /* Arrow fade in/out for down movement */
+        @keyframes arrowDownFade {
+            0%, 75% {
+                opacity: 0;
+            }
+            10%, 40% {
+                opacity: 1;
+            }
+            50%, 100% {
+                opacity: 0;
+            }
+        }
+        
+        /* Arrow fade in/out for up movement */
+        @keyframes arrowUpFade {
+            0%, 40% {
+                opacity: 0;
+            }
+            50%, 70% {
+                opacity: 1;
+            }
+            75%, 100% {
+                opacity: 0;
+            }
+        }
+        
+        /* Muscle flex effect */
+        @keyframes muscleFlex {
+            0%, 25%, 100% {
+                stroke-width: 3;
+            }
+            50%, 75% {
+                stroke-width: 4;
+            }
+        }
+        
+        .bench-press-arms {
+            animation: benchPress 4s ease-in-out infinite;
+            transform-origin: center;
+        }
+        
+        .barbell {
+            animation: benchPress 4s ease-in-out infinite;
+        }
+        
+        .arrow-down {
+            animation: arrowDownFade 4s ease-in-out infinite;
+        }
+        
+        .arrow-up {
+            animation: arrowUpFade 4s ease-in-out infinite;
+        }
+        
+        .muscle-arms {
+            animation: muscleFlex 4s ease-in-out infinite;
+        }
+    </style>
+    
+    <!-- Background -->
+    <rect width="200" height="200" fill="#f9fafb" rx="10"/>
+    
+    <!-- Bench -->
+    <rect x="60" y="140" width="80" height="12" fill="#4b5563" rx="2"/>
+    <rect x="70" y="152" width="10" height="30" fill="#374151" rx="2"/>
+    <rect x="120" y="152" width="10" height="30" fill="#374151" rx="2"/>
+    
+    <!-- Ground line -->
+    <line x1="20" y1="185" x2="180" y2="185" stroke="#d1d5db" stroke-width="2"/>
+    
+    <!-- Static body on bench -->
+    <g>
+        <!-- Head -->
+        <circle cx="100" cy="120" r="12" fill="url(#figureGradient)" stroke="#ea580c" stroke-width="2"/>
+        
+        <!-- Torso -->
+        <rect x="88" y="132" width="24" height="35" fill="url(#figureGradient)" stroke="#ea580c" stroke-width="2" rx="3"/>
+        
+        <!-- Legs -->
+        <line x1="92" y1="167" x2="85" y2="185" stroke="url(#figureGradient)" stroke-width="4" stroke-linecap="round"/>
+        <line x1="108" y1="167" x2="115" y2="185" stroke="url(#figureGradient)" stroke-width="4" stroke-linecap="round"/>
+        
+        <!-- Feet -->
+        <ellipse cx="85" cy="185" rx="6" ry="3" fill="#ea580c"/>
+        <ellipse cx="115" cy="185" rx="6" ry="3" fill="#ea580c"/>
+    </g>
+    
+    <!-- Animated arms and barbell -->
+    <g class="bench-press-arms">
+        <!-- Left arm -->
+        <line x1="88" y1="140" x2="70" y2="80" stroke="url(#figureGradient)" stroke-width="4" stroke-linecap="round" class="muscle-arms"/>
+        <line x1="70" y1="80" x2="70" y2="60" stroke="url(#figureGradient)" stroke-width="4" stroke-linecap="round" class="muscle-arms"/>
+        
+        <!-- Right arm -->
+        <line x1="112" y1="140" x2="130" y2="80" stroke="url(#figureGradient)" stroke-width="4" stroke-linecap="round" class="muscle-arms"/>
+        <line x1="130" y1="80" x2="130" y2="60" stroke="url(#figureGradient)" stroke-width="4" stroke-linecap="round" class="muscle-arms"/>
+        
+        <!-- Hands -->
+        <circle cx="70" cy="60" r="4" fill="#f97316"/>
+        <circle cx="130" cy="60" r="4" fill="#f97316"/>
+        
+        <!-- Barbell -->
+        <g class="barbell">
+            <!-- Bar -->
+            <rect x="50" y="57" width="100" height="6" fill="url(#barbellGradient)" rx="3"/>
+            
+            <!-- Weight plates (left) -->
+            <rect x="45" y="50" width="8" height="20" fill="#374151" rx="2"/>
+            <rect x="42" y="52" width="3" height="16" fill="#1f2937" rx="1"/>
+            
+            <!-- Weight plates (right) -->
+            <rect x="147" y="50" width="8" height="20" fill="#374151" rx="2"/>
+            <rect x="155" y="52" width="3" height="16" fill="#1f2937" rx="1"/>
+            
+            <!-- Center grip -->
+            <rect x="95" y="55" width="10" height="10" fill="#9ca3af" rx="1"/>
+        </g>
+    </g>
+    
+    <!-- Directional arrows -->
+    <g class="arrow-down">
+        <!-- Down arrow (lowering phase) -->
+        <line x1="30" y1="60" x2="30" y2="90" stroke="#f97316" stroke-width="3" marker-end="url(#arrowDown)"/>
+        <text x="35" y="75" fill="#f97316" font-size="12" font-weight="bold" font-family="Arial">DOWN</text>
+    </g>
+    
+    <g class="arrow-up">
+        <!-- Up arrow (pressing phase) -->
+        <line x1="170" y1="90" x2="170" y2="60" stroke="#10b981" stroke-width="3" marker-end="url(#arrowUp)"/>
+        <text x="145" y="75" fill="#10b981" font-size="12" font-weight="bold" font-family="Arial">PRESS</text>
+    </g>
+    
+    <!-- Exercise label -->
+    <text x="100" y="20" text-anchor="middle" fill="#1f2937" font-size="16" font-weight="bold" font-family="Arial">BENCH PRESS</text>
+    
+    <!-- Instruction text -->
+    <text x="100" y="195" text-anchor="middle" fill="#6b7280" font-size="10" font-family="Arial">Lower • Pause • Press</text>
+</svg>

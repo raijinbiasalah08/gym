@@ -6,7 +6,7 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-900">Progress Tracking</h1>
-        <a href="{{ route('trainer.progress.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200">
+        <a href="{{ route('trainer.progress.create') }}" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-200">
             <i class="fas fa-plus mr-2"></i> Record Progress
         </a>
     </div>
@@ -29,7 +29,7 @@
                         <tr class="hover:bg-white hover:bg-opacity-60 transition-colors duration-200">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-orange-600 font-bold">
                                         {{ substr($record->member->name, 0, 1) }}
                                     </div>
                                     <div class="ml-4">
@@ -56,7 +56,7 @@
                                 {{ $record->body_fat_percentage ?? '-' }}%
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="{{ route('trainer.progress.show', $record) }}" class="text-blue-600 hover:text-blue-900 mr-3"><i class="fas fa-eye"></i></a>
+                                <a href="{{ route('trainer.progress.show', $record) }}" class="text-orange-600 hover:text-orange-900 mr-3"><i class="fas fa-eye"></i></a>
                                 <a href="{{ route('trainer.progress.edit', $record) }}" class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></a>
                                 <form action="{{ route('trainer.progress.destroy', $record) }}" method="POST" class="inline-block">
                                     @csrf

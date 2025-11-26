@@ -8,7 +8,7 @@
         <div class="flex justify-between items-center">
             <h1 class="text-2xl font-semibold text-gray-900">Member Attendance</h1>
             <a href="{{ route('trainer.attendance.create') }}" 
-               class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+               class="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700 transition">
                 <i class="fas fa-plus mr-2"></i>Record Attendance
             </a>
         </div>
@@ -116,7 +116,7 @@
                 </p>
                 <div class="mt-6">
                     <a href="{{ route('trainer.attendance.create') }}" 
-                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700">
                         <i class="fas fa-plus mr-2"></i>Record First Attendance
                     </a>
                 </div>

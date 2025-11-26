@@ -134,4 +134,22 @@ class TrainerController extends Controller
         return redirect()->route('admin.trainers.index')
             ->with('success', 'Trainer deleted successfully.');
     }
+
+    public function toggleStatus(User $trainer)
+    {
+        if (!Auth::user()->isAdmin()) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        if (!$trainer->isTrainer()) {
+            abort(404);
+        }
+
+        $trainer->update(['is_active' => !$trainer->is_active]);
+
+        return response()->json([
+            'message' => 'Trainer status updated successfully',
+            'is_active' => $trainer->is_active
+        ]);
+    }
 }

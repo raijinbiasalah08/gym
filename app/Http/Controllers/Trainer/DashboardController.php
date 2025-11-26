@@ -45,7 +45,7 @@ class DashboardController extends Controller
         $todaySessions = Booking::with('member')
             ->where('trainer_id', $trainer->id)
             ->whereDate('booking_date', today())
-            ->where('status', 'confirmed')
+            ->whereIn('status', ['confirmed', 'pending'])
             ->orderBy('start_time')
             ->get();
 
@@ -57,14 +57,19 @@ class DashboardController extends Controller
         // Upcoming sessions for the week
         $weekSessions = Booking::with('member')
             ->where('trainer_id', $trainer->id)
-            ->whereBetween('booking_date', [now(), now()->addDays(7)])
+            ->whereBetween('booking_date', [today(), today()->addDays(7)])
             ->where('status', 'confirmed')
             ->orderBy('booking_date')
             ->orderBy('start_time')
             ->get();
 
-        // Recent attendance recorded
+        // Recent attendance recorded - only for members who have bookings with this trainer
+        $memberIds = Booking::where('trainer_id', $trainer->id)
+            ->distinct()
+            ->pluck('member_id');
+        
         $recentAttendance = Attendance::with('member')
+            ->whereIn('member_id', $memberIds)
             ->latest()
             ->take(5)
             ->get();

@@ -9,7 +9,7 @@
             <h1 class="text-2xl font-semibold text-gray-900">My Bookings</h1>
             <div class="space-x-2">
                 <a href="{{ route('trainer.bookings.calendar') }}" 
-                   class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                   class="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700 transition">
                     <i class="fas fa-calendar-alt mr-2"></i>Calendar View
                 </a>
             </div>
@@ -27,7 +27,7 @@
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <i class="fas fa-calendar text-2xl text-blue-600"></i>
+                            <i class="fas fa-calendar text-2xl text-orange-600"></i>
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
@@ -95,7 +95,7 @@
                     <div class="flex-1">
                         <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
                         <select name="status" id="status" 
-                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
                             <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>All Statuses</option>
                             <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
                             <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
@@ -106,11 +106,11 @@
                     <div class="flex-1">
                         <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
                         <input type="date" name="date" id="date" value="{{ request('date') }}"
-                               class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                               class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm">
                     </div>
                     <div class="flex items-end">
                         <button type="submit" 
-                                class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                                class="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700 transition">
                             <i class="fas fa-filter mr-2"></i>Filter
                         </button>
                     </div>
@@ -187,7 +187,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-medium text-gray-900">
-                                        ${{ number_format($booking->price, 2) }}
+                                        ₱{{ number_format($booking->price, 2) }}
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -202,7 +202,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
                                         <a href="{{ route('trainer.bookings.show', $booking) }}" 
-                                           class="text-blue-600 hover:text-blue-900" title="View Details">
+                                           class="text-orange-600 hover:text-orange-900" title="View Details">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         
@@ -222,7 +222,7 @@
                                             @csrf
                                             @method('PATCH')
                                             <input type="hidden" name="status" value="completed">
-                                            <button type="submit" class="text-blue-600 hover:text-blue-900" title="Mark as Completed">
+                                            <button type="submit" class="text-orange-600 hover:text-orange-900" title="Mark as Completed">
                                                 <i class="fas fa-flag-checkered"></i>
                                             </button>
                                         </form>

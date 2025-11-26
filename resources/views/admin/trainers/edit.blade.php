@@ -131,7 +131,7 @@
 
             <div class="glass-card rounded-xl p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
-                    <i class="fas fa-toggle-on text-blue-600 mr-2"></i>
+                    <i class="fas fa-toggle-on text-orange-600 mr-2"></i>
                     Account Status
                 </h3>
                 

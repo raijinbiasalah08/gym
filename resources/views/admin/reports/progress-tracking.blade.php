@@ -27,18 +27,18 @@
                             <label for="start_date" class="block text-sm font-medium text-gray-700">Start Date</label>
                             <input type="date" name="start_date" id="start_date" required
                                    value="{{ request('start_date', now()->subMonths(1)->format('Y-m-d')) }}"
-                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-600 focus:border-blue-600 sm:text-sm">
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-600 focus:border-orange-600 sm:text-sm">
                         </div>
 
                         <div>
                             <label for="end_date" class="block text-sm font-medium text-gray-700">End Date</label>
                             <input type="date" name="end_date" id="end_date" required
                                    value="{{ request('end_date', now()->format('Y-m-d')) }}"
-                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-600 focus:border-blue-600 sm:text-sm">
+                                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-600 focus:border-orange-600 sm:text-sm">
                         </div>
 
                         <div class="flex items-end">
-                            <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button type="submit" class="w-full bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700 transition focus:outline-none focus:ring-2 focus:ring-orange-500">
                                 <i class="fas fa-filter mr-2"></i>Generate Report
                             </button>
                         </div>
@@ -48,7 +48,7 @@
                 @if(request()->has('start_date'))
                 <div class="mt-4 flex justify-end">
                     <a href="{{ route('admin.reports.progress-tracking.export', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}"
-                       class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700">
+                       class="inline-flex items-center px-4 py-2 bg-orange-600 text-white text-sm rounded-md hover:bg-orange-700">
                         <i class="fas fa-file-csv mr-2"></i>Download CSV
                     </a>
                 </div>

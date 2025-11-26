@@ -34,7 +34,10 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        // Get payments from recent members
+        $recentMemberIds = $recentMembers->pluck('id');
         $recentPayments = Payment::with('member')
+            ->whereIn('member_id', $recentMemberIds)
             ->latest()
             ->take(5)
             ->get();

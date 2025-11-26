@@ -35,7 +35,7 @@
                                 <p class="text-sm font-medium text-gray-600">Current Weight</p>
                                 <p class="text-2xl font-bold text-gray-900 mt-1">{{ $latest->weight }} kg</p>
                             </div>
-                            <div class="rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-3 shadow-lg">
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg">
                                 <i class="fas fa-weight text-2xl text-white"></i>
                             </div>
                         </div>
@@ -87,7 +87,7 @@
                                 <p class="text-sm font-medium text-gray-600">Muscle Mass</p>
                                 <p class="text-2xl font-bold text-gray-900 mt-1">{{ $latest->muscle_mass }} kg</p>
                             </div>
-                            <div class="rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-3 shadow-lg">
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg">
                                 <i class="fas fa-dumbbell text-2xl text-white"></i>
                             </div>
                         </div>
@@ -111,7 +111,7 @@
         <div class="glass-card rounded-xl overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200 border-opacity-50">
                 <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                    <i class="fas fa-history text-blue-600 mr-2"></i>
+                    <i class="fas fa-history text-orange-600 mr-2"></i>
                     Progress History
                 </h3>
             </div>
@@ -166,7 +166,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <a href="{{ route('member.progress.show', $record) }}" 
-                                       class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg transition">
+                                       class="text-orange-600 hover:text-orange-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg transition">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                 </td>

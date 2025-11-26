@@ -11,7 +11,7 @@
                 <p class="text-sm text-gray-600 mt-1">Quick overview of members, trainers, bookings and revenue.</p>
             </div>
             <div class="flex items-center space-x-3">
-                <a href="{{ route('admin.members.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition shadow-sm hover:shadow-md">
+                <a href="{{ route('admin.members.create') }}" class="inline-flex items-center px-4 py-2 bg-orange-600 text-white text-sm font-medium rounded-lg hover:bg-orange-700 transition shadow-sm hover:shadow-md">
                     <i class="fas fa-user-plus mr-2"></i>Add Member
                 </a>
                 <a href="{{ route('admin.reports.index') }}" class="inline-flex items-center px-4 py-2 glass-card text-gray-700 text-sm font-medium rounded-lg hover:bg-white hover:bg-opacity-60 transition">
@@ -23,12 +23,12 @@
         <!-- Stats Grid -->
         <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 mb-8">
             <!-- Total Members -->
-            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
+            <div class="neuro-stat group">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
-                                <i class="fas fa-users text-2xl text-white"></i>
+                            <div class="neuro-icon w-14 h-14 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-users text-2xl text-orange-600"></i>
                             </div>
                         </div>
                         <div class="ml-5 w-0 flex-1">
@@ -42,7 +42,7 @@
             </div>
 
             <!-- Total Trainers -->
-            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
+            <div class="neuro-stat group">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -61,11 +61,11 @@
             </div>
 
             <!-- Active Bookings -->
-            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
+            <div class="neuro-stat group">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
                                 <i class="fas fa-calendar-check text-2xl text-white"></i>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
             </div>
 
             <!-- Pending Payments -->
-            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
+            <div class="neuro-stat group">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -99,7 +99,7 @@
             </div>
 
             <!-- Total Revenue -->
-            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
+            <div class="neuro-stat group">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -110,7 +110,7 @@
                         <div class="ml-5 w-0 flex-1">
                             <dl>
                                 <dt class="text-sm font-medium text-gray-600 truncate">Total Revenue</dt>
-                                <dd class="text-2xl font-bold text-gray-900 mt-1">${{ number_format($stats['total_revenue'], 2) }}</dd>
+                                <dd class="text-2xl font-bold text-gray-900 mt-1">₱{{ number_format($stats['total_revenue'], 2) }}</dd>
                             </dl>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
             </div>
 
             <!-- Today's Attendance -->
-            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
+            <div class="neuro-stat group">
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -140,9 +140,9 @@
         <!-- Charts Section -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
             <!-- Revenue Chart -->
-            <div class="glass-card rounded-xl p-6 lg:col-span-2">
+            <div class="neuro-card p-6 lg:col-span-2">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                    <i class="fas fa-chart-area text-blue-600 mr-2"></i>
+                    <i class="fas fa-chart-area text-orange-600 mr-2"></i>
                     Revenue Overview (Last 12 Months)
                 </h3>
                 <div class="relative h-72 w-full">
@@ -151,14 +151,14 @@
             </div>
 
             <!-- Quick Actions -->
-            <div class="glass-card rounded-xl p-6">
+            <div class="neuro-card p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                     <i class="fas fa-bolt text-yellow-600 mr-2"></i>
                     Quick Actions
                 </h3>
                 <div class="space-y-3">
                     <a href="{{ route('admin.members.create') }}" class="flex items-center p-3 rounded-lg hover:bg-white hover:bg-opacity-50 transition group">
-                        <div class="flex-shrink-0 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-2.5 group-hover:scale-110 transition-transform shadow">
+                        <div class="flex-shrink-0 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg p-2.5 group-hover:scale-110 transition-transform shadow">
                             <i class="fas fa-user-plus text-white text-sm"></i>
                         </div>
                         <div class="ml-4">
@@ -176,7 +176,7 @@
                         </div>
                     </a>
                     <a href="{{ route('admin.reports.index') }}" class="flex items-center p-3 rounded-lg hover:bg-white hover:bg-opacity-50 transition group">
-                        <div class="flex-shrink-0 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-2.5 group-hover:scale-110 transition-transform shadow">
+                        <div class="flex-shrink-0 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg p-2.5 group-hover:scale-110 transition-transform shadow">
                             <i class="fas fa-file-alt text-white text-sm"></i>
                         </div>
                         <div class="ml-4">
@@ -200,10 +200,10 @@
         <!-- Recent Members & Payments -->
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <!-- Recent Members -->
-            <div class="glass-card rounded-xl overflow-hidden">
+            <div class="neuro-card overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-200 border-opacity-50">
                     <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                        <i class="fas fa-user-friends text-blue-600 mr-2"></i>
+                        <i class="fas fa-user-friends text-orange-600 mr-2"></i>
                         Recent Members
                     </h3>
                 </div>
@@ -213,7 +213,7 @@
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
-                                    <div class="h-12 w-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-md">
+                                    <div class="h-12 w-12 rounded-full bg-gradient-to-br from-orange-400 to-red-600 flex items-center justify-center shadow-md">
                                         <span class="text-white font-bold text-lg">{{ substr($member->name, 0, 1) }}</span>
                                     </div>
                                 </div>
@@ -223,7 +223,7 @@
                                 </div>
                             </div>
                             <div class="text-sm text-gray-500">
-                                <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                                <span class="bg-gradient-to-r from-orange-500 to-red-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
                                     {{ ucfirst($member->membership_type) }}
                                 </span>
                             </div>
@@ -239,7 +239,7 @@
             </div>
 
             <!-- Recent Payments -->
-            <div class="glass-card rounded-xl overflow-hidden">
+            <div class="neuro-card overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-200 border-opacity-50">
                     <h3 class="text-lg font-semibold text-gray-900 flex items-center">
                         <i class="fas fa-receipt text-green-600 mr-2"></i>
@@ -255,7 +255,7 @@
                                 <div class="text-xs text-gray-500">{{ $payment->description ?? 'Membership Payment' }}</div>
                             </div>
                             <div class="text-right">
-                                <div class="text-sm font-bold text-gray-900">${{ number_format($payment->amount, 2) }}</div>
+                                <div class="text-sm font-bold text-gray-900">₱{{ number_format($payment->amount, 2) }}</div>
                                 <div class="text-xs mt-1">
                                     @if($payment->status == 'paid')
                                         <span class="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-2 py-1 rounded-full font-medium shadow-sm">

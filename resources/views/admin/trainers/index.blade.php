@@ -41,7 +41,7 @@
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
                                 <i class="fas fa-check-circle text-2xl text-white"></i>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                 <div class="p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
                                 <i class="fas fa-star text-2xl text-white"></i>
                             </div>
                         </div>
@@ -171,7 +171,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">
-                                        <i class="fas fa-users text-blue-600 mr-1"></i>
+                                        <i class="fas fa-users text-orange-600 mr-1"></i>
                                         {{ $trainer->bookings_count ?? 0 }} sessions
                                     </div>
                                     <div class="text-xs text-gray-600">
@@ -193,10 +193,15 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
                                         <a href="{{ route('admin.trainers.show', $trainer) }}" 
-                                           class="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white hover:scale-110 transition-transform shadow-sm"
+                                           class="p-2 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 text-white hover:scale-110 transition-transform shadow-sm"
                                            title="View Details">
                                             <i class="fas fa-eye"></i>
                                         </a>
+                                        <button onclick="toggleTrainerStatus({{ $trainer->id }}, this)" 
+                                                class="p-2 rounded-lg {{ $trainer->is_active ? 'bg-gradient-to-br from-yellow-500 to-yellow-600' : 'bg-gradient-to-br from-blue-500 to-blue-600' }} text-white hover:scale-110 transition-transform shadow-sm"
+                                                title="{{ $trainer->is_active ? 'Deactivate' : 'Activate' }} Trainer">
+                                            <i class="fas fa-{{ $trainer->is_active ? 'ban' : 'check-circle' }}"></i>
+                                        </button>
                                         <a href="{{ route('admin.trainers.edit', $trainer) }}" 
                                            class="p-2 rounded-lg bg-gradient-to-br from-green-500 to-green-600 text-white hover:scale-110 transition-transform shadow-sm"
                                            title="Edit Trainer">
@@ -255,6 +260,50 @@
             row.style.display = text.includes(searchTerm) ? '' : 'none';
         });
     });
+
+    // Toggle trainer status
+    function toggleTrainerStatus(trainerId, button) {
+        if (!confirm('Are you sure you want to change this trainer\'s status?')) {
+            return;
+        }
+
+        fetch(`/admin/trainers/${trainerId}/toggle-status`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.is_active) {
+                button.className = 'p-2 rounded-lg bg-gradient-to-br from-yellow-500 to-yellow-600 text-white hover:scale-110 transition-transform shadow-sm';
+                button.title = 'Deactivate Trainer';
+                button.querySelector('i').className = 'fas fa-ban';
+            } else {
+                button.className = 'p-2 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white hover:scale-110 transition-transform shadow-sm';
+                button.title = 'Activate Trainer';
+                button.querySelector('i').className = 'fas fa-check-circle';
+            }
+            
+            // Update status badge
+            const row = button.closest('tr');
+            const statusBadge = row.querySelector('td:nth-child(5) span');
+            if (data.is_active) {
+                statusBadge.className = 'bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm';
+                statusBadge.textContent = 'Active';
+            } else {
+                statusBadge.className = 'bg-gradient-to-r from-red-500 to-red-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm';
+                statusBadge.textContent = 'Inactive';
+            }
+
+            window.showToast(data.message, 'success');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            window.showToast('Failed to update trainer status', 'error');
+        });
+    }
 </script>
 @endpush
 @endsection

@@ -38,7 +38,7 @@ class BookingController extends Controller
         $member = Auth::user();
         
         // Check if member has active membership
-        if ($member->membership_status !== 'active') {
+        if (!$member->membership_expiry || $member->membership_expiry->isPast()) {
             return redirect()->route('member.bookings.index')
                 ->with('error', 'Your membership is not active. Please renew your membership to book sessions.');
         }
@@ -71,6 +71,7 @@ class BookingController extends Controller
             'start_time' => 'required',
             'end_time' => 'required|after:start_time',
             'session_type' => 'required|in:personal_training,group_session,consultation',
+            'payment_method' => 'required|in:cash,credit_card,debit_card,bank_transfer,online,face_to_face,mobile_money,check,e_wallet',
             'notes' => 'nullable|string|max:500',
         ]);
 

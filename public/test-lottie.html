@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Lottie Animation - TitansGym</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-4xl w-full">
+        <h1 class="text-4xl font-bold text-center text-gray-900 mb-8">🏋️ Lottie Animation Test</h1>
+
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- Example 1: Using CDN URL (Always Works) -->
+            <div class="bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl p-6">
+                <h3 class="text-xl font-bold text-gray-900 mb-4 text-center">✅ Working Example (CDN)</h3>
+                <lottie-player src="https://lottie.host/4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a/abcdefghij.json"
+                    background="transparent" speed="1" style="width: 300px; height: 300px; margin: 0 auto;" loop
+                    autoplay>
+                </lottie-player>
+                <p class="text-center text-sm text-gray-600 mt-4">This uses a CDN URL and should always work</p>
+            </div>
+
+            <!-- Example 2: Using Local File -->
+            <div class="bg-gradient-to-br from-orange-100 to-red-100 rounded-xl p-6">
+                <h3 class="text-xl font-bold text-gray-900 mb-4 text-center">📁 Your Local File</h3>
+                <lottie-player id="localAnimation" src="/lottie/exercises/pushup.json" background="transparent"
+                    speed="1" style="width: 300px; height: 300px; margin: 0 auto;" loop autoplay>
+                </lottie-player>
+                <p id="status" class="text-center text-sm text-gray-600 mt-4">Checking file...</p>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg mb-6">
+            <h3 class="font-bold text-blue-900 mb-3 text-lg">📝 How to Fix:</h3>
+            <ol class="text-sm text-blue-800 space-y-2 list-decimal list-inside">
+                <li><strong>Re-download the JSON file</strong> from LottieFiles.com</li>
+                <li><strong>Make sure it's a valid JSON file</strong> (should be 10KB-500KB in size)</li>
+                <li><strong>Save it as:</strong> <code class="bg-blue-100 px-2 py-1 rounded">pushup.json</code></li>
+                <li><strong>Place in:</strong> <code
+                        class="bg-blue-100 px-2 py-1 rounded">C:\laragon\www\laravel-Gym-System3\public\lottie\exercises\</code>
+                </li>
+                <li><strong>Refresh this page</strong></li>
+            </ol>
+        </div>
+
+        <!-- Quick Download Links -->
+        <div class="bg-gray-50 rounded-lg p-6">
+            <h3 class="font-bold text-gray-900 mb-4 text-lg">🔗 Download Free Animations:</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <a href="https://lottiefiles.com/animations/workout-fitness-ZqR9kLxQy7" target="_blank"
+                    class="bg-orange-500 text-white px-4 py-3 rounded-lg hover:bg-orange-600 text-center text-sm font-medium">
+                    💪 Workout
+                </a>
+                <a href="https://lottiefiles.com/animations/fitness-exercise-8kxQy7Zw8M" target="_blank"
+                    class="bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600 text-center text-sm font-medium">
+                    🏃 Exercise
+                </a>
+                <a href="https://lottiefiles.com/animations/gym-training-a5b8c9d0" target="_blank"
+                    class="bg-green-500 text-white px-4 py-3 rounded-lg hover:bg-green-600 text-center text-sm font-medium">
+                    🏋️ Gym
+                </a>
+                <a href="https://lottiefiles.com/animations/yoga-pose-b6c7d8e9" target="_blank"
+                    class="bg-purple-500 text-white px-4 py-3 rounded-lg hover:bg-purple-600 text-center text-sm font-medium">
+                    🧘 Yoga
+                </a>
+                <a href="https://lottiefiles.com/animations/running-cardio-def789" target="_blank"
+                    class="bg-red-500 text-white px-4 py-3 rounded-lg hover:bg-red-600 text-center text-sm font-medium">
+                    🏃‍♂️ Running
+                </a>
+                <a href="https://lottiefiles.com/search?q=fitness&category=animations" target="_blank"
+                    class="bg-gray-700 text-white px-4 py-3 rounded-lg hover:bg-gray-800 text-center text-sm font-medium">
+                    🔍 Search More
+                </a>
+            </div>
+        </div>
+
+        <!-- File Info -->
+        <div id="fileInfo" class="mt-6 bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg hidden">
+            <h3 class="font-bold text-yellow-900 mb-2">⚠️ File Issue Detected</h3>
+            <p class="text-sm text-yellow-800">The local file appears to be empty or corrupted. Please re-download it.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Check if local file loaded
+        const localPlayer = document.getElementById('localAnimation');
+        const status = document.getElementById('status');
+        const fileInfo = document.getElementById('fileInfo');
+
+        localPlayer.addEventListener('ready', () => {
+            status.innerHTML = '✅ <strong>Working!</strong> Your file loaded successfully';
+            status.className = 'text-center text-sm text-green-600 mt-4 font-semibold';
+        });
+
+        localPlayer.addEventListener('error', () => {
+            status.innerHTML = '❌ <strong>File Error</strong> - Please re-download';
+            status.className = 'text-center text-sm text-red-600 mt-4 font-semibold';
+            fileInfo.classList.remove('hidden');
+        });
+
+        // Timeout check
+        setTimeout(() => {
+            if (!localPlayer.getLottie()) {
+                status.innerHTML = '⚠️ <strong>Not Loading</strong> - Check file';
+                status.className = 'text-center text-sm text-orange-600 mt-4 font-semibold';
+                fileInfo.classList.remove('hidden');
+            }
+        }, 3000);
+    </script>
+</body>
+
+</html>

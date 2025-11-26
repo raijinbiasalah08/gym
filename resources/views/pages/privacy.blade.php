@@ -56,7 +56,7 @@
                     <strong>TitansGym</strong><br>
                     123 Fitness Street<br>
                     Gym City, GC 12345<br>
-                    <a href="mailto:privacy@titansgym.com" class="text-blue-600 hover:underline">privacy@titansgym.com</a>
+                    <a href="mailto:privacy@titansgym.com" class="text-orange-600 hover:underline">privacy@titansgym.com</a>
                 </p>
             </div>
         </div>

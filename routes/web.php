@@ -12,10 +12,14 @@ use App\Http\Controllers\Trainer\WorkoutPlanController as TrainerWorkoutPlanCont
 use App\Http\Controllers\Trainer\AttendanceController as TrainerAttendanceController;
 use App\Http\Controllers\Trainer\ProgressController as TrainerProgressController;
 use App\Http\Controllers\Trainer\BookingController as TrainerBookingController;
+use App\Http\Controllers\Trainer\ExerciseController as TrainerExerciseController;
+use App\Http\Controllers\Trainer\WorkoutSplitsController as TrainerWorkoutSplitsController;
 use App\Http\Controllers\Member\DashboardController as MemberDashboardController;
 use App\Http\Controllers\Member\BookingController as MemberBookingController;
 use App\Http\Controllers\Member\PaymentController as MemberPaymentController;
 use App\Http\Controllers\Member\ProgressController as MemberProgressController;
+use App\Http\Controllers\Member\ExerciseController as MemberExerciseController;
+use App\Http\Controllers\Member\WorkoutSplitsController as MemberWorkoutSplitsController;
 
 // Public routes
 Route::get('/', function () {
@@ -39,6 +43,12 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Password Reset routes
+Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
 // Protected routes
 Route::middleware('auth')->group(function () {
@@ -67,6 +77,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/members/{member}/edit', [AdminMemberController::class, 'edit'])->name('admin.members.edit');
         Route::put('/members/{member}', [AdminMemberController::class, 'update'])->name('admin.members.update');
         Route::delete('/members/{member}', [AdminMemberController::class, 'destroy'])->name('admin.members.destroy');
+        Route::patch('/members/{member}/toggle-status', [AdminMemberController::class, 'toggleStatus'])->name('admin.members.toggleStatus');
         
         // Trainers management
         Route::get('/trainers', [AdminTrainerController::class, 'index'])->name('admin.trainers.index');
@@ -76,6 +87,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/trainers/{trainer}/edit', [AdminTrainerController::class, 'edit'])->name('admin.trainers.edit');
         Route::put('/trainers/{trainer}', [AdminTrainerController::class, 'update'])->name('admin.trainers.update');
         Route::delete('/trainers/{trainer}', [AdminTrainerController::class, 'destroy'])->name('admin.trainers.destroy');
+        Route::patch('/trainers/{trainer}/toggle-status', [AdminTrainerController::class, 'toggleStatus'])->name('admin.trainers.toggleStatus');
         
         // Payments management
         Route::get('/payments', [AdminPaymentController::class, 'index'])->name('admin.payments.index');
@@ -131,6 +143,12 @@ Route::middleware('auth')->group(function () {
         
         // Progress Tracking
         Route::resource('progress', TrainerProgressController::class)->names('trainer.progress');
+        
+        // Exercise Details
+        Route::get('/exercises/{slug}', [TrainerExerciseController::class, 'show'])->name('trainer.exercises.show');
+        
+        // Workout Splits Guide
+        Route::get('/workout-splits', [TrainerWorkoutSplitsController::class, 'index'])->name('trainer.workout-splits.index');
     });
 
     // Member routes
@@ -153,9 +171,18 @@ Route::middleware('auth')->group(function () {
         
         // Membership page
         Route::get('/membership', [MemberDashboardController::class, 'membershipPage'])->name('member.membership');
+        Route::post('/membership/update', [MemberDashboardController::class, 'updateMembership'])->name('member.membership.update');
+
 
         // Payments
         Route::get('/payments', [MemberPaymentController::class, 'index'])->name('member.payments.index');
         Route::get('/payments/history', [MemberPaymentController::class, 'paymentHistory'])->name('member.payments.history');
+        
+        // Exercise Library
+        Route::get('/exercises', [MemberExerciseController::class, 'index'])->name('member.exercises.index');
+        Route::get('/exercises/{slug}', [MemberExerciseController::class, 'show'])->name('member.exercises.show');
+        
+        // Workout Splits Guide
+        Route::get('/workout-splits', [MemberWorkoutSplitsController::class, 'index'])->name('member.workout-splits.index');
     });
 });
