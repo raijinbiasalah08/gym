@@ -20,12 +20,22 @@ class DashboardController extends Controller
             abort(403, 'Unauthorized access.');
         }
 
+        // Calculate revenue from both old and new payment systems
+        $oldPaymentsRevenue = Payment::paid()->sum('amount');
+        $newPaymentsRevenue = \App\Models\PaymentTransaction::where('status', 'completed')->sum('amount');
+        $totalRevenue = $oldPaymentsRevenue + $newPaymentsRevenue;
+
+        // Calculate pending from both systems
+        $oldPendingCount = Payment::pending()->count();
+        $newPendingCount = \App\Models\PaymentTransaction::where('status', 'pending')->count();
+        $totalPending = $oldPendingCount + $newPendingCount;
+
         $stats = [
             'total_members' => User::members()->count(),
             'total_trainers' => User::trainers()->count(),
             'active_bookings' => Booking::where('status', 'confirmed')->count(),
-            'pending_payments' => Payment::pending()->count(),
-            'total_revenue' => Payment::paid()->sum('amount'),
+            'pending_payments' => $totalPending,
+            'total_revenue' => $totalRevenue,
             'today_attendance' => Attendance::today()->count(),
         ];
 
@@ -42,10 +52,18 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        $monthlyRevenue = Payment::paid()
+        // Calculate monthly revenue from both systems
+        $oldMonthlyRevenue = Payment::paid()
             ->whereYear('payment_date', now()->year)
             ->whereMonth('payment_date', now()->month)
             ->sum('amount');
+        
+        $newMonthlyRevenue = \App\Models\PaymentTransaction::where('status', 'completed')
+            ->whereYear('created_at', now()->year)
+            ->whereMonth('created_at', now()->month)
+            ->sum('amount');
+        
+        $monthlyRevenue = $oldMonthlyRevenue + $newMonthlyRevenue;
 
         // Fetch all members and trainers for directory cards
         $allMembers = User::members()->orderBy('name')->get();
@@ -63,7 +81,8 @@ class DashboardController extends Controller
             abort(403, 'Unauthorized access.');
         }
 
-        $revenue = Payment::paid()
+        // Get old payment system revenue
+        $oldRevenue = Payment::paid()
             ->select(
                 DB::raw('YEAR(payment_date) as year'),
                 DB::raw('MONTH(payment_date) as month'),
@@ -73,9 +92,43 @@ class DashboardController extends Controller
             ->orderBy('year', 'desc')
             ->orderBy('month', 'desc')
             ->take(12)
-            ->get();
+            ->get()
+            ->keyBy(function($item) {
+                return $item->year . '-' . $item->month;
+            });
 
-        return response()->json($revenue);
+        // Get new payment transaction revenue
+        $newRevenue = \App\Models\PaymentTransaction::where('status', 'completed')
+            ->select(
+                DB::raw('YEAR(created_at) as year'),
+                DB::raw('MONTH(created_at) as month'),
+                DB::raw('SUM(amount) as total')
+            )
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->take(12)
+            ->get()
+            ->keyBy(function($item) {
+                return $item->year . '-' . $item->month;
+            });
+
+        // Merge both revenue sources
+        $allKeys = $oldRevenue->keys()->merge($newRevenue->keys())->unique()->sort()->reverse();
+        
+        $mergedRevenue = $allKeys->take(12)->map(function($key) use ($oldRevenue, $newRevenue) {
+            list($year, $month) = explode('-', $key);
+            $oldTotal = $oldRevenue->get($key)->total ?? 0;
+            $newTotal = $newRevenue->get($key)->total ?? 0;
+            
+            return [
+                'year' => (int)$year,
+                'month' => (int)$month,
+                'total' => $oldTotal + $newTotal
+            ];
+        })->values();
+
+        return response()->json($mergedRevenue);
     }
 
     public function profile()

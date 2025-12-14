@@ -73,7 +73,7 @@
                 </div>
             @endif
 
-            <form class="mt-8 space-y-6" action="{{ route('register') }}" method="POST">
+            <form class="mt-8 space-y-6" action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 
                 <div class="space-y-5">
@@ -172,23 +172,9 @@
 
                     <!-- Dynamic Fields Container -->
                     <div id="dynamic-fields" class="space-y-5 animate-fade-in">
-                        <!-- Member Fields -->
+                        <!-- Member Fields (membership plan will be selected in next step) -->
                         <div id="member-fields" class="{{ old('role') == 'trainer' ? 'hidden' : '' }}">
-                            <label for="membership_type" class="block text-sm font-medium text-gray-700 mb-1">Membership Plan</label>
-                            <div class="relative rounded-md shadow-sm">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-id-card text-gray-400"></i>
-                                </div>
-                                <select id="membership_type" name="membership_type" 
-                                        class="block w-full pl-10 pr-10 py-3 border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 sm:text-sm appearance-none transition-colors">
-                                    <option value="basic" {{ old('membership_type') == 'basic' ? 'selected' : '' }}>Basic Plan</option>
-                                    <option value="premium" {{ old('membership_type') == 'premium' ? 'selected' : '' }}>Premium Plan</option>
-                                    <option value="vip" {{ old('membership_type') == 'vip' ? 'selected' : '' }}>VIP Access</option>
-                                </select>
-                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
-                                </div>
-                            </div>
+                            <!-- Membership plan is selected after registration -->
                         </div>
 
                         <!-- Trainer Fields -->
@@ -215,6 +201,43 @@
                                            class="block w-full pl-10 pr-3 py-3 border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 sm:text-sm transition-colors" 
                                            placeholder="0">
                                 </div>
+                            </div>
+                            
+                            <!-- Valid ID Upload (Required) -->
+                            <div>
+                                <label for="valid_id" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Valid ID <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-id-card text-gray-400"></i>
+                                    </div>
+                                    <input id="valid_id" name="valid_id" type="file" 
+                                           accept=".pdf,.jpg,.jpeg,.png"
+                                           class="block w-full pl-10 pr-3 py-3 border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 sm:text-sm transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100">
+                                </div>
+                                <p class="mt-1 text-xs text-gray-500">Upload government-issued ID (PDF, JPG, PNG - Max 5MB)</p>
+                                <div id="valid_id_preview" class="mt-2 hidden">
+                                    <img src="" alt="ID Preview" class="h-32 rounded-lg border border-gray-300">
+                                </div>
+                            </div>
+
+                            <!-- Certifications Upload (Optional) -->
+                            <div>
+                                <label for="certification_files" class="block text-sm font-medium text-gray-700 mb-1">
+                                    Certifications <span class="text-gray-500">(Optional)</span>
+                                </label>
+                                <div class="relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-certificate text-gray-400"></i>
+                                    </div>
+                                    <input id="certification_files" name="certification_files[]" type="file" 
+                                           accept=".pdf,.jpg,.jpeg,.png"
+                                           multiple
+                                           class="block w-full pl-10 pr-3 py-3 border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 sm:text-sm transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100">
+                                </div>
+                                <p class="mt-1 text-xs text-gray-500">Upload training certifications (PDF, JPG, PNG - Max 5MB each)</p>
+                                <div id="cert_files_list" class="mt-2 space-y-1"></div>
                             </div>
                         </div>
                     </div>
@@ -290,23 +313,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const memberFields = document.getElementById('member-fields');
     const specializationInput = document.getElementById('specialization');
     const experienceInput = document.getElementById('experience_years');
-    const membershipInput = document.getElementById('membership_type');
 
     function updateFields(role) {
+        const validIdInput = document.getElementById('valid_id');
+        
         if (role === 'trainer') {
             trainerFields.classList.remove('hidden');
             memberFields.classList.add('hidden');
             
             specializationInput.required = true;
             experienceInput.required = true;
-            membershipInput.required = false;
+            if (validIdInput) validIdInput.required = true;
         } else {
             trainerFields.classList.add('hidden');
             memberFields.classList.remove('hidden');
             
             specializationInput.required = false;
             experienceInput.required = false;
-            membershipInput.required = true;
+            if (validIdInput) validIdInput.required = false;
         }
     }
 
@@ -319,6 +343,61 @@ document.addEventListener('DOMContentLoaded', function() {
     if (checkedRole) {
         updateFields(checkedRole.value);
     }
+
+    // File upload handling
+    const validIdInput = document.getElementById('valid_id');
+    const validIdPreview = document.getElementById('valid_id_preview');
+    const certFilesInput = document.getElementById('certification_files');
+    const certFilesList = document.getElementById('cert_files_list');
+
+    // Valid ID preview
+    validIdInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // Validate file size (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must be less than 5MB');
+                this.value = '';
+                validIdPreview.classList.add('hidden');
+                return;
+            }
+
+            // Show preview for images
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    validIdPreview.querySelector('img').src = e.target.result;
+                    validIdPreview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                validIdPreview.classList.add('hidden');
+            }
+        }
+    });
+
+    // Certification files list
+    certFilesInput.addEventListener('change', function(e) {
+        certFilesList.innerHTML = '';
+        const files = Array.from(e.target.files);
+        
+        files.forEach((file, index) => {
+            // Validate file size
+            if (file.size > 5 * 1024 * 1024) {
+                alert(`File "${file.name}" is too large. Maximum size is 5MB.`);
+                return;
+            }
+
+            const fileItem = document.createElement('div');
+            fileItem.className = 'flex items-center text-sm text-gray-600 bg-gray-50 px-3 py-2 rounded';
+            fileItem.innerHTML = `
+                <i class="fas fa-file-${file.type === 'application/pdf' ? 'pdf' : 'image'} text-orange-500 mr-2"></i>
+                <span class="flex-1 truncate">${file.name}</span>
+                <span class="text-xs text-gray-400 ml-2">${(file.size / 1024).toFixed(1)} KB</span>
+            `;
+            certFilesList.appendChild(fileItem);
+        });
+    });
 });
 </script>
 @endsection

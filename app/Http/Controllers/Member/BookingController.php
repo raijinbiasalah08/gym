@@ -72,7 +72,6 @@ class BookingController extends Controller
             'start_time' => 'required',
             'end_time' => 'required|after:start_time',
             'session_type' => 'required|in:personal_training,group_session,consultation',
-            'payment_method' => 'required|in:cash,credit_card,debit_card,bank_transfer,online,face_to_face,mobile_money,check,e_wallet',
             'notes' => 'nullable|string|max:500',
         ]);
 
@@ -92,6 +91,7 @@ class BookingController extends Controller
 
         $validated['member_id'] = $member->id;
         $validated['status'] = 'pending';
+        $validated['payment_method'] = 'cash'; // Members pay in person at the gym
         $validated['price'] = $this->calculateSessionPrice($validated['trainer_id'], $validated['session_type']);
 
         $booking = Booking::create($validated);

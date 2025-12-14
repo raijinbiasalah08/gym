@@ -123,18 +123,51 @@ function markAsRead(id) {
 function markAllAsRead() {
     if (!confirm('Are you sure you want to mark all notifications as read?')) return;
     
-    fetch('/notifications/mark-all-read', {
+    console.log('Marking all notifications as read...');
+    
+    const csrfToken = document.querySelector('meta[name="csrf-token"]');
+    if (!csrfToken) {
+        console.error('CSRF token not found in page');
+        alert('Error: Security token not found. Please refresh the page.');
+        return;
+    }
+    
+    // Show loading state
+    const button = event.target;
+    const originalText = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+    
+    fetch('{{ route("notifications.mark-all-read") }}', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            'X-CSRF-TOKEN': csrfToken.content
         }
     })
-    .then(response => response.json())
-    .then(() => {
-        location.reload();
+    .then(response => {
+        console.log('Mark all as read response status:', response.status);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
     })
-    .catch(error => console.error('Error:', error));
+    .then(data => {
+        console.log('Mark all as read response:', data);
+        if (data.success) {
+            console.log('All notifications marked as read successfully');
+            location.reload();
+        } else {
+            throw new Error('Server returned success: false');
+        }
+    })
+    .catch(error => {
+        console.error('Error marking all as read:', error);
+        alert('Failed to mark all notifications as read. Please try again.');
+        // Restore button state
+        button.disabled = false;
+        button.innerHTML = originalText;
+    });
 }
 
 function deleteNotification(id) {

@@ -33,16 +33,19 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
             
-            // Check approval status
-            if ($user->approval_status === 'pending') {
-                Auth::logout();
-                return back()->withErrors(['email' => 'Your account is pending admin approval. Please wait for confirmation.']);
-            }
-            
-            if ($user->approval_status === 'rejected') {
-                Auth::logout();
-                $reason = $user->rejection_reason ? ' Reason: ' . $user->rejection_reason : '';
-                return back()->withErrors(['email' => 'Your registration has been rejected.' . $reason]);
+            // Skip approval checks for admin users
+            if ($user->role !== 'admin') {
+                // Check approval status
+                if ($user->approval_status === 'pending') {
+                    Auth::logout();
+                    return back()->withErrors(['email' => 'Your account is pending admin approval. Please wait for confirmation.']);
+                }
+                
+                if ($user->approval_status === 'rejected') {
+                    Auth::logout();
+                    $reason = $user->rejection_reason ? ' Reason: ' . $user->rejection_reason : '';
+                    return back()->withErrors(['email' => 'Your registration has been rejected.' . $reason]);
+                }
             }
             
             if (!$user->is_active) {
@@ -58,7 +61,8 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        // Base validation rules
+        $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
@@ -66,8 +70,15 @@ class AuthController extends Controller
             'phone' => 'required|string|max:20',
             'sex' => 'required|in:male,female',
             'date_of_birth' => 'required|date|before:-13 years',
-            'membership_type' => 'required_if:role,member|in:basic,premium,vip',
-        ]);
+        ];
+
+        // Add trainer-specific validation
+        if ($request->role === 'trainer') {
+            $rules['valid_id'] = 'required|file|mimes:pdf,jpg,jpeg,png|max:5120'; // 5MB
+            $rules['certification_files.*'] = 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120';
+        }
+
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -87,18 +98,115 @@ class AuthController extends Controller
 
         // Add role-specific fields
         if ($request->role === 'member') {
-            $userData['membership_type'] = $request->membership_type ?? 'basic';
+            // Membership type will be selected in the next step
+            $userData['membership_type'] = 'basic'; // Default, will be updated
             $userData['membership_expiry'] = now()->addMonth();
         } elseif ($request->role === 'trainer') {
             $userData['specialization'] = $request->specialization;
-            $userData['certifications'] = $request->certifications;
             $userData['experience_years'] = $request->experience_years;
             $userData['hourly_rate'] = $request->hourly_rate ?? 50.00;
         }
 
         $user = User::create($userData);
 
-        // Don't auto-login, redirect to pending approval page
+        // Handle trainer document uploads
+        if ($request->role === 'trainer') {
+            $documentPath = 'trainer_documents/' . $user->id;
+
+            // Store Valid ID
+            if ($request->hasFile('valid_id')) {
+                $validIdPath = $request->file('valid_id')->store($documentPath, 'public');
+                $user->update(['valid_id_path' => $validIdPath]);
+            }
+
+            // Store Certifications
+            if ($request->hasFile('certification_files')) {
+                $certPaths = [];
+                foreach ($request->file('certification_files') as $certFile) {
+                    $certPath = $certFile->store($documentPath, 'public');
+                    $certPaths[] = $certPath;
+                }
+                $user->update(['certifications' => json_encode($certPaths)]);
+            }
+        }
+
+        // For members, redirect to plan selection page
+        if ($request->role === 'member') {
+            // Store user info in session for plan selection
+            session(['pending_plan_user_id' => $user->id]);
+            session(['user_name' => $user->name]);
+            return redirect()->route('select-plan');
+        }
+
+        // For trainers, create notifications and redirect to pending approval
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            \App\Models\Notification::create([
+                'user_id' => $admin->id,
+                'type' => 'user_registration',
+                'title' => 'New Trainer Registration',
+                'message' => $user->name . ' has registered as a trainer with verification documents and is pending approval.',
+                'icon' => 'fas fa-user-plus',
+                'color' => 'info',
+                'link' => '/admin/user-approvals',
+                'is_read' => false,
+            ]);
+        }
+
+        return redirect()->route('pending-approval')->with('email', $user->email);
+    }
+
+    public function showPlanSelection()
+    {
+        // Check if user has a pending plan selection
+        if (!session('pending_plan_user_id')) {
+            return redirect()->route('register')->withErrors(['error' => 'Please complete registration first.']);
+        }
+
+        return view('auth.select-plan');
+    }
+
+    public function savePlanSelection(Request $request)
+    {
+        // Validate plan selection
+        $request->validate([
+            'membership_type' => 'required|in:basic,premium,vip',
+            'payment_method' => 'required|in:visa,mastercard,amex,jcb,gcash,paymaya,alipay,wechat,bdo,bancnet,tendopay,paypal,cash',
+        ]);
+
+        $userId = session('pending_plan_user_id');
+        if (!$userId) {
+            return redirect()->route('register')->withErrors(['error' => 'Session expired. Please register again.']);
+        }
+
+        $user = User::find($userId);
+        if (!$user) {
+            return redirect()->route('register')->withErrors(['error' => 'User not found. Please register again.']);
+        }
+
+        // Update user's membership type
+        $user->update([
+            'membership_type' => $request->membership_type,
+        ]);
+
+        // Clear session data
+        session()->forget(['pending_plan_user_id', 'user_name']);
+
+        // Create notifications for all admins about the new registration
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            \App\Models\Notification::create([
+                'user_id' => $admin->id,
+                'type' => 'user_registration',
+                'title' => 'New Member Registration',
+                'message' => $user->name . ' has registered as a member (' . ucfirst($request->membership_type) . ' plan) and is pending approval.',
+                'icon' => 'fas fa-user-plus',
+                'color' => 'info',
+                'link' => '/admin/user-approvals',
+                'is_read' => false,
+            ]);
+        }
+
         return redirect()->route('pending-approval')->with('email', $user->email);
     }
 

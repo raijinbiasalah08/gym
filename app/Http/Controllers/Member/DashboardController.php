@@ -19,6 +19,16 @@ class DashboardController extends Controller
     {
         $member = Auth::user();
 
+        // Calculate pending payments from both systems
+        $oldPending = Payment::where('member_id', $member->id)->pending()->count();
+        $newPending = \App\Models\PaymentTransaction::where('user_id', $member->id)
+            ->where('status', 'pending')->count();
+        
+        // Calculate total spent from both systems
+        $oldSpent = Payment::where('member_id', $member->id)->paid()->sum('amount');
+        $newSpent = \App\Models\PaymentTransaction::where('user_id', $member->id)
+            ->where('status', 'completed')->sum('amount');
+
         $stats = [
             'upcoming_sessions' => Booking::where('member_id', $member->id)
                 ->upcoming()
@@ -27,11 +37,9 @@ class DashboardController extends Controller
                 ->completed()
                 ->count(),
             'total_workouts' => Attendance::where('member_id', $member->id)->count(),
-            'pending_payments' => Payment::where('member_id', $member->id)
-                ->pending()
-                ->count(),
+            'pending_payments' => $oldPending + $newPending,
             'membership_days_remaining' => $member->membership_days_remaining,
-            'total_spent' => $member->total_spent,
+            'total_spent' => $oldSpent + $newSpent,
         ];
 
         $todaySession = Booking::with('trainer')
@@ -58,11 +66,43 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        // Recent payments
-        $recentPayments = Payment::where('member_id', $member->id)
+        // Recent payments - merge both old and new systems
+        $oldPayments = Payment::where('member_id', $member->id)
             ->latest()
+            ->get()
+            ->map(function($payment) {
+                return [
+                    'id' => $payment->id,
+                    'transaction_id' => $payment->transaction_id,
+                    'amount' => $payment->amount,
+                    'payment_method' => $payment->payment_method,
+                    'status' => $payment->status,
+                    'payment_date' => $payment->payment_date,
+                    'created_at' => $payment->created_at,
+                    'type' => 'old',
+                ];
+            });
+
+        $newPayments = \App\Models\PaymentTransaction::where('user_id', $member->id)
+            ->latest()
+            ->get()
+            ->map(function($transaction) {
+                return [
+                    'id' => $transaction->id,
+                    'transaction_id' => $transaction->transaction_reference,
+                    'amount' => $transaction->amount,
+                    'payment_method' => $transaction->payment_method,
+                    'status' => $transaction->status === 'completed' ? 'paid' : $transaction->status,
+                    'payment_date' => $transaction->created_at,
+                    'created_at' => $transaction->created_at,
+                    'type' => 'new',
+                ];
+            });
+
+        $recentPayments = $oldPayments->concat($newPayments)
+            ->sortByDesc('created_at')
             ->take(5)
-            ->get();
+            ->values();
 
         // Fetch all members and trainers for directory cards
         $allMembers = User::members()->orderBy('name')->get();
@@ -171,10 +211,47 @@ class DashboardController extends Controller
         // Fetch fresh data from database to avoid cached values
         $member = Auth::user()->fresh();
 
-        $payments = Payment::where('member_id', $member->id)
+        // Merge old and new payment systems
+        $oldPayments = Payment::where('member_id', $member->id)
             ->latest()
+            ->get()
+            ->map(function($payment) {
+                return [
+                    'id' => $payment->id,
+                    'transaction_id' => $payment->transaction_id,
+                    'amount' => $payment->amount,
+                    'payment_method' => $payment->payment_method,
+                    'membership_type' => $payment->membership_type,
+                    'status' => $payment->status,
+                    'payment_date' => $payment->payment_date,
+                    'due_date' => $payment->due_date,
+                    'created_at' => $payment->created_at,
+                    'type' => 'old',
+                ];
+            });
+
+        $newPayments = \App\Models\PaymentTransaction::where('user_id', $member->id)
+            ->latest()
+            ->get()
+            ->map(function($transaction) {
+                return [
+                    'id' => $transaction->id,
+                    'transaction_id' => $transaction->transaction_reference,
+                    'amount' => $transaction->amount,
+                    'payment_method' => $transaction->payment_method,
+                    'membership_type' => $transaction->membership_type,
+                    'status' => $transaction->status === 'completed' ? 'paid' : $transaction->status,
+                    'payment_date' => $transaction->created_at,
+                    'due_date' => null,
+                    'created_at' => $transaction->created_at,
+                    'type' => 'new',
+                ];
+            });
+
+        $payments = $oldPayments->concat($newPayments)
+            ->sortByDesc('created_at')
             ->take(12)
-            ->get();
+            ->values();
 
         return view('member.membership', compact('member', 'payments'));
     }
@@ -183,6 +260,7 @@ class DashboardController extends Controller
     {
         $request->validate([
             'membership_type' => 'required|in:basic,premium,vip',
+            'payment_method' => 'required|in:visa,mastercard,amex,jcb,gcash,paymaya,alipay,wechat,bdo,bancnet,tendopay,paypal,cash',
         ]);
 
         $member = Auth::user();

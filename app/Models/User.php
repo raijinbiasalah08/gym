@@ -34,6 +34,7 @@ class User extends Authenticatable
         'approved_by',
         'approved_at',
         'rejection_reason',
+        'valid_id_path',
     ];
 
     protected $hidden = [
@@ -115,6 +116,11 @@ class User extends Authenticatable
     public function notifications()
     {
         return $this->hasMany(Notification::class);
+    }
+
+    public function paymentTransactions()
+    {
+        return $this->hasMany(PaymentTransaction::class);
     }
 
 

@@ -209,19 +209,43 @@ function markAsRead(id) {
 }
 
 function markAllAsRead() {
+    console.log('Marking all notifications as read...');
+    
+    const csrfToken = document.querySelector('meta[name="csrf-token"]');
+    if (!csrfToken) {
+        console.error('CSRF token not found in page');
+        alert('Error: Security token not found. Please refresh the page.');
+        return;
+    }
+    
     fetch('{{ route("notifications.mark-all-read") }}', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            'X-CSRF-TOKEN': csrfToken.content
         }
     })
-    .then(response => response.json())
-    .then(() => {
-        updateNotificationBadge();
-        loadNotifications();
+    .then(response => {
+        console.log('Mark all as read response status:', response.status);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
     })
-    .catch(error => console.error('Error marking all as read:', error));
+    .then(data => {
+        console.log('Mark all as read response:', data);
+        if (data.success) {
+            console.log('All notifications marked as read successfully');
+            updateNotificationBadge();
+            loadNotifications();
+        } else {
+            throw new Error('Server returned success: false');
+        }
+    })
+    .catch(error => {
+        console.error('Error marking all as read:', error);
+        alert('Failed to mark all notifications as read. Please try again.');
+    });
 }
 
 function formatTime(timestamp) {

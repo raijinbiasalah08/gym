@@ -363,13 +363,13 @@
                             <tbody class="divide-y divide-gray-200 divide-opacity-30">
                                 @foreach($recentPayments as $p)
                                 <tr class="hover:bg-white hover:bg-opacity-30 transition">
-                                    <td class="px-4 py-3 text-sm text-gray-900">{{ \Carbon\Carbon::parse($p->created_at)->format('M d, Y') }}</td>
-                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">₱{{ number_format($p->amount, 2) }}</td>
+                                    <td class="px-4 py-3 text-sm text-gray-900">{{ \Carbon\Carbon::parse($p['created_at'])->format('M d, Y') }}</td>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">₱{{ number_format($p['amount'], 2) }}</td>
                                     <td class="px-4 py-3 text-sm">
-                                        @if($p->status == 'paid')
+                                        @if($p['status'] == 'paid')
                                             <span class="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-2 py-1 rounded-full font-medium">Paid</span>
                                         @else
-                                            <span class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white text-xs px-2 py-1 rounded-full font-medium">{{ ucfirst($p->status) }}</span>
+                                            <span class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white text-xs px-2 py-1 rounded-full font-medium">{{ ucfirst($p['status']) }}</span>
                                         @endif
                                     </td>
                                     <td class="px-4 py-3 text-right text-sm">

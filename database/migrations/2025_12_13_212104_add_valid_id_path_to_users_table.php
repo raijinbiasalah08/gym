@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trainer_reviews', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('valid_id_path')->nullable()->after('certifications');
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trainer_reviews');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('valid_id_path');
+        });
     }
 };

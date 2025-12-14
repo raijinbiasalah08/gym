@@ -55,7 +55,7 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="amount" class="block text-sm font-semibold text-gray-700 mb-2">Amount ($) <span class="text-red-500">*</span></label>
+                            <label for="amount" class="block text-sm font-semibold text-gray-700 mb-2">Amount (₱) <span class="text-red-500">*</span></label>
                             <input type="number" name="amount" id="amount" required min="0" step="0.01"
                                    value="{{ old('amount') }}"
                                    class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all @error('amount') ring-2 ring-red-500 @enderror">
@@ -70,17 +70,12 @@
                             <label for="payment_method" class="block text-sm font-semibold text-gray-700 mb-2">Payment Method <span class="text-red-500">*</span></label>
                             <select name="payment_method" id="payment_method" required
                                     class="w-full px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all @error('payment_method') ring-2 ring-red-500 @enderror">
-                                <option value="">Select method</option>
-                                <option value="cash" {{ old('payment_method') == 'cash' ? 'selected' : '' }}>💵 Cash</option>
-                                <option value="credit_card" {{ old('payment_method') == 'credit_card' ? 'selected' : '' }}>💳 Credit Card</option>
-                                <option value="debit_card" {{ old('payment_method') == 'debit_card' ? 'selected' : '' }}>💳 Debit Card</option>
-                                <option value="bank_transfer" {{ old('payment_method') == 'bank_transfer' ? 'selected' : '' }}>🏦 Bank Transfer</option>
-                                <option value="online" {{ old('payment_method') == 'online' ? 'selected' : '' }}>🌐 Online Payment</option>
-                                <option value="face_to_face" {{ old('payment_method') == 'face_to_face' ? 'selected' : '' }}>🤝 Face to Face</option>
-                                <option value="mobile_money" {{ old('payment_method') == 'mobile_money' ? 'selected' : '' }}>📱 Mobile Money (GCash/PayMaya)</option>
-                                <option value="check" {{ old('payment_method') == 'check' ? 'selected' : '' }}>📝 Check</option>
-                                <option value="e_wallet" {{ old('payment_method') == 'e_wallet' ? 'selected' : '' }}>👛 E-Wallet (PayPal/Stripe)</option>
+                                <option value="cash" selected>💵 Cash (In-Person Payment)</option>
                             </select>
+                            <p class="mt-2 text-xs text-gray-500">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Online payments are automatically recorded. Use this form only for cash payments received at the gym.
+                            </p>
                             @error('payment_method')
                                 <p class="mt-2 text-sm text-red-600 flex items-center">
                                     <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}

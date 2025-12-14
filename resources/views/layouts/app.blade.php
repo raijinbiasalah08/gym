@@ -968,7 +968,98 @@
         @if(session('info'))
             showToast('{{ session('info') }}', 'info');
         @endif
+        
+        // Prevent back button navigation after logout for authenticated pages
+        @auth
+        (function() {
+            // Add entry to history to prevent back button
+            window.history.pushState(null, '', window.location.href);
+            
+            // Listen for popstate event (back/forward button)
+            window.addEventListener('popstate', function(event) {
+                // Push state again to prevent navigation
+                window.history.pushState(null, '', window.location.href);
+                
+                // Optional: Show a message
+                showToast('Please use the logout button to exit', 'info');
+            });
+            
+            // Prevent page caching
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) {
+                    // Page was loaded from cache, reload it
+                    window.location.reload();
+                }
+            });
+        })();
+        @endauth
     </script>
+    
+    {{-- Session Timeout - Auto logout after inactivity --}}
+    @auth
+    <script>
+        (function() {
+            const TIMEOUT_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
+            const WARNING_BEFORE = 2 * 60 * 1000; // Show warning 2 minutes before timeout
+            let timeoutTimer;
+            let warningTimer;
+            let lastActivity = Date.now();
+            
+            // Reset timers on user activity
+            function resetTimers() {
+                lastActivity = Date.now();
+                
+                // Clear existing timers
+                clearTimeout(timeoutTimer);
+                clearTimeout(warningTimer);
+                
+                // Set warning timer (28 minutes)
+                warningTimer = setTimeout(showWarning, TIMEOUT_DURATION - WARNING_BEFORE);
+                
+                // Set logout timer (30 minutes)
+                timeoutTimer = setTimeout(autoLogout, TIMEOUT_DURATION);
+            }
+            
+            // Show warning modal
+            function showWarning() {
+                const timeLeft = Math.ceil((TIMEOUT_DURATION - (Date.now() - lastActivity)) / 1000 / 60);
+                
+                if (confirm(`Your session will expire in ${timeLeft} minute(s) due to inactivity.\n\nClick OK to stay logged in, or Cancel to logout now.`)) {
+                    resetTimers(); // User wants to stay logged in
+                } else {
+                    autoLogout(); // User chose to logout
+                }
+            }
+            
+            // Auto logout function
+            function autoLogout() {
+                // Create a form and submit it
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '{{ route("logout") }}';
+                
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_token';
+                csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                
+                form.appendChild(csrfInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+            
+            // Track user activity
+            const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+            
+            activityEvents.forEach(event => {
+                document.addEventListener(event, resetTimers, true);
+            });
+            
+            // Initialize timers
+            resetTimers();
+        })();
+    </script>
+    @endauth
     
     {{-- Page-specific scripts --}}
     @yield('scripts')

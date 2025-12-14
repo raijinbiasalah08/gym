@@ -41,28 +41,28 @@
                 <tbody class="bg-white bg-opacity-40 divide-y divide-gray-200">
                     @forelse($payments as $payment)
                         <tr class="hover:bg-white hover:bg-opacity-60 transition-colors duration-200 payment-row"
-                            data-date="{{ $payment->created_at->format('Y-m-d') }}"
-                            data-amount="{{ $payment->amount }}"
-                            data-method="{{ $payment->payment_method }}"
-                            data-status="{{ $payment->status }}">
+                            data-date="{{ \Carbon\Carbon::parse($payment['created_at'])->format('Y-m-d') }}"
+                            data-amount="{{ $payment['amount'] }}"
+                            data-method="{{ $payment['payment_method'] }}"
+                            data-status="{{ $payment['status'] }}">
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {{ $payment->created_at->format('M d, Y') }}
+                                {{ \Carbon\Carbon::parse($payment['created_at'])->format('M d, Y') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                ₱{{ number_format($payment->amount, 2) }}
+                                ₱{{ number_format($payment['amount'], 2) }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">
-                                {{ str_replace('_', ' ', $payment->payment_method) }}
+                                {{ str_replace('_', ' ', $payment['payment_method']) }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                    {{ $payment->status === 'paid' ? 'bg-green-100 text-green-800' : 
-                                       ($payment->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
-                                    {{ ucfirst($payment->status) }}
+                                    {{ $payment['status'] === 'paid' ? 'bg-green-100 text-green-800' : 
+                                       ($payment['status'] === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
+                                    {{ ucfirst($payment['status']) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $payment->description ?? 'N/A' }}
+                                {{ $payment['description'] ?? 'N/A' }}
                             </td>
                         </tr>
                     @empty

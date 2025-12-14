@@ -6,15 +6,9 @@
 <div class="py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900">Manage Members</h1>
-                <p class="text-sm text-gray-600 mt-1">View and manage all gym members</p>
-            </div>
-            <a href="{{ route('admin.members.create') }}" 
-                class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-                <i class="fas fa-user-plus mr-2"></i>Add New Member
-            </a>
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-900">Manage Members</h1>
+            <p class="text-sm text-gray-600 mt-1">View and manage all gym members</p>
         </div>
 
         <!-- Stats Cards -->
@@ -111,6 +105,14 @@
                             <option value="basic" {{ request('membership') == 'basic' ? 'selected' : '' }}>Basic</option>
                             <option value="premium" {{ request('membership') == 'premium' ? 'selected' : '' }}>Premium</option>
                             <option value="vip" {{ request('membership') == 'vip' ? 'selected' : '' }}>VIP</option>
+                        </select>
+                        <select name="sort_by" 
+                                onchange="this.form.submit()"
+                                class="px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">
+                            <option value="created_at" {{ request('sort_by') == 'created_at' || !request('sort_by') ? 'selected' : '' }}>Sort: Newest First</option>
+                            <option value="name" {{ request('sort_by') == 'name' ? 'selected' : '' }}>Sort: Name (A-Z)</option>
+                            <option value="membership_type" {{ request('sort_by') == 'membership_type' ? 'selected' : '' }}>Sort: Membership Type</option>
+                            <option value="membership_expiry" {{ request('sort_by') == 'membership_expiry' ? 'selected' : '' }}>Sort: Expiry Date</option>
                         </select>
                     </div>
                 </div>

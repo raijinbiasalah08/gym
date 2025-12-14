@@ -147,105 +147,111 @@
                             <tr class="hover:bg-white hover:bg-opacity-30 transition">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-semibold text-gray-900">
-                                        {{ $payment->transaction_id ?? 'N/A' }}
+                                        {{ $payment['transaction_id'] ?? 'N/A' }}
                                     </div>
-                                    <div class="text-xs text-gray-600">
-                                        {{ $payment->description }}
-                                    </div>
+                                    @if($payment['type'] === 'new')
+                                        <div class="text-xs text-gray-600">
+                                            Online Payment
+                                        </div>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0">
-                                            @if($payment->member->avatar)
-                                                <img src="{{ asset('storage/' . $payment->member->avatar) }}" alt="{{ $payment->member->name }}" class="h-8 w-8 rounded-full object-cover shadow-sm">
-                                            @else
-                                                <div class="h-8 w-8 rounded-full bg-gradient-to-br from-orange-400 to-red-600 flex items-center justify-center shadow-sm">
-                                                    <span class="text-white font-bold text-xs">{{ substr($payment->member->name, 0, 1) }}</span>
-                                                </div>
-                                            @endif
+                                            <div class="h-8 w-8 rounded-full bg-gradient-to-br from-orange-400 to-red-600 flex items-center justify-center shadow-sm">
+                                                <span class="text-white font-bold text-xs">{{ substr($payment['member_name'], 0, 1) }}</span>
+                                            </div>
                                         </div>
                                         <div class="ml-3">
                                             <div class="text-sm font-semibold text-gray-900">
-                                                {{ $payment->member->name }}
+                                                {{ $payment['member_name'] }}
                                             </div>
                                             <div class="text-xs text-gray-600">
-                                                {{ $payment->member->email }}
+                                                {{ $payment['member_email'] }}
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-bold text-gray-900">
-                                        ₱{{ number_format($payment->amount, 2) }}
+                                        ₱{{ number_format($payment['amount'], 2) }}
                                     </div>
                                     <div class="text-xs text-gray-600 capitalize">
-                                        {{ $payment->membership_type }}
+                                        {{ $payment['membership_type'] }}
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">
-                                        Paid: {{ $payment->payment_date->format('M d, Y') }}
+                                        Paid: {{ \Carbon\Carbon::parse($payment['payment_date'])->format('M d, Y') }}
                                     </div>
-                                    <div class="text-xs text-gray-600">
-                                        Due: {{ $payment->due_date->format('M d, Y') }}
-                                    </div>
+                                    @if($payment['due_date'])
+                                        <div class="text-xs text-gray-600">
+                                            Due: {{ \Carbon\Carbon::parse($payment['due_date'])->format('M d, Y') }}
+                                        </div>
+                                    @else
+                                        <div class="text-xs text-gray-600">
+                                            Due: {{ \Carbon\Carbon::parse($payment['payment_date'])->addMonth()->format('M d, Y') }}
+                                        </div>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900 capitalize">
-                                        {{ str_replace('_', ' ', $payment->payment_method) }}
+                                        {{ str_replace('_', ' ', $payment['payment_method']) }}
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    @if($payment->status == 'paid')
+                                    @if($payment['status'] == 'paid')
                                         <span class="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
                                             Paid
                                         </span>
-                                    @elseif($payment->status == 'pending')
-                                        @if($payment->due_date->isPast())
-                                            <span class="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
-                                                Overdue
-                                            </span>
-                                        @else
-                                            <span class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
-                                                Pending
-                                            </span>
-                                        @endif
-                                    @elseif($payment->status == 'failed')
+                                    @elseif($payment['status'] == 'pending')
+                                        <span class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
+                                            Pending
+                                        </span>
+                                    @elseif($payment['status'] == 'failed')
                                         <span class="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs px-3 py-1 rounded-full font-medium shadow-sm">
                                             Failed
                                         </span>
                                     @else
                                         <span class="bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-full font-medium">
-                                            {{ ucfirst($payment->status) }}
+                                            {{ ucfirst($payment['status']) }}
                                         </span>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
-                                        @if($payment->status == 'pending')
-                                        <form action="{{ route('admin.payments.updateStatus', $payment) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('PATCH')
-                                            <input type="hidden" name="status" value="paid">
-                                            <button type="submit" 
-                                                    class="p-2 rounded-lg bg-gradient-to-br from-green-500 to-green-600 text-white hover:scale-110 transition-transform shadow-sm"
-                                                    title="Mark as Paid"
-                                                    onclick="return confirm('Mark this payment as paid?')">
-                                                <i class="fas fa-check"></i>
-                                            </button>
-                                        </form>
+                                        @if($payment['type'] === 'old')
+                                            @if($payment['status'] == 'pending')
+                                            <form action="{{ route('admin.payments.updateStatus', $payment['id']) }}" method="POST" class="inline">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="status" value="paid">
+                                                <button type="submit" 
+                                                        class="p-2 rounded-lg bg-gradient-to-br from-green-500 to-green-600 text-white hover:scale-110 transition-transform shadow-sm"
+                                                        title="Mark as Paid"
+                                                        onclick="return confirm('Mark this payment as paid?')">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                            </form>
+                                            @endif
+                                            <form action="{{ route('admin.payments.destroy', $payment['id']) }}" method="POST" 
+                                                  onsubmit="return confirm('Are you sure you want to delete this payment record?')"
+                                                  class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" 
+                                                        class="p-2 rounded-lg bg-gradient-to-br from-red-500 to-red-600 text-white hover:scale-110 transition-transform shadow-sm"
+                                                        title="Delete Record">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        @else
+                                            @if($payment['payment_method'] === 'cash')
+                                                <span class="text-xs text-gray-500 italic">Walk in</span>
+                                            @else
+                                                <span class="text-xs text-gray-500 italic">Online Payment</span>
+                                            @endif
                                         @endif
-                                        <form action="{{ route('admin.payments.destroy', $payment) }}" method="POST" 
-                                              onsubmit="return confirm('Are you sure you want to delete this payment record?')"
-                                              class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" 
-                                                    class="p-2 rounded-lg bg-gradient-to-br from-red-500 to-red-600 text-white hover:scale-110 transition-transform shadow-sm"
-                                                    title="Delete Record">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
                                     </div>
                                 </td>
                             </tr>

@@ -66,7 +66,67 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="flex space-x-2">
+                            </div>
+                            
+                            @if($user->role === 'trainer')
+                                <div class="mt-4 pt-4 border-t border-gray-200">
+                                    <h4 class="text-sm font-semibold text-gray-700 mb-3">
+                                        <i class="fas fa-file-alt mr-2 text-orange-500"></i>Verification Documents
+                                    </h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <!-- Valid ID -->
+                                        @if($user->valid_id_path)
+                                            <div class="bg-gray-50 rounded-lg p-3">
+                                                <p class="text-xs font-medium text-gray-600 mb-2">Valid ID</p>
+                                                @if(str_ends_with($user->valid_id_path, '.pdf'))
+                                                    <a href="{{ asset('storage/' . $user->valid_id_path) }}" target="_blank" 
+                                                       class="flex items-center text-sm text-orange-600 hover:text-orange-700">
+                                                        <i class="fas fa-file-pdf text-2xl mr-2"></i>
+                                                        <span>View PDF</span>
+                                                    </a>
+                                                @else
+                                                    <a href="{{ asset('storage/' . $user->valid_id_path) }}" target="_blank">
+                                                        <img src="{{ asset('storage/' . $user->valid_id_path) }}" 
+                                                             alt="Valid ID" 
+                                                             class="w-full h-32 object-cover rounded border border-gray-300 hover:opacity-75 transition">
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        @endif
+                                        
+                                        <!-- Certifications -->
+                                        @if($user->certifications)
+                                            @php
+                                                $certs = json_decode($user->certifications, true) ?? [];
+                                            @endphp
+                                            @if(count($certs) > 0)
+                                                <div class="bg-gray-50 rounded-lg p-3">
+                                                    <p class="text-xs font-medium text-gray-600 mb-2">Certifications ({{ count($certs) }})</p>
+                                                    <div class="space-y-2">
+                                                        @foreach($certs as $index => $cert)
+                                                            @if(str_ends_with($cert, '.pdf'))
+                                                                <a href="{{ asset('storage/' . $cert) }}" target="_blank" 
+                                                                   class="flex items-center text-sm text-orange-600 hover:text-orange-700">
+                                                                    <i class="fas fa-file-pdf mr-2"></i>
+                                                                    <span>Certificate {{ $index + 1 }}</span>
+                                                                </a>
+                                                            @else
+                                                                <a href="{{ asset('storage/' . $cert) }}" target="_blank">
+                                                                    <img src="{{ asset('storage/' . $cert) }}" 
+                                                                         alt="Certificate {{ $index + 1 }}" 
+                                                                         class="w-full h-24 object-cover rounded border border-gray-300 hover:opacity-75 transition">
+                                                                </a>
+                                                            @endif
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="mt-4 flex justify-end space-x-2">
                                     <form action="{{ route('admin.approvals.approve', $user) }}" method="POST" class="inline">
                                         @csrf
                                         <button type="submit" class="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">

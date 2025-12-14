@@ -46,6 +46,8 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::get('/pending-approval', function () {
     return view('auth.pending-approval');
 })->name('pending-approval');
+Route::get('/select-plan', [AuthController::class, 'showPlanSelection'])->name('select-plan');
+Route::post('/select-plan', [AuthController::class, 'savePlanSelection']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Password Reset routes
@@ -54,8 +56,12 @@ Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->
 Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
+// Payment Processing (accessible during registration)
+Route::post('/payment/process', [App\Http\Controllers\PaymentController::class, 'process'])->name('payment.process');
+
 // Protected routes
 Route::middleware('auth')->group(function () {
+
     // Dashboard redirect based on role
     Route::get('/dashboard', function () {
         $user = auth()->user();
@@ -84,6 +90,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/dashboard/revenue', [AdminDashboardController::class, 'monthlyRevenue'])->name('admin.dashboard.revenue');
+        
         
         // Members management
         Route::get('/members', [AdminMemberController::class, 'index'])->name('admin.members.index');

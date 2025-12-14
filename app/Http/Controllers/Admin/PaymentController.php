@@ -22,9 +22,65 @@ class PaymentController extends Controller
             abort(403, 'Unauthorized access.');
         }
 
-        $payments = Payment::with('member')
+        // Get old Payment records
+        $oldPayments = Payment::with('member')
             ->latest()
-            ->paginate(15);
+            ->get()
+            ->map(function($payment) {
+                return [
+                    'id' => $payment->id,
+                    'transaction_id' => $payment->transaction_id,
+                    'member_name' => $payment->member->name,
+                    'member_email' => $payment->member->email,
+                    'amount' => $payment->amount,
+                    'payment_method' => $payment->payment_method,
+                    'membership_type' => $payment->membership_type,
+                    'status' => $payment->status,
+                    'payment_date' => $payment->payment_date,
+                    'due_date' => $payment->due_date,
+                    'created_at' => $payment->created_at,
+                    'type' => 'old', // Mark as old payment system
+                ];
+            });
+
+        // Get new PaymentTransaction records
+        $newPayments = \App\Models\PaymentTransaction::with('user')
+            ->latest()
+            ->get()
+            ->map(function($transaction) {
+                return [
+                    'id' => $transaction->id,
+                    'transaction_id' => $transaction->transaction_reference,
+                    'member_name' => $transaction->user->name,
+                    'member_email' => $transaction->user->email,
+                    'amount' => $transaction->amount,
+                    'payment_method' => $transaction->payment_method,
+                    'membership_type' => $transaction->membership_type,
+                    'status' => $transaction->status === 'completed' ? 'paid' : $transaction->status,
+                    'payment_date' => $transaction->created_at,
+                    'due_date' => null,
+                    'created_at' => $transaction->created_at,
+                    'type' => 'new', // Mark as new payment system
+                ];
+            });
+
+        // Merge and sort by created_at
+        $allPayments = $oldPayments->concat($newPayments)
+            ->sortByDesc('created_at')
+            ->values();
+
+        // Paginate manually
+        $perPage = 15;
+        $currentPage = request()->get('page', 1);
+        $pagedData = $allPayments->slice(($currentPage - 1) * $perPage, $perPage)->values();
+        
+        $payments = new \Illuminate\Pagination\LengthAwarePaginator(
+            $pagedData,
+            $allPayments->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
 
         return view('admin.payments.index', compact('payments'));
     }
@@ -35,7 +91,7 @@ class PaymentController extends Controller
             abort(403, 'Unauthorized access.');
         }
 
-        $members = User::members()->active()->get();
+        $members = User::where('role', 'member')->get();
         return view('admin.payments.create', compact('members'));
     }
 

@@ -21,6 +21,7 @@ class AdminSeeder extends Seeder
                 'role' => 'admin',
                 'phone' => '+1234567890',
                 'is_active' => true,
+                'approval_status' => 'approved',
             ]
         );
 

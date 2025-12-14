@@ -35,7 +35,18 @@ class TrainerController extends Controller
             $query->where('is_active', $isActive);
         }
 
-        $trainers = $query->latest()->paginate(10)->appends($request->query());
+        // Sort functionality
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortOrder = $request->get('sort_order', 'desc');
+
+        $allowedSorts = ['name', 'email', 'specialization', 'experience_years', 'hourly_rate', 'created_at'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'created_at';
+        }
+
+        $query->orderBy($sortBy, $sortOrder);
+
+        $trainers = $query->paginate(10)->appends($request->query());
 
         return view('admin.trainers.index', compact('trainers'));
     }
