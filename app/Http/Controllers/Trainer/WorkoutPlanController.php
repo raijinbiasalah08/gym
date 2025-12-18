@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Trainer;
 use App\Http\Controllers\Controller;
 use App\Models\WorkoutPlan;
 use App\Models\User;
+use App\Models\Exercise;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,8 +34,10 @@ class WorkoutPlanController extends Controller
 
         $trainer = Auth::user();
         $members = User::members()->active()->get();
+        // Fetch exercises grouped by category for the drag-and-drop interface
+        $exercises = Exercise::all()->groupBy('category');
 
-        return view('trainer.workout-plans.create', compact('members'));
+        return view('trainer.workout-plans.create', compact('members', 'exercises'));
     }
 
     public function store(Request $request)
@@ -49,25 +52,26 @@ class WorkoutPlanController extends Controller
             'member_id' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'exercise_recommendations' => 'nullable|string',
             'goal' => 'required|string|max:255',
             'duration_weeks' => 'required|integer|min:1',
             'difficulty_level' => 'required|in:beginner,intermediate,advanced',
             'status' => 'required|in:active,inactive,completed',
-            // REMOVED exercises and schedule from validation
+            'schedule_data' => 'nullable|json', // New field for the drag-and-drop data
         ]);
+
+        $scheduleData = $request->input('schedule_data') ? json_decode($request->input('schedule_data'), true) : [];
 
         $workoutPlan = WorkoutPlan::create([
             'trainer_id' => $trainer->id,
             'member_id' => $validated['member_id'],
             'title' => $validated['title'],
             'description' => $validated['description'],
-            'exercise_recommendations' => $validated['exercise_recommendations'] ?? null,
+            'exercise_recommendations' => null, // No longer used in this format
             'goal' => $validated['goal'],
             'duration_weeks' => $validated['duration_weeks'],
             'difficulty_level' => $validated['difficulty_level'],
-            'exercises' => [], // Empty array by default
-            'schedule' => [], // Empty array by default
+            'exercises' => [], // Can be populated from schedule data if needed for simple listing
+            'schedule' => $scheduleData, // Store the structured weekly schedule
             'status' => $validated['status'],
         ]);
 
@@ -160,8 +164,10 @@ class WorkoutPlanController extends Controller
 
         $members = User::members()->active()->get();
         $workoutPlan->load('member');
+        // Fetch exercises grouped by category for the drag-and-drop interface
+        $exercises = Exercise::all()->groupBy('category');
 
-        return view('trainer.workout-plans.edit', compact('workoutPlan', 'members'));
+        return view('trainer.workout-plans.edit', compact('workoutPlan', 'members', 'exercises'));
     }
 
     /**
@@ -186,7 +192,10 @@ class WorkoutPlanController extends Controller
             'duration_weeks' => 'required|integer|min:1',
             'difficulty_level' => 'required|in:beginner,intermediate,advanced',
             'status' => 'required|in:active,inactive,completed',
+            'schedule_data' => 'nullable|json',
         ]);
+
+        $scheduleData = $request->input('schedule_data') ? json_decode($request->input('schedule_data'), true) : [];
 
         $workoutPlan->update([
             'member_id' => $validated['member_id'],
@@ -196,6 +205,7 @@ class WorkoutPlanController extends Controller
             'goal' => $validated['goal'],
             'duration_weeks' => $validated['duration_weeks'],
             'difficulty_level' => $validated['difficulty_level'],
+            'schedule' => $scheduleData,
             'status' => $validated['status'],
         ]);
 

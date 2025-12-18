@@ -147,11 +147,23 @@ Route::middleware('auth')->group(function () {
         Route::get('/reports/upcoming-expirations', [AdminReportController::class, 'upcomingExpirationsReport'])->name('admin.reports.upcoming-expirations');
         Route::get('/reports/upcoming-expirations/export', [AdminReportController::class, 'upcomingExpirationsExport'])->name('admin.reports.upcoming-expirations.export');
         
+        // Announcements
+        Route::resource('announcements', \App\Http\Controllers\Admin\AnnouncementController::class)->names('admin.announcements');
+
         // Profile
         Route::get('/profile', [AdminDashboardController::class, 'profile'])->name('admin.profile');
         Route::get('/profile/edit', [AdminDashboardController::class, 'editProfile'])->name('admin.profile.edit');
         Route::put('/profile', [AdminDashboardController::class, 'updateProfile'])->name('admin.profile.update');
         Route::post('/profile/update-avatar', [AdminDashboardController::class, 'updateAvatar'])->name('admin.profile.update-avatar');
+    });
+
+    // Notification Routes
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/notifications/unread-count', [App\Http\Controllers\NotificationController::class, 'getUnreadCount'])->name('notifications.unread-count');
+        Route::get('/notifications/recent', [App\Http\Controllers\NotificationController::class, 'getRecent'])->name('notifications.recent');
+        Route::post('/notifications/mark-all-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+        Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
+        Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
     });
 
     // Trainer routes
@@ -222,6 +234,7 @@ Route::middleware('auth')->group(function () {
         // Progress
         Route::get('/progress', [MemberProgressController::class, 'index'])->name('member.progress.index');
         Route::post('/progress', [MemberProgressController::class, 'store'])->name('member.progress.store');
+        Route::delete('/progress/{progressLog}', [MemberProgressController::class, 'destroy'])->name('member.progress.destroy');
         Route::get('/progress/{progress}', [MemberProgressController::class, 'show'])->name('member.progress.show');
         
         // Workout Logs

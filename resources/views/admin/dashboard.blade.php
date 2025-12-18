@@ -4,37 +4,39 @@
 
 @section('content')
 <div class="py-6">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between mb-6">
+    <div class="mx-auto px-4 sm:px-6 lg:px-8" style="max-width: 100% !important; width: 100% !important;">
+        
+        <!-- System Announcements -->
+        <x-announcement-banner :announcements="$announcements" />
+
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
             <div>
-                <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Admin Dashboard</h1>
                 <p class="text-sm text-gray-600 mt-1">Quick overview of members, trainers, bookings and revenue.</p>
             </div>
-            <div class="flex items-center space-x-3">
-                <a href="{{ route('admin.members.create') }}" class="inline-flex items-center px-4 py-2 bg-orange-600 text-white text-sm font-medium rounded-lg hover:bg-orange-700 transition shadow-sm hover:shadow-md">
-                    <i class="fas fa-user-plus mr-2"></i>Add Member
-                </a>
-                <a href="{{ route('admin.reports.index') }}" class="inline-flex items-center px-4 py-2 glass-card text-gray-700 text-sm font-medium rounded-lg hover:bg-white hover:bg-opacity-60 transition">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+
+                <a href="{{ route('admin.reports.index') }}" class="inline-flex items-center justify-center px-4 py-3 sm:py-2 glass-card text-gray-700 text-sm font-medium rounded-lg hover:bg-white hover:bg-opacity-60 transition">
                     <i class="fas fa-chart-bar mr-2"></i>View Reports
                 </a>
             </div>
         </div>
         
         <!-- Stats Grid -->
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+        <div class="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-3 mb-8">
             <!-- Total Members -->
             <div class="neuro-stat group">
-                <div class="p-6">
+                <div class="p-5 sm:p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="neuro-icon w-14 h-14 group-hover:scale-110 transition-transform">
-                                <i class="fas fa-users text-2xl text-orange-600"></i>
+                            <div class="neuro-icon w-12 h-12 sm:w-14 sm:h-14 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-users text-xl sm:text-2xl text-orange-600"></i>
                             </div>
                         </div>
-                        <div class="ml-5 w-0 flex-1">
+                        <div class="ml-4 sm:ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-600 truncate">Total Members</dt>
-                                <dd class="text-2xl font-bold text-gray-900 mt-1">{{ $stats['total_members'] }}</dd>
+                                <dt class="text-xs sm:text-sm font-medium text-gray-600 truncate">Total Members</dt>
+                                <dd class="text-xl sm:text-2xl font-bold text-gray-900 mt-1">{{ $stats['total_members'] }}</dd>
                             </dl>
                         </div>
                     </div>
@@ -43,17 +45,17 @@
 
             <!-- Total Trainers -->
             <div class="neuro-stat group">
-                <div class="p-6">
+                <div class="p-5 sm:p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-green-500 to-green-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
-                                <i class="fas fa-dumbbell text-2xl text-white"></i>
+                            <div class="rounded-xl bg-gradient-to-br from-green-500 to-green-600 p-2.5 sm:p-3 shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fas fa-dumbbell text-xl sm:text-2xl text-white"></i>
                             </div>
                         </div>
-                        <div class="ml-5 w-0 flex-1">
+                        <div class="ml-4 sm:ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-600 truncate">Total Trainers</dt>
-                                <dd class="text-2xl font-bold text-gray-900 mt-1">{{ $stats['total_trainers'] }}</dd>
+                                <dt class="text-xs sm:text-sm font-medium text-gray-600 truncate">Total Trainers</dt>
+                                <dd class="text-xl sm:text-2xl font-bold text-gray-900 mt-1">{{ $stats['total_trainers'] }}</dd>
                             </dl>
                         </div>
                     </div>
@@ -62,17 +64,17 @@
 
             <!-- Active Bookings -->
             <div class="neuro-stat group">
-                <div class="p-6">
+                <div class="p-5 sm:p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
-                                <i class="fas fa-calendar-check text-2xl text-white"></i>
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-2.5 sm:p-3 shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fas fa-calendar-check text-xl sm:text-2xl text-white"></i>
                             </div>
                         </div>
-                        <div class="ml-5 w-0 flex-1">
+                        <div class="ml-4 sm:ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-600 truncate">Active Bookings</dt>
-                                <dd class="text-2xl font-bold text-gray-900 mt-1">{{ $stats['active_bookings'] }}</dd>
+                                <dt class="text-xs sm:text-sm font-medium text-gray-600 truncate">Active Bookings</dt>
+                                <dd class="text-xl sm:text-2xl font-bold text-gray-900 mt-1">{{ $stats['active_bookings'] }}</dd>
                             </dl>
                         </div>
                     </div>
@@ -81,17 +83,17 @@
 
             <!-- Pending Payments -->
             <div class="neuro-stat group">
-                <div class="p-6">
+                <div class="p-5 sm:p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-yellow-500 to-yellow-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
-                                <i class="fas fa-money-bill-wave text-2xl text-white"></i>
+                            <div class="rounded-xl bg-gradient-to-br from-yellow-500 to-yellow-600 p-2.5 sm:p-3 shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fas fa-money-bill-wave text-xl sm:text-2xl text-white"></i>
                             </div>
                         </div>
-                        <div class="ml-5 w-0 flex-1">
+                        <div class="ml-4 sm:ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-600 truncate">Pending Payments</dt>
-                                <dd class="text-2xl font-bold text-gray-900 mt-1">{{ $stats['pending_payments'] }}</dd>
+                                <dt class="text-xs sm:text-sm font-medium text-gray-600 truncate">Pending Payments</dt>
+                                <dd class="text-xl sm:text-2xl font-bold text-gray-900 mt-1">{{ $stats['pending_payments'] }}</dd>
                             </dl>
                         </div>
                     </div>
@@ -100,17 +102,17 @@
 
             <!-- Pending Approvals -->
             <a href="{{ route('admin.approvals.index') }}" class="neuro-stat group hover:shadow-2xl transition-all duration-300">
-                <div class="p-6">
+                <div class="p-5 sm:p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
-                                <i class="fas fa-user-clock text-2xl text-white"></i>
+                            <div class="rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 p-2.5 sm:p-3 shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fas fa-user-clock text-xl sm:text-2xl text-white"></i>
                             </div>
                         </div>
-                        <div class="ml-5 w-0 flex-1">
+                        <div class="ml-4 sm:ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-600 truncate">Pending Approvals</dt>
-                                <dd class="text-2xl font-bold text-gray-900 mt-1">
+                                <dt class="text-xs sm:text-sm font-medium text-gray-600 truncate">Pending Approvals</dt>
+                                <dd class="text-xl sm:text-2xl font-bold text-gray-900 mt-1">
                                     {{ $pendingApprovalsCount ?? 0 }}
                                     @if(($pendingApprovalsCount ?? 0) > 0)
                                         <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 animate-pulse">
@@ -183,24 +185,7 @@
                     Quick Actions
                 </h3>
                 <div class="space-y-3">
-                    <a href="{{ route('admin.members.create') }}" class="flex items-center p-3 rounded-lg hover:bg-white hover:bg-opacity-50 transition group">
-                        <div class="flex-shrink-0 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg p-2.5 group-hover:scale-110 transition-transform shadow">
-                            <i class="fas fa-user-plus text-white text-sm"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-semibold text-gray-900">Add New Member</p>
-                            <p class="text-xs text-gray-500">Register a new gym member</p>
-                        </div>
-                    </a>
-                    <a href="{{ route('admin.trainers.create') }}" class="flex items-center p-3 rounded-lg hover:bg-white hover:bg-opacity-50 transition group">
-                        <div class="flex-shrink-0 bg-gradient-to-br from-green-500 to-green-600 rounded-lg p-2.5 group-hover:scale-110 transition-transform shadow">
-                            <i class="fas fa-user-tie text-white text-sm"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-semibold text-gray-900">Add Trainer</p>
-                            <p class="text-xs text-gray-500">Onboard a new trainer</p>
-                        </div>
-                    </a>
+
                     <a href="{{ route('admin.reports.index') }}" class="flex items-center p-3 rounded-lg hover:bg-white hover:bg-opacity-50 transition group">
                         <div class="flex-shrink-0 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg p-2.5 group-hover:scale-110 transition-transform shadow">
                             <i class="fas fa-file-alt text-white text-sm"></i>

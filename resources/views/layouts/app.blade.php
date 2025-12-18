@@ -880,6 +880,35 @@
         .dark .text-red-600 {
             color: #fca5a5 !important;
         }
+        
+        /* iPad and Tablet Full-Width Fix */
+        @media only screen and (min-width: 768px) and (max-width: 1024px) {
+            body, html {
+                max-width: 100% !important;
+                width: 100% !important;
+                overflow-x: hidden !important;
+            }
+            
+            nav > div,
+            main > div > div {
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+            
+            .max-w-7xl,
+            .max-w-6xl,
+            .max-w-5xl,
+            .max-w-4xl {
+                max-width: 100% !important;
+            }
+        }
+        
+        /* Hide scrollbar for navigation links on iPad */
+        @media only screen and (min-width: 768px) and (max-width: 1024px) {
+            nav .md\:overflow-x-auto::-webkit-scrollbar {
+                display: none;
+            }
+        }
     
     </style>
     

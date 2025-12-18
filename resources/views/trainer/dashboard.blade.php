@@ -5,6 +5,10 @@
 @section('content')
 <div class="py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- System Announcements -->
+        <x-announcement-banner :announcements="$announcements" />
+
         <!-- Header -->
         <div class="flex items-center justify-between mb-6">
             <div>
@@ -112,8 +116,8 @@
                     <span class="text-sm text-gray-600" id="memberCount">{{ $allMembers->count() }} members</span>
                 </div>
 
-                <!-- Search Bar -->
-                <div class="mb-4">
+                <!-- Search and Filter -->
+                <div class="space-y-3 mb-4">
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
@@ -122,13 +126,20 @@
                                class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 sm:text-sm" 
                                placeholder="Search members...">
                     </div>
+                    <select id="memberFilter" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md bg-gray-800 text-white border-0 appearance-none">
+                        <option value="all">All Members</option>
+                        <option value="vip">VIP</option>
+                        <option value="premium">Premium</option>
+                        <option value="basic">Basic</option>
+                    </select>
                 </div>
 
                 <div class="space-y-3 max-h-96 overflow-y-auto custom-scrollbar" id="membersContainer">
-                    @forelse($allMembers->take(10) as $member)
+                    @forelse($allMembers as $member)
                         <a href="{{ route('trainer.members.show', $member) }}" class="member-item block bg-white rounded-lg p-3 hover:bg-gray-50 transition-all duration-200 group shadow-sm hover:shadow-md"
                            data-name="{{ strtolower($member->name) }}"
-                           data-email="{{ strtolower($member->email) }}">
+                           data-email="{{ strtolower($member->email) }}"
+                           data-membership="{{ strtolower($member->membership_type) }}">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-3 flex-1 min-w-0">
                                     <div class="flex-shrink-0">
@@ -185,8 +196,8 @@
                     <span class="text-sm text-gray-600" id="trainerCount">{{ $allTrainers->count() }} trainers</span>
                 </div>
 
-                <!-- Search Bar -->
-                <div class="mb-4">
+                <!-- Search and Filter -->
+                <div class="space-y-3 mb-4">
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
@@ -195,6 +206,14 @@
                                class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 sm:text-sm" 
                                placeholder="Search trainers...">
                     </div>
+                    <select id="trainerFilter" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md bg-gray-800 text-white border-0 appearance-none">
+                        <option value="all">All Trainers</option>
+                        <option value="hiit">HIIT</option>
+                        <option value="strength training">Strength Training</option>
+                        <option value="cardio">Cardio</option>
+                        <option value="yoga">Yoga</option>
+                        <option value="personal training">Personal Training</option>
+                    </select>
                 </div>
 
                 <div class="space-y-3 max-h-96 overflow-y-auto custom-scrollbar" id="trainersContainer">
@@ -1091,6 +1110,169 @@
         </div>
     </div>
 </div>
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- Members Filtering ---
+        const memberSearch = document.getElementById('memberSearch');
+        const memberFilter = document.getElementById('memberFilter');
+        const membersContainer = document.getElementById('membersContainer');
+        const memberItems = document.querySelectorAll('.member-item');
+        const memberCount = document.getElementById('memberCount');
+
+        function filterMembers() {
+            const searchTerm = memberSearch.value.toLowerCase();
+            const filterValue = memberFilter.value.toLowerCase();
+            let visibleCount = 0;
+
+            memberItems.forEach(item => {
+                const name = item.getAttribute('data-name');
+                const email = item.getAttribute('data-email');
+                const membership = item.getAttribute('data-membership');
+                
+                const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm);
+                const matchesFilter = filterValue === 'all' || membership === filterValue;
+
+                if (matchesSearch && matchesFilter) {
+                    item.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            memberCount.textContent = `${visibleCount} members`;
+            
+            // Show/hide "No members found" message if needed
+            let noResultsMsg = membersContainer.querySelector('.no-results-msg');
+            if (visibleCount === 0) {
+                if (!noResultsMsg) {
+                    noResultsMsg = document.createElement('div');
+                    noResultsMsg.className = 'text-center py-8 text-gray-500 no-results-msg';
+                    noResultsMsg.innerHTML = '<i class="fas fa-user-slash text-4xl mb-2"></i><p>No members found matching your criteria</p>';
+                    membersContainer.appendChild(noResultsMsg);
+                } else {
+                    noResultsMsg.style.display = 'block';
+                }
+            } else if (noResultsMsg) {
+                noResultsMsg.style.display = 'none';
+            }
+        }
+
+        memberSearch.addEventListener('input', filterMembers);
+        memberFilter.addEventListener('change', filterMembers);
+
+        // --- Trainers Filtering ---
+        const trainerSearch = document.getElementById('trainerSearch');
+        const trainerFilter = document.getElementById('trainerFilter');
+        const trainersContainer = document.getElementById('trainersContainer');
+        const trainerItems = document.querySelectorAll('.trainer-item');
+        const trainerCount = document.getElementById('trainerCount');
+
+        function filterTrainers() {
+            const searchTerm = trainerSearch.value.toLowerCase();
+            const filterValue = trainerFilter.value.toLowerCase();
+            let visibleCount = 0;
+
+            trainerItems.forEach(item => {
+                const name = item.getAttribute('data-name');
+                const specialization = item.getAttribute('data-specialization');
+                
+                const matchesSearch = name.includes(searchTerm);
+                const matchesFilter = filterValue === 'all' || specialization.includes(filterValue);
+
+                if (matchesSearch && matchesFilter) {
+                    item.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            trainerCount.textContent = `${visibleCount} trainers`;
+
+            // Show/hide "No trainers found" message
+            let noResultsMsg = trainersContainer.querySelector('.no-results-msg');
+            if (visibleCount === 0) {
+                if (!noResultsMsg) {
+                    noResultsMsg = document.createElement('div');
+                    noResultsMsg.className = 'text-center py-8 text-gray-500 no-results-msg';
+                    noResultsMsg.innerHTML = '<i class="fas fa-user-slash text-4xl mb-2"></i><p>No trainers found matching your criteria</p>';
+                    trainersContainer.appendChild(noResultsMsg);
+                } else {
+                    noResultsMsg.style.display = 'block';
+                }
+            } else if (noResultsMsg) {
+                noResultsMsg.style.display = 'none';
+            }
+        }
+
+        trainerSearch.addEventListener('input', filterTrainers);
+        trainerFilter.addEventListener('change', filterTrainers);
+
+        // --- Exercise Search ---
+        const exerciseSearch = document.getElementById('exerciseSearch');
+        const exerciseAccordion = document.getElementById('exerciseAccordion');
+        const exerciseItems = document.querySelectorAll('.exercise-item');
+        const accordionBtns = document.querySelectorAll('.accordion-btn');
+
+        exerciseSearch.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+
+            if (searchTerm === '') {
+                // Reset to initial state (all collapsed)
+                document.querySelectorAll('.accordion-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                document.querySelectorAll('.accordion-icon').forEach(icon => {
+                    icon.classList.remove('rotate-180');
+                });
+                exerciseItems.forEach(item => item.classList.remove('hidden'));
+                return;
+            }
+
+            // Expand all sections when searching
+            document.querySelectorAll('.accordion-content').forEach(content => {
+                content.classList.remove('hidden');
+            });
+
+            let hasMatches = false;
+
+            exerciseItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    item.classList.remove('hidden');
+                    // Ensure parent section is visible
+                    item.closest('.accordion-content').classList.remove('hidden');
+                    hasMatches = true;
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        });
+
+        // Accordion functionality
+        accordionBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const targetContent = document.getElementById(targetId);
+                const icon = this.querySelector('.accordion-icon');
+
+                // Toggle visibility
+                targetContent.classList.toggle('hidden');
+                
+                // Rotate icon
+                if (targetContent.classList.contains('hidden')) {
+                    icon.classList.remove('rotate-180');
+                } else {
+                    icon.classList.add('rotate-180');
+                }
+            });
+        });
+    });
+</script>
+@endpush
+
 @endsection
 
 @push('scripts')
@@ -1278,5 +1460,65 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+    // Exercise Modal Logic
+    window.openExerciseModal = function(url) {
+        const modal = document.getElementById('exerciseModal');
+        const content = document.getElementById('modalContent');
+        
+        // Show modal
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; 
+        
+        // Show loading
+        content.innerHTML = '<div class="flex justify-center p-12"><i class="fas fa-circle-notch fa-spin text-4xl text-orange-500"></i></div>';
+        
+        // Fetch content
+        fetch(url + '?partial=true', {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+            content.innerHTML = html;
+        })
+        .catch(error => {
+            content.innerHTML = '<div class="p-8 text-center text-red-500">Error loading content. Please try again.</div>';
+            console.error('Error:', error);
+        });
+    }
+
+    window.closeExerciseModal = function() {
+        const modal = document.getElementById('exerciseModal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    // Attach click handlers for exercises
+    document.body.addEventListener('click', function(e) {
+        const link = e.target.closest('.exercise-item');
+        if (link) {
+            e.preventDefault();
+            openExerciseModal(link.href);
+        }
+    });
+
 </script>
+
+<!-- Exercise Modal HTML -->
+<div id="exerciseModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeExerciseModal()"></div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+             <div class="absolute top-0 right-0 pt-4 pr-4 z-10">
+                <button type="button" class="bg-white dark:bg-gray-800 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onclick="closeExerciseModal()">
+                    <span class="sr-only">Close</span>
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="modalContent" class="p-1 max-h-[80vh] overflow-y-auto custom-scrollbar"></div>
+        </div>
+    </div>
+</div>
 @endpush

@@ -29,7 +29,7 @@
                 @foreach($workoutPlans as $plan)
                 <div class="glass-card rounded-xl overflow-hidden hover:shadow-xl transition duration-300 group">
                     <div class="p-6">
-                        <div class="flex justify-between items-start mb-4">
+                        <div class="flex justify-between items-start mb-4 flex-wrap gap-2">
                             <h3 class="text-lg font-bold text-gray-900 group-hover:text-orange-600 transition">{{ $plan->title }}</h3>
                             <span class="px-3 py-1 text-xs font-semibold rounded-full shadow-sm
                                 @if($plan->status === 'active') bg-gradient-to-r from-green-400 to-green-600 text-white
@@ -44,11 +44,11 @@
                         <div class="space-y-3">
                             <div class="flex justify-between text-sm p-2 rounded-lg bg-white bg-opacity-40">
                                 <span class="text-gray-500"><i class="fas fa-user mr-2 text-blue-500"></i>Member</span>
-                                <span class="font-semibold text-gray-900">{{ $plan->member->name }}</span>
+                                <span class="font-semibold text-gray-900 text-right">{{ $plan->member->name }}</span>
                             </div>
                             <div class="flex justify-between text-sm p-2 rounded-lg bg-white bg-opacity-40">
                                 <span class="text-gray-500"><i class="fas fa-bullseye mr-2 text-red-500"></i>Goal</span>
-                                <span class="font-semibold text-gray-900">{{ $plan->goal }}</span>
+                                <span class="font-semibold text-gray-900 text-right truncate max-w-[150px]">{{ $plan->goal }}</span>
                             </div>
                             <div class="flex justify-between text-sm p-2 rounded-lg bg-white bg-opacity-40">
                                 <span class="text-gray-500"><i class="fas fa-clock mr-2 text-yellow-500"></i>Duration</span>
@@ -72,7 +72,7 @@
                             </div>
                         </div>
 
-                        <div class="mt-6 pt-4 border-t border-gray-200 border-opacity-50 flex justify-between items-center">
+                        <div class="mt-6 pt-4 border-t border-gray-200 border-opacity-50 flex justify-between items-center flex-wrap gap-2">
                             <span class="text-xs text-gray-500 flex items-center">
                                 <i class="far fa-calendar-alt mr-1"></i>
                                 {{ $plan->created_at->diffForHumans() }}

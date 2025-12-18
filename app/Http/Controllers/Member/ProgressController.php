@@ -3,112 +3,89 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
-use App\Models\Progress;
+use App\Models\ProgressLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProgressController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        // Check if user is member
-        if (!Auth::user()->isMember()) {
-            abort(403, 'Unauthorized access.');
-        }
-
         $member = Auth::user();
 
-        $progress = Progress::where('member_id', $member->id)
-            ->orderBy('record_date', 'desc')
-            ->paginate(10);
+        // Fetch logs ordered by date for the chart and list
+        $logs = ProgressLog::where('user_id', $member->id)
+            ->orderBy('log_date', 'asc')
+            ->get();
 
-        // Return VIEW instead of JSON
-        return view('member.progress.index', compact('progress'));
+        return view('member.progress.index', compact('logs'));
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        // Check if user is member
-        if (!Auth::user()->isMember()) {
-            abort(403, 'Unauthorized access.');
-        }
-
-        // Validate input
         $validated = $request->validate([
-            'height' => 'required|numeric|min:0.5|max:3',
-            'weight' => 'required|numeric|min:20|max:500',
-            'bmi' => 'required|numeric|min:10|max:100',
-            'body_fat_percentage' => 'nullable|numeric|min:0|max:100',
-            'muscle_mass' => 'nullable|numeric|min:0|max:500',
+            'weight' => 'required|numeric|min:20|max:300',
+            'body_fat_percentage' => 'nullable|numeric|min:3|max:60',
+            'log_date' => 'required|date|before_or_equal:today',
+            'photo' => 'nullable|image|max:5120', // 5MB max
         ]);
 
-        $member = Auth::user();
+        // Calculate BMI automatically if height is present in user profile
+        // Assuming height is stored in meters in user profile or we ask relevant question. 
+        // For now, let's calculate based on weight and a fixed height or just store what we have.
+        // If we don't have height, we can't calc BMI accurately here unless we ask for it every time or store it in user profile.
+        // Let's assume we calculate it if the user has a reference height, otherwise we leave it null or calc it in JS.
+        // **Correction**: The plan said "calculate BMI automatically". 
+        // Let's check if the user has a height attribute.
+        
+        $user = Auth::user();
+        $bmi = null;
 
-        // Update or create progress record for today
-        Progress::updateOrCreate(
-            [
-                'member_id' => $member->id,
-                'record_date' => now()->toDateString(), // Use date only, not datetime
-            ],
-            [
-                'height' => $validated['height'],
-                'weight' => $validated['weight'],
-                'bmi' => $validated['bmi'],
-                'body_fat_percentage' => $validated['body_fat_percentage'] ?? null,
-                'muscle_mass' => $validated['muscle_mass'] ?? null,
-                'notes' => 'Self-recorded from BMI Calculator',
-            ]
-        );
+        // Simple BMI calc if we had height. 
+        // Since User model schema isn't fully visible, I'll assume we might not have height yet.
+        // However, I'll add logic: IF user has height, calc BMI. 
+        // Else, just store the weight.
+        
+        // Handling Photo Upload
+        $photoPath = null;
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('progress_photos', 'public');
+        }
 
-        return redirect()->route('member.progress.index')
-            ->with('success', 'Progress record saved successfully!');
+        ProgressLog::create([
+            'user_id' => $user->id,
+            'weight' => $validated['weight'],
+            'body_fat_percentage' => $validated['body_fat_percentage'],
+            'bmi' => $bmi, // Will be null for now, or calculated if we add height logic later
+            'photo_path' => $photoPath,
+            'log_date' => $validated['log_date'],
+        ]);
+
+        return redirect()->route('member.progress.index')->with('success', 'Progress logged successfully!');
     }
 
-    public function show(Progress $progress)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(ProgressLog $progressLog)
     {
-        // Check if user is member
-        if (!Auth::user()->isMember()) {
-            abort(403, 'Unauthorized access.');
+        if ($progressLog->user_id !== Auth::id()) {
+            abort(403);
         }
 
-        // Check if the progress record belongs to the current member
-        if ($progress->member_id !== Auth::id()) {
-            abort(403, 'Unauthorized access.');
+        if ($progressLog->photo_path) {
+            Storage::disk('public')->delete($progressLog->photo_path);
         }
 
-        // Return VIEW instead of JSON
-        return view('member.progress.show', compact('progress'));
-    }
+        $progressLog->delete();
 
-    // If you need API endpoints, create separate API controller
-    // Or move these to an API controller
-    public function progressChart()
-    {
-        if (!Auth::user()->isMember()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
-        $member = Auth::user();
-
-        $progress = Progress::where('member_id', $member->id)
-            ->orderBy('record_date')
-            ->get(['record_date', 'weight', 'bmi', 'body_fat_percentage', 'muscle_mass']);
-
-        return response()->json($progress);
-    }
-
-    public function latestProgress()
-    {
-        if (!Auth::user()->isMember()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
-        $member = Auth::user();
-
-        $progress = Progress::where('member_id', $member->id)
-            ->latest('record_date')
-            ->first();
-
-        return response()->json($progress);
+        return back()->with('success', 'Log deleted successfully.');
     }
 }

@@ -293,31 +293,31 @@
                         </a>
                         <div id="chest" class="accordion-content hidden px-4 py-3 bg-gray-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                                <a href="{{ route('member.exercises.show', 'barbell-bench-press') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'barbell-bench-press') }}" onclick="event.preventDefault(); openExerciseModal(this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/bench-press.gif" alt="Barbell Bench Press" class="w-full h-full object-cover rounded">
                                     </div>
                                     <span>Barbell Bench Press</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'incline-barbell-bench-press') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'incline-barbell-bench-press') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/incline-barbell-bench-press.gif" alt="Incline Barbell Bench Press" class="w-full h-full object-cover rounded">
                                     </div>
                                     <span>Incline Barbell Bench Press</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'decline-barbell-bench-press') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'decline-barbell-bench-press') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/decline-barbell-bench-press.gif" alt="Decline Barbell Bench Press" class="w-full h-full object-cover rounded">
                                     </div>
                                     <span>Decline Barbell Bench Press</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'dumbbell-bench-press') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'dumbbell-bench-press') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/dumbbell-bench-press.gif" alt="Dumbbell Bench Press" class="w-full h-full object-cover rounded">
                                     </div>
                                     <span>Dumbbell Bench Press</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'incline-dumbbell-press') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'incline-dumbbell-press') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <x-exercise-animation exercise="incline-dumbbell-press" size="48" />
                                     </div>
@@ -394,19 +394,19 @@
                         </a>
                         <div id="shoulders" class="accordion-content hidden px-4 py-3 bg-gray-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                                <a href="{{ route('member.exercises.show', 'barbell-overhead-press') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'barbell-overhead-press') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/barbell-overhead-press.gif" alt="Barbell Overhead Press" class="w-full h-full object-cover rounded">
                                     </div>
                                     <span>Barbell Overhead Press</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'seated-barbell-press') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'seated-barbell-press') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/seated-barbell-press.gif" alt="Seated Barbell Press" class="w-full h-full object-cover rounded">
                                     </div>
                                     <span>Seated Barbell Press</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'dumbbell-shoulder-press') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'dumbbell-shoulder-press') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/dumbbell-shoulder-press.gif" alt="Dumbbell Shoulder Press" class="w-full h-full object-cover rounded">
                                     </div>
@@ -500,19 +500,19 @@
                         </a>
                         <div id="back" class="accordion-content hidden px-4 py-3 bg-gray-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                                <a href="{{ route('member.exercises.show', 'pull-ups') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'pull-ups') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <x-exercise-animation exercise="pull-ups" size="48" />
                                     </div>
                                     <span>Pull-Ups</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'chin-ups') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'chin-ups') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/chin-ups.gif" alt="Chin-Ups" class="w-full h-full object-cover rounded">
                                     </div>
                                     <span>Chin-Ups</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'lat-pulldown') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'lat-pulldown') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/lat-pulldown.gif" alt="Lat Pulldown" class="w-full h-full object-cover rounded">
                                     </div>
@@ -606,13 +606,13 @@
                         </a>
                         <div id="arms" class="accordion-content hidden px-4 py-3 bg-gray-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                                <a href="{{ route('member.exercises.show', 'barbell-bicep-curls') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'barbell-bicep-curls') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <x-exercise-animation exercise="bicep-curl" size="48" />
                                     </div>
                                     <span>Barbell Bicep Curls</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'dumbbell-bicep-curls') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'dumbbell-bicep-curls') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <x-exercise-animation exercise="dumbbell-bicep-curls" size="48" />
                                     </div>
@@ -712,19 +712,19 @@
                         </a>
                         <div id="legs" class="accordion-content hidden px-4 py-3 bg-gray-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                                <a href="{{ route('member.exercises.show', 'barbell-back-squats') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'barbell-back-squats') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/barbell-back-squats.gif" alt="Barbell Back Squats" class="w-full h-full object-cover rounded">
                                     </div>
                                     <span>Barbell Back Squats</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'front-squats') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'front-squats') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/Front-Squat.gif" alt="Front Squats" class="w-full h-full object-cover rounded">
                                     </div>
                                     <span>Front Squats</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'leg-press') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'leg-press') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <x-exercise-animation exercise="leg-press" size="48" />
                                     </div>
@@ -789,13 +789,13 @@
                         </a>
                         <div id="core" class="accordion-content hidden px-4 py-3 bg-gray-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                                <a href="{{ route('member.exercises.show', 'crunches') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'crunches') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <x-exercise-animation exercise="crunches" size="48" />
                                     </div>
                                     <span>Crunches</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'sit-ups') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'sit-ups') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/SIT_UPS.gif" alt="Sit-Ups" class="w-full h-full object-cover rounded">
                                     </div>
@@ -855,13 +855,13 @@
                         </a>
                         <div id="glutes" class="accordion-content hidden px-4 py-3 bg-gray-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                                <a href="{{ route('member.exercises.show', 'barbell-hip-thrusts') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'barbell-hip-thrusts') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/Barbell-Hip-Thrust.gif" alt="Barbell Hip Thrusts" class="w-full h-full object-cover rounded">
                                     </div>
                                     <span>Barbell Hip Thrusts</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'sumo-squats') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'sumo-squats') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <x-exercise-animation exercise="sumo-squats" size="48" />
                                     </div>
@@ -895,31 +895,31 @@
                         </a>
                         <div id="cardio" class="accordion-content hidden px-4 py-3 bg-gray-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                                <a href="{{ route('member.exercises.show', 'walking') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'walking') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/walking.gif" alt="Walking" class="w-full h-full object-cover rounded">
                                     </div>
                                     <span>Walking</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'cycling') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'cycling') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/cycling.gif" alt="Cycling" class="w-full h-full object-cover rounded">
                                     </div>
                                     <span>Cycling</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'jump-rope') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'jump-rope') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <x-exercise-animation exercise="jumping-rope" size="48" />
                                     </div>
                                     <span>Jump Rope</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'jumping-jacks') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'jumping-jacks') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <img src="/lottie/exercises/jumping-jacks.gif" alt="Jumping Jacks" class="w-full h-full object-cover rounded">
                                     </div>
                                     <span>Jumping Jacks</span>
                                 </a>
-                                <a href="{{ route('member.exercises.show', 'treadmill') }}" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
+                                <a href="{{ route('member.exercises.show', 'treadmill') }}" onclick="openExerciseModal(event, this.href)" class="exercise-item flex items-center gap-3 text-left px-3 py-2 rounded hover:bg-orange-100 hover:text-orange-700 transition text-sm group">
                                     <div class="w-12 h-12 flex-shrink-0">
                                         <x-exercise-animation exercise="treadmill" size="48" />
                                     </div>
@@ -1207,5 +1207,62 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+    // Exercise Modal Logic
+    window.openExerciseModal = function(event, url) {
+        if (event) event.preventDefault(); // Prevent default link behavior safely
+
+        const modal = document.getElementById('exerciseModal');
+        const content = document.getElementById('modalContent');
+        
+        // Show modal
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        
+        // Show loading
+        content.innerHTML = '<div class="flex justify-center p-12"><i class="fas fa-circle-notch fa-spin text-4xl text-orange-500"></i></div>';
+        
+        // Fetch content
+        fetch(url + '?partial=true', {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.text();
+        })
+        .then(html => {
+            content.innerHTML = html;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            content.innerHTML = '<div class="p-8 text-center text-red-500"><i class="fas fa-exclamation-triangle text-4xl mb-3"></i><p>Error loading content.</p><p class="text-sm mt-2 text-gray-500">Please try again.</p></div>';
+        });
+    }
+
+    window.closeExerciseModal = function() {
+        const modal = document.getElementById('exerciseModal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
 </script>
+
+<!-- Exercise Modal HTML -->
+<div id="exerciseModal" class="fixed inset-0 hidden overflow-y-auto" style="z-index: 9999;" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeExerciseModal()"></div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+             <div class="absolute top-0 right-0 pt-4 pr-4 z-10">
+                <button type="button" class="bg-white dark:bg-gray-800 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onclick="closeExerciseModal()">
+                    <span class="sr-only">Close</span>
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="modalContent" class="p-1 max-h-[80vh] overflow-y-auto custom-scrollbar"></div>
+        </div>
+    </div>
+</div>
 @endpush

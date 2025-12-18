@@ -31,6 +31,10 @@ class ExerciseController extends Controller
             ]);
         }
         
+        if (request()->ajax() || request()->has('partial')) {
+            return view('member.exercises.partials.show-content', compact('exercise'));
+        }
+
         return view('member.exercises.show', compact('exercise'));
     }
 }

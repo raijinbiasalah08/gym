@@ -72,7 +72,22 @@ class DashboardController extends Controller
         // Get pending approvals count
         $pendingApprovalsCount = User::where('approval_status', 'pending')->count();
 
-        return view('admin.dashboard', compact('stats', 'recentMembers', 'recentPayments', 'monthlyRevenue', 'allMembers', 'allTrainers', 'pendingApprovalsCount'));
+        // Fetch active announcements
+        $announcements = \App\Models\Announcement::where('active', true)
+            ->where('start_date', '<=', today())
+            ->where('end_date', '>=', today())
+            ->get();
+
+        return view('admin.dashboard', compact(
+            'stats', 
+            'recentMembers', 
+            'recentPayments', 
+            'monthlyRevenue', 
+            'allMembers', 
+            'allTrainers', 
+            'pendingApprovalsCount',
+            'announcements'
+        ));
     }
 
     public function monthlyRevenue()

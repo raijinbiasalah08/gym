@@ -13,10 +13,9 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $notifications = Auth::user()->notifications()
+        $notifications = Notification::where('user_id', Auth::id())
             ->latest()
             ->paginate(20);
-
         return view('notifications.index', compact('notifications'));
     }
 
@@ -25,8 +24,9 @@ class NotificationController extends Controller
      */
     public function getUnreadCount()
     {
-        $count = Auth::user()->notifications()->unread()->count();
-        
+        $count = Notification::where('user_id', Auth::id())
+            ->where('is_read', false)
+            ->count();
         return response()->json(['count' => $count]);
     }
 
@@ -35,12 +35,26 @@ class NotificationController extends Controller
      */
     public function getRecent()
     {
-        $notifications = Auth::user()->notifications()
+        $notifications = Notification::where('user_id', Auth::id())
             ->latest()
             ->take(5)
-            ->get();
+            ->get()
+            ->map(function ($notification) {
+                return [
+                    'id' => $notification->id,
+                    'title' => $notification->title,
+                    'message' => $notification->message,
+                    'icon' => $notification->icon ?? 'fas fa-bell',
+                    'color' => $notification->color ?? 'blue',
+                    'link' => $notification->link,
+                    'created_at' => $notification->created_at->toIso8601String(),
+                    'is_read' => $notification->is_read,
+                ];
+            });
 
-        $unreadCount = Auth::user()->notifications()->unread()->count();
+        $unreadCount = Notification::where('user_id', Auth::id())
+            ->where('is_read', false)
+            ->count();
 
         return response()->json([
             'notifications' => $notifications,
@@ -55,14 +69,8 @@ class NotificationController extends Controller
     {
         $notification = Notification::where('user_id', Auth::id())
             ->findOrFail($id);
-
         $notification->markAsRead();
-
-        if (request()->wantsJson()) {
-            return response()->json(['success' => true]);
-        }
-
-        return redirect()->back()->with('success', 'Notification marked as read.');
+        return response()->json(['success' => true]);
     }
 
     /**
@@ -70,46 +78,12 @@ class NotificationController extends Controller
      */
     public function markAllAsRead()
     {
-        Auth::user()->notifications()->unread()->update([
-            'is_read' => true,
-            'read_at' => now(),
-        ]);
-
-        if (request()->wantsJson()) {
-            return response()->json(['success' => true]);
-        }
-
-        return redirect()->back()->with('success', 'All notifications marked as read.');
-    }
-
-    /**
-     * Delete a notification.
-     */
-    public function destroy($id)
-    {
-        $notification = Notification::where('user_id', Auth::id())
-            ->findOrFail($id);
-
-        $notification->delete();
-
-        if (request()->wantsJson()) {
-            return response()->json(['success' => true]);
-        }
-
-        return redirect()->back()->with('success', 'Notification deleted.');
-    }
-
-    /**
-     * Clear all read notifications.
-     */
-    public function clearRead()
-    {
-        Auth::user()->notifications()->read()->delete();
-
-        if (request()->wantsJson()) {
-            return response()->json(['success' => true]);
-        }
-
-        return redirect()->back()->with('success', 'Read notifications cleared.');
+        Notification::where('user_id', Auth::id())
+            ->where('is_read', false)
+            ->update([
+                'is_read' => true,
+                'read_at' => now(),
+            ]);
+        return response()->json(['success' => true]);
     }
 }

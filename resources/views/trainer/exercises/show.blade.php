@@ -45,13 +45,13 @@
             <div class="lg:col-span-2 space-y-6">
                 <!-- Animation Section -->
                 @if($exercise->gif_path)
-                <div class="neuro-card p-8 bg-white">
+                <div class="neuro-card p-8 bg-white dark:bg-gray-800">
                     <div class="text-center">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center justify-center">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center justify-center">
                             <i class="fas fa-play-circle text-orange-600 mr-3 text-3xl"></i>
                             Exercise Demonstration
                         </h2>
-                        <div class="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl p-8 flex items-center justify-center shadow-inner">
+                        <div class="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-2xl p-8 flex items-center justify-center shadow-inner">
                             <img src="{{ $exercise->gif_path }}" alt="{{ $exercise->name }}" class="max-w-full h-auto rounded-xl shadow-2xl" style="max-height: 450px;">
                         </div>
                     </div>
@@ -59,19 +59,19 @@
                 @endif
 
                 <!-- Step-by-Step Instructions -->
-                <div class="neuro-card p-8 bg-white">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <div class="neuro-card p-8 bg-white dark:bg-gray-800">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center">
                         <i class="fas fa-list-ol text-orange-600 mr-3 text-2xl"></i>
                         How to Perform
                     </h2>
                     @if($exercise->steps && is_array($exercise->steps))
                     <div class="space-y-4">
                         @foreach($exercise->steps as $index => $step)
-                        <div class="flex items-start p-4 bg-gradient-to-r from-orange-50 to-white rounded-lg hover:shadow-md transition-shadow">
+                        <div class="flex items-start p-4 bg-orange-50 dark:bg-gray-700 rounded-lg hover:shadow-md transition-shadow">
                             <span class="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 text-white rounded-full flex items-center justify-center font-bold text-lg mr-4 shadow-lg">
                                 {{ $index + 1 }}
                             </span>
-                            <p class="text-gray-700 pt-2 leading-relaxed">{{ $step }}</p>
+                            <p class="text-gray-800 dark:text-gray-100 pt-2 leading-relaxed">{{ $step }}</p>
                         </div>
                         @endforeach
                     </div>
@@ -125,16 +125,16 @@
 
                 <!-- Equipment Required -->
                 @if($exercise->equipment && is_array($exercise->equipment) && count($exercise->equipment) > 0)
-                <div class="neuro-card p-6 bg-white">
-                    <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                <div class="neuro-card p-6 bg-white dark:bg-gray-800">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
                         <i class="fas fa-dumbbell text-orange-600 mr-3 text-xl"></i>
                         Equipment Needed
                     </h2>
                     <ul class="space-y-3">
                         @foreach($exercise->equipment as $item)
-                        <li class="flex items-center p-3 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors">
+                        <li class="flex items-center p-3 bg-orange-50 dark:bg-gray-700 rounded-lg hover:bg-orange-100 dark:hover:bg-gray-600 transition-colors">
                             <i class="fas fa-check text-orange-600 mr-3"></i>
-                            <span class="text-gray-800 font-medium">{{ $item }}</span>
+                            <span class="text-gray-800 dark:text-gray-100 font-medium">{{ $item }}</span>
                         </li>
                         @endforeach
                     </ul>
@@ -143,20 +143,20 @@
 
                 <!-- Muscle Groups -->
                 @if($exercise->muscle_groups)
-                <div class="neuro-card p-6 bg-white">
-                    <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                <div class="neuro-card p-6 bg-white dark:bg-gray-800">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
                         <i class="fas fa-heartbeat text-red-600 mr-3 text-xl"></i>
                         Targeted Muscles
                     </h2>
                     
                     @if(isset($exercise->muscle_groups['primary']) && is_array($exercise->muscle_groups['primary']) && count($exercise->muscle_groups['primary']) > 0)
                     <div class="mb-5">
-                        <h3 class="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">Primary Muscles</h3>
+                        <h3 class="text-sm font-bold text-gray-700 dark:text-white mb-3 uppercase tracking-wide">Primary Muscles</h3>
                         <div class="space-y-2">
                             @foreach($exercise->muscle_groups['primary'] as $muscle)
-                            <div class="flex items-center p-2 bg-yellow-50 rounded-lg">
+                            <div class="flex items-center p-2 bg-yellow-50 dark:bg-gray-700 rounded-lg">
                                 <i class="fas fa-star text-yellow-500 mr-3"></i>
-                                <span class="text-gray-800 font-medium">{{ $muscle }}</span>
+                                <span class="text-gray-800 dark:text-gray-100 font-medium">{{ $muscle }}</span>
                             </div>
                             @endforeach
                         </div>
@@ -165,12 +165,12 @@
 
                     @if(isset($exercise->muscle_groups['secondary']) && is_array($exercise->muscle_groups['secondary']) && count($exercise->muscle_groups['secondary']) > 0)
                     <div>
-                        <h3 class="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">Secondary Muscles</h3>
+                        <h3 class="text-sm font-bold text-gray-700 dark:text-white mb-3 uppercase tracking-wide">Secondary Muscles</h3>
                         <div class="space-y-2">
                             @foreach($exercise->muscle_groups['secondary'] as $muscle)
-                            <div class="flex items-center p-2 bg-gray-50 rounded-lg">
+                            <div class="flex items-center p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
                                 <i class="fas fa-star-half-alt text-gray-400 mr-3"></i>
-                                <span class="text-gray-700">{{ $muscle }}</span>
+                                <span class="text-gray-700 dark:text-gray-100">{{ $muscle }}</span>
                             </div>
                             @endforeach
                         </div>

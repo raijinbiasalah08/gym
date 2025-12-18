@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="py-6">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="w-full max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="mb-6">
             <h1 class="text-3xl font-bold text-gray-900">Manage Members</h1>
@@ -78,7 +78,7 @@
         <!-- Search & Filter Bar -->
         <div class="glass-card rounded-xl p-4 mb-6">
             <form action="{{ route('admin.members.index') }}" method="GET" id="filterForm">
-                <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex flex-col lg:flex-row gap-4">
                     <div class="flex-1">
                         <div class="relative">
                             <input type="text" 
@@ -90,17 +90,17 @@
                             <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                     </div>
-                    <div class="flex gap-2">
+                    <div class="flex flex-col sm:flex-row gap-2">
                         <select name="status" 
                                 onchange="this.form.submit()"
-                                class="px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">
+                                class="w-full sm:w-auto px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all cursor-pointer">
                             <option value="">All Status</option>
                             <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
                             <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
                         </select>
                         <select name="membership" 
                                 onchange="this.form.submit()"
-                                class="px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">
+                                class="w-full sm:w-auto px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all cursor-pointer">
                             <option value="">All Types</option>
                             <option value="basic" {{ request('membership') == 'basic' ? 'selected' : '' }}>Basic</option>
                             <option value="premium" {{ request('membership') == 'premium' ? 'selected' : '' }}>Premium</option>
@@ -108,7 +108,7 @@
                         </select>
                         <select name="sort_by" 
                                 onchange="this.form.submit()"
-                                class="px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all">
+                                class="w-full sm:w-auto px-4 py-3 glass-card rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all cursor-pointer">
                             <option value="created_at" {{ request('sort_by') == 'created_at' || !request('sort_by') ? 'selected' : '' }}>Sort: Newest First</option>
                             <option value="name" {{ request('sort_by') == 'name' ? 'selected' : '' }}>Sort: Name (A-Z)</option>
                             <option value="membership_type" {{ request('sort_by') == 'membership_type' ? 'selected' : '' }}>Sort: Membership Type</option>

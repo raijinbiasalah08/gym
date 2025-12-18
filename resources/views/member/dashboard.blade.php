@@ -200,23 +200,27 @@
 
 <div class="py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- System Announcements -->
+        <x-announcement-banner :announcements="$announcements" />
+
         <!-- Header -->
-        <div class="dashboard-header flex items-center justify-between mb-6">
-            <div>
+        <div class="dashboard-header flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+            <div class="text-center md:text-left">
                 <h1 class="text-3xl font-bold text-gray-900">Member Dashboard</h1>
                 <p class="text-sm text-gray-600 mt-1">Overview of your bookings, progress, and upcoming sessions.</p>
             </div>
-            <div class="dashboard-actions flex items-center space-x-3">
-                <a href="{{ route('member.bookings.create') }}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-600 to-red-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+            <div class="dashboard-actions flex flex-wrap justify-center md:justify-end gap-3">
+                <a href="{{ route('member.bookings.create') }}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-600 to-red-600 text-white text-sm font-medium rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 shadow-md">
                     <i class="fas fa-calendar-plus mr-2"></i>Book Session
                 </a>
-                <a href="{{ route('member.progress.index') }}" class="inline-flex items-center px-4 py-2 glass-card text-gray-700 text-sm font-medium rounded-lg hover:bg-white hover:bg-opacity-60 transition">
+                <a href="{{ route('member.progress.index') }}" class="inline-flex items-center px-4 py-2 glass-card text-gray-700 text-sm font-medium rounded-lg hover:bg-white hover:bg-opacity-60 transition shadow-sm">
                     <i class="fas fa-chart-line mr-2"></i>View Progress
                 </a>
-                <a href="{{ route('member.workout-plans.index') }}" class="inline-flex items-center px-4 py-2 glass-card text-gray-700 text-sm font-medium rounded-lg hover:bg-white hover:bg-opacity-60 transition">
+                <a href="{{ route('member.workout-plans.index') }}" class="inline-flex items-center px-4 py-2 glass-card text-gray-700 text-sm font-medium rounded-lg hover:bg-white hover:bg-opacity-60 transition shadow-sm">
                     <i class="fas fa-clipboard-list mr-2"></i>My Plans
                 </a>
-                <a href="{{ route('member.workout-logs.index') }}" class="inline-flex items-center px-4 py-2 glass-card text-gray-700 text-sm font-medium rounded-lg hover:bg-white hover:bg-opacity-60 transition">
+                <a href="{{ route('member.workout-logs.index') }}" class="inline-flex items-center px-4 py-2 glass-card text-gray-700 text-sm font-medium rounded-lg hover:bg-white hover:bg-opacity-60 transition shadow-sm">
                     <i class="fas fa-dumbbell mr-2"></i>Workout Logs
                 </a>
             </div>
@@ -225,80 +229,88 @@
         <!-- Stats Grid -->
         <div class="stats-grid grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
             <!-- Upcoming Sessions -->
-            <div class="neuro-stat group">
-                <div class="p-6">
-                    <div class="flex items-center">
+            <!-- Upcoming Sessions -->
+            <!-- Upcoming Sessions -->
+            <a href="{{ route('member.bookings.index') }}" class="neuro-stat group block h-full transition-transform duration-300 hover:-translate-y-1">
+                <div class="p-6 h-full flex items-center">
+                    <div class="flex items-center w-full">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
-                                <i class="fas fa-calendar-alt text-2xl text-white"></i>
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 w-12 h-12 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fas fa-calendar-alt text-xl text-white leading-none"></i>
                             </div>
                         </div>
-                        <div class="ml-5 w-0 flex-1">
+                        <div class="ml-4 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-600 truncate">Upcoming Sessions</dt>
-                                <dd class="text-2xl font-bold text-gray-900 mt-1">{{ $stats['upcoming_sessions'] }}</dd>
+                                <dt class="text-sm font-medium text-gray-600">Upcoming Sessions</dt>
+                                <dd class="text-2xl font-bold text-gray-900 leading-tight">{{ $stats['upcoming_sessions'] }}</dd>
                             </dl>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Completed Sessions -->
-            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
-                <div class="p-6">
-                    <div class="flex items-center">
+            <!-- Completed Sessions -->
+            <!-- Completed Sessions -->
+            <a href="{{ route('member.bookings.index') }}" class="neuro-stat group block h-full transition-transform duration-300 hover:-translate-y-1">
+                <div class="p-6 h-full flex items-center">
+                    <div class="flex items-center w-full">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-green-500 to-green-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
-                                <i class="fas fa-check-circle text-2xl text-white"></i>
+                            <div class="rounded-xl bg-gradient-to-br from-green-500 to-green-600 w-12 h-12 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fas fa-check-circle text-xl text-white leading-none"></i>
                             </div>
                         </div>
-                        <div class="ml-5 w-0 flex-1">
+                        <div class="ml-4 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-600 truncate">Completed Sessions</dt>
-                                <dd class="text-2xl font-bold text-gray-900 mt-1">{{ $stats['completed_sessions'] }}</dd>
+                                <dt class="text-sm font-medium text-gray-600">Completed Sessions</dt>
+                                <dd class="text-2xl font-bold text-gray-900 leading-tight">{{ $stats['completed_sessions'] }}</dd>
                             </dl>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Total Workouts -->
-            <div class="neuro-stat group">
-                <div class="p-6">
-                    <div class="flex items-center">
+            <!-- Total Workouts -->
+            <!-- Total Workouts -->
+            <a href="{{ route('member.workout-logs.index') }}" class="neuro-stat group block h-full transition-transform duration-300 hover:-translate-y-1">
+                <div class="p-6 h-full flex items-center">
+                    <div class="flex items-center w-full">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
-                                <i class="fas fa-dumbbell text-2xl text-white"></i>
+                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 w-12 h-12 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fas fa-dumbbell text-xl text-white leading-none"></i>
                             </div>
                         </div>
-                        <div class="ml-5 w-0 flex-1">
+                        <div class="ml-4 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-600 truncate">Total Workouts</dt>
-                                <dd class="text-2xl font-bold text-gray-900 mt-1">{{ $stats['total_workouts'] }}</dd>
+                                <dt class="text-sm font-medium text-gray-600">Total Workouts</dt>
+                                <dd class="text-2xl font-bold text-gray-900 leading-tight">{{ $stats['total_workouts'] }}</dd>
                             </dl>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Pending Payments -->
-            <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
-                <div class="p-6">
-                    <div class="flex items-center">
+            <!-- Pending Payments -->
+            <!-- Pending Payments -->
+            <a href="{{ route('member.payments.index') }}" class="neuro-stat group block h-full transition-transform duration-300 hover:-translate-y-1">
+                <div class="p-6 h-full flex items-center">
+                    <div class="flex items-center w-full">
                         <div class="flex-shrink-0">
-                            <div class="rounded-xl bg-gradient-to-br from-yellow-500 to-yellow-600 p-3 shadow-lg group-hover:scale-110 transition-transform">
-                                <i class="fas fa-money-bill-wave text-2xl text-white"></i>
+                            <div class="rounded-xl bg-gradient-to-br from-yellow-500 to-yellow-600 w-12 h-12 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                <i class="fas fa-money-bill-wave text-xl text-white leading-none"></i>
                             </div>
                         </div>
-                        <div class="ml-5 w-0 flex-1">
+                        <div class="ml-4 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-600 truncate">Pending Payments</dt>
-                                <dd class="text-2xl font-bold text-gray-900 mt-1">{{ $stats['pending_payments'] }}</dd>
+                                <dt class="text-sm font-medium text-gray-600">Pending Payments</dt>
+                                <dd class="text-2xl font-bold text-gray-900 leading-tight">{{ $stats['pending_payments'] }}</dd>
                             </dl>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <!-- Membership & Payments -->

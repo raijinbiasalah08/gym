@@ -1,207 +1,103 @@
 @extends('layouts.app')
 
-@section('title', 'Notifications - TitansGym')
+@section('title', 'Notifications - GymManagement')
 
 @section('content')
-<div class="py-8">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="mb-8 flex justify-between items-center">
-            <div>
-                <h1 class="text-4xl font-bold text-gray-900 mb-2 flex items-center">
-                    <i class="fas fa-bell text-orange-600 mr-3"></i>Notifications
-                </h1>
-                <p class="text-lg text-gray-600">Stay updated with your latest activities</p>
-            </div>
-            @if($notifications->total() > 0)
-                <div class="flex gap-2">
-                    <button onclick="markAllAsRead()" 
-                            class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition">
-                        <i class="fas fa-check-double mr-2"></i>Mark All Read
+<div class="py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">Your Notifications</h2>
+            
+            @if($notifications->count() > 0)
+                <form action="{{ route('notifications.mark-all-read') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="text-sm text-orange-600 hover:text-orange-800 font-semibold transition">
+                        Mark all as read
                     </button>
-                    <button onclick="clearAllRead()" 
-                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
-                        <i class="fas fa-trash mr-2"></i>Clear Read
-                    </button>
-                </div>
+                </form>
             @endif
         </div>
 
-        <!-- Notifications List -->
-        @if($notifications->count() > 0)
-            <div class="space-y-4">
-                @foreach($notifications as $notification)
-                    <div class="neuro-card p-6 {{ !$notification->is_read ? 'bg-orange-50 border-l-4 border-orange-500' : '' }}">
-                        <div class="flex items-start justify-between">
-                            <div class="flex items-start space-x-4 flex-1">
-                                <!-- Icon -->
-                                <div class="flex-shrink-0">
-                                    @php
-                                        $colorClasses = [
-                                            'blue' => 'from-blue-400 to-blue-600',
-                                            'green' => 'from-green-400 to-green-600',
-                                            'orange' => 'from-orange-400 to-orange-600',
-                                            'red' => 'from-red-400 to-red-600',
-                                            'yellow' => 'from-yellow-400 to-yellow-600',
-                                            'purple' => 'from-purple-400 to-purple-600'
-                                        ];
-                                        $colorClass = $colorClasses[$notification->color] ?? $colorClasses['blue'];
-                                    @endphp
-                                    <div class="w-12 h-12 rounded-full bg-gradient-to-br {{ $colorClass }} flex items-center justify-center shadow-md">
-                                        <i class="{{ $notification->icon ?? 'fas fa-bell' }} text-white text-lg"></i>
-                                    </div>
-                                </div>
-
-                                <!-- Content -->
-                                <div class="flex-1 min-w-0">
-                                    <h3 class="text-lg font-semibold text-gray-900">{{ $notification->title }}</h3>
-                                    <p class="text-gray-700 mt-1">{{ $notification->message }}</p>
-                                    <p class="text-sm text-gray-500 mt-2">
-                                        <i class="far fa-clock mr-1"></i>{{ $notification->created_at->diffForHumans() }}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Actions -->
-                            <div class="flex items-center space-x-2 ml-4">
-                                @if(!$notification->is_read)
-                                    <button onclick="markAsRead({{ $notification->id }})" 
-                                            class="p-2 text-orange-600 hover:bg-orange-100 rounded-lg transition"
-                                            title="Mark as read">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                @endif
-                                <button onclick="deleteNotification({{ $notification->id }})" 
-                                        class="p-2 text-red-600 hover:bg-red-100 rounded-lg transition"
-                                        title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-6 bg-white border-b border-gray-200">
+                @forelse($notifications as $notification)
+                    <div class="flex items-start p-4 hover:bg-gray-50 transition border-b border-gray-100 last:border-0 {{ is_null($notification->read_at) ? 'bg-orange-50' : '' }}">
+                        <div class="flex-shrink-0 mr-4">
+                            @php
+                                $color = $notification->data['color'] ?? 'blue';
+                                $icon = $notification->data['icon'] ?? 'fas fa-bell';
+                                
+                                $colorClasses = [
+                                    'blue' => 'bg-blue-100 text-blue-600',
+                                    'green' => 'bg-green-100 text-green-600',
+                                    'orange' => 'bg-orange-100 text-orange-600',
+                                    'red' => 'bg-red-100 text-red-600',
+                                    'yellow' => 'bg-yellow-100 text-yellow-600',
+                                    'purple' => 'bg-purple-100 text-purple-600',
+                                ];
+                                
+                                $class = $colorClasses[$color] ?? $colorClasses['blue'];
+                            @endphp
+                            
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center {{ $class }}">
+                                <i class="{{ $icon }}"></i>
                             </div>
                         </div>
-
-                        @if($notification->link)
-                            <a href="{{ $notification->link }}" 
-                               class="inline-block mt-4 px-4 py-2 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-lg hover:shadow-lg transition text-sm font-semibold">
-                                <i class="fas fa-arrow-right mr-2"></i>View Details
-                            </a>
+                        
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-sm font-semibold text-gray-900 {{ !$notification->is_read ? 'font-bold' : '' }}">
+                                    {{ $notification->title ?? 'Notification' }}
+                                </h3>
+                                <span class="text-xs text-gray-500 whitespace-nowrap ml-2">
+                                    {{ $notification->created_at->diffForHumans() }}
+                                </span>
+                            </div>
+                            
+                            <p class="mt-1 text-sm text-gray-600">
+                                {{ $notification->message ?? '' }}
+                            </p>
+                            
+                            @if($notification->link)
+                                <a href="{{ $notification->link }}" class="mt-2 inline-block text-xs font-medium text-orange-600 hover:text-orange-500">
+                                    View Details <i class="fas fa-arrow-right ml-1"></i>
+                                </a>
+                            @endif
+                        </div>
+                        
+                        @if(!$notification->is_read)
+                            <div class="ml-4 flex-shrink-0">
+                                <form action="{{ route('notifications.mark-as-read', $notification->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="text-gray-400 hover:text-orange-600" title="Mark as read">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        @else
+                            <div class="ml-4 flex-shrink-0 text-gray-300">
+                                <i class="fas fa-check-double" title="Read"></i>
+                            </div>
                         @endif
                     </div>
-                @endforeach
+                @empty
+                    <div class="text-center py-12">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+                            <i class="fas fa-bell-slash text-gray-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900">No notifications</h3>
+                        <p class="mt-1 text-gray-500">You're all caught up! Check back later for updates.</p>
+                    </div>
+                @endforelse
             </div>
-
+            
             <!-- Pagination -->
-            <div class="mt-8">
-                {{ $notifications->links() }}
-            </div>
-        @else
-            <!-- Empty State -->
-            <div class="neuro-card p-12 text-center">
-                <i class="fas fa-bell-slash text-6xl text-gray-300 mb-4"></i>
-                <h3 class="text-xl font-semibold text-gray-700 mb-2">No Notifications</h3>
-                <p class="text-gray-500">You're all caught up! We'll notify you when something new arrives.</p>
-            </div>
-        @endif
+            @if($notifications->hasPages())
+                <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+                    {{ $notifications->links() }}
+                </div>
+            @endif
+        </div>
     </div>
 </div>
-
-<script>
-function markAsRead(id) {
-    fetch(`/notifications/${id}/read`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        }
-    })
-    .then(response => response.json())
-    .then(() => {
-        location.reload();
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-function markAllAsRead() {
-    if (!confirm('Are you sure you want to mark all notifications as read?')) return;
-    
-    console.log('Marking all notifications as read...');
-    
-    const csrfToken = document.querySelector('meta[name="csrf-token"]');
-    if (!csrfToken) {
-        console.error('CSRF token not found in page');
-        alert('Error: Security token not found. Please refresh the page.');
-        return;
-    }
-    
-    // Show loading state
-    const button = event.target;
-    const originalText = button.innerHTML;
-    button.disabled = true;
-    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
-    
-    fetch('{{ route("notifications.mark-all-read") }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken.content
-        }
-    })
-    .then(response => {
-        console.log('Mark all as read response status:', response.status);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Mark all as read response:', data);
-        if (data.success) {
-            console.log('All notifications marked as read successfully');
-            location.reload();
-        } else {
-            throw new Error('Server returned success: false');
-        }
-    })
-    .catch(error => {
-        console.error('Error marking all as read:', error);
-        alert('Failed to mark all notifications as read. Please try again.');
-        // Restore button state
-        button.disabled = false;
-        button.innerHTML = originalText;
-    });
-}
-
-function deleteNotification(id) {
-    if (!confirm('Are you sure you want to delete this notification?')) return;
-    
-    fetch(`/notifications/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        }
-    })
-    .then(response => response.json())
-    .then(() => {
-        location.reload();
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-function clearAllRead() {
-    if (!confirm('Are you sure you want to clear all read notifications?')) return;
-    
-    fetch('/notifications/clear-read', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        }
-    })
-    .then(response => response.json())
-    .then(() => {
-        location.reload();
-    })
-    .catch(error => console.error('Error:', error));
-}
-</script>
 @endsection

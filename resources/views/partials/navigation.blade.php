@@ -1,50 +1,58 @@
 <nav class="bg-gradient-to-r from-gray-900 to-black bg-opacity-95 backdrop-filter backdrop-blur-lg shadow-2xl sticky top-0 z-50 border-b border-orange-500/20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto px-4 sm:px-6 lg:px-8" style="max-width: 100% !important; width: 100% !important;">
         <div class="flex justify-between h-16 items-center">
-            <div class="flex items-center">
-                <div class="flex-shrink-0 mr-8">
-                    <a href="{{ url('/') }}" class="text-white text-xl font-bold flex items-center hover:text-orange-400 transition-colors duration-200">
-                        <i class="fas fa-dumbbell mr-2 text-orange-500"></i>
-                        <span>TitansGym</span>
+            <div class="flex items-center flex-1 min-w-0">
+                <div class="flex-shrink-0 mr-4 md:mr-8">
+                    <a href="{{ url('/') }}" class="text-white text-lg md:text-xl font-bold flex items-center hover:text-orange-400 transition-colors duration-200">
+                        <i class="fas fa-dumbbell mr-1 md:mr-2 text-orange-500"></i>
+                        <span class="hidden lg:inline">TitansGym</span>
+                        <span class="lg:hidden">TG</span>
                     </a>
                 </div>
                 
                 <!-- Desktop links -->
                 @auth
-                <div class="hidden md:flex md:items-center md:space-x-2">
+                <div class="hidden md:flex md:items-center md:space-x-2 md:overflow-x-auto md:max-w-full" style="scrollbar-width: none; -ms-overflow-style: none;">
                     @if(auth()->user()->isAdmin())
                         <a href="{{ route('admin.dashboard') }}" 
-                           class="group relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.dashboard') ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-lg shadow-orange-500/50' : 'text-gray-300 hover:text-white hover:bg-gray-800' }}">
-                            <i class="fas fa-home mr-2"></i>Dashboard
+                           class="group relative px-2 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-200 whitespace-nowrap {{ request()->routeIs('admin.dashboard') ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-lg shadow-orange-500/50' : 'text-gray-300 hover:text-white hover:bg-gray-800' }}">
+                            <i class="fas fa-home mr-1 md:mr-2"></i>Dashboard
                             @if(request()->routeIs('admin.dashboard'))
                                 <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>
                             @endif
                         </a>
                         <a href="{{ route('admin.members.index') }}" 
-                           class="group relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.members.*') ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-lg shadow-orange-500/50' : 'text-gray-300 hover:text-white hover:bg-gray-800' }}">
-                            <i class="fas fa-users mr-2"></i>Members
+                           class="group relative px-2 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-200 whitespace-nowrap {{ request()->routeIs('admin.members.*') ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-lg shadow-orange-500/50' : 'text-gray-300 hover:text-white hover:bg-gray-800' }}">
+                            <i class="fas fa-users mr-1 md:mr-2"></i>Members
                             @if(request()->routeIs('admin.members.*'))
                                 <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>
                             @endif
                         </a>
                         <a href="{{ route('admin.trainers.index') }}" 
-                           class="group relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.trainers.*') ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-lg shadow-orange-500/50' : 'text-gray-300 hover:text-white hover:bg-gray-800' }}">
-                            <i class="fas fa-user-tie mr-2"></i>Trainers
+                           class="group relative px-2 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-200 whitespace-nowrap {{ request()->routeIs('admin.trainers.*') ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-lg shadow-orange-500/50' : 'text-gray-300 hover:text-white hover:bg-gray-800' }}">
+                            <i class="fas fa-user-tie mr-1 md:mr-2"></i>Trainers
                             @if(request()->routeIs('admin.trainers.*'))
                                 <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>
                             @endif
                         </a>
                         <a href="{{ route('admin.payments.index') }}" 
-                           class="group relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.payments.*') ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-lg shadow-orange-500/50' : 'text-gray-300 hover:text-white hover:bg-gray-800' }}">
-                            <i class="fas fa-dollar-sign mr-2"></i>Payments
+                           class="group relative px-2 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-200 whitespace-nowrap {{ request()->routeIs('admin.payments.*') ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-lg shadow-orange-500/50' : 'text-gray-300 hover:text-white hover:bg-gray-800' }}">
+                            <i class="fas fa-dollar-sign mr-1 md:mr-2"></i>Payments
                             @if(request()->routeIs('admin.payments.*'))
                                 <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>
                             @endif
                         </a>
                         <a href="{{ route('admin.reports.index') }}" 
-                           class="group relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.reports.*') ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-lg shadow-orange-500/50' : 'text-gray-300 hover:text-white hover:bg-gray-800' }}">
-                            <i class="fas fa-chart-bar mr-2"></i>Reports
+                           class="group relative px-2 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-200 whitespace-nowrap {{ request()->routeIs('admin.reports.*') ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-lg shadow-orange-500/50' : 'text-gray-300 hover:text-white hover:bg-gray-800' }}">
+                            <i class="fas fa-chart-bar mr-1 md:mr-2"></i>Reports
                             @if(request()->routeIs('admin.reports.*'))
+                                <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>
+                            @endif
+                        </a>
+                        <a href="{{ route('admin.announcements.index') }}" 
+                           class="group relative px-2 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-200 whitespace-nowrap {{ request()->routeIs('admin.announcements.*') ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-lg shadow-orange-500/50' : 'text-gray-300 hover:text-white hover:bg-gray-800' }}">
+                            <i class="fas fa-bullhorn mr-1 md:mr-2"></i>Announcements
+                            @if(request()->routeIs('admin.announcements.*'))
                                 <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>
                             @endif
                         </a>
@@ -147,7 +155,7 @@
                 @endauth
             </div>
 
-            <div class="flex items-center">
+            <div class="flex items-center flex-shrink-0">
                 <!-- Theme Toggle -->
                 <div class="mr-4">
                     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
@@ -214,6 +222,7 @@
                     <a href="{{ route('admin.trainers.index') }}" class="block text-white px-3 py-2 rounded-md text-base font-medium">Trainers</a>
                     <a href="{{ route('admin.payments.index') }}" class="block text-white px-3 py-2 rounded-md text-base font-medium">Payments</a>
                     <a href="{{ route('admin.reports.index') }}" class="block text-white px-3 py-2 rounded-md text-base font-medium">Reports</a>
+                    <a href="{{ route('admin.announcements.index') }}" class="block text-white px-3 py-2 rounded-md text-base font-medium">Announcements</a>
                 @elseif(auth()->user()->isTrainer())
                     <a href="{{ route('trainer.dashboard') }}" class="block text-white px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
                     <a href="{{ route('trainer.bookings.index') }}" class="block text-white px-3 py-2 rounded-md text-base font-medium">My Bookings</a>

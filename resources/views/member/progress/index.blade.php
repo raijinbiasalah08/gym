@@ -5,269 +5,159 @@
 @section('content')
 <div class="py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900">My Progress</h1>
-                <p class="text-sm text-gray-600 mt-1">Track your fitness journey and body measurements</p>
+        <h1 class="text-2xl font-semibold text-gray-900 mb-6">My Progress Tracker</h1>
+
+        <!-- Chart Section -->
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+            <div class="p-6 bg-white border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Weight History</h3>
+                <div class="h-64">
+                    <canvas id="weightChart"></canvas>
+                </div>
             </div>
-            <!-- Optional: Add a button to request a new measurement from trainer if that flow exists, 
-                 but usually trainers add progress. -->
         </div>
 
-        <!-- Stats Overview (Latest) -->
-        @if($progress->count() > 0)
-            @php
-                $latest = $progress->first();
-                $previous = $progress->skip(1)->first();
-                
-                $weightDiff = $previous ? $latest->weight - $previous->weight : 0;
-                $fatDiff = $previous ? $latest->body_fat_percentage - $previous->body_fat_percentage : 0;
-                $muscleDiff = $previous ? $latest->muscle_mass - $previous->muscle_mass : 0;
-            @endphp
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Add New Log Form -->
+            <div class="md:col-span-1">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 bg-white border-b border-gray-200">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Log Today's Stats</h3>
+                        <form action="{{ route('member.progress.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="log_date" class="block text-sm font-medium text-gray-700">Date</label>
+                                    <input type="date" name="log_date" id="log_date" value="{{ date('Y-m-d') }}" required
+                                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                </div>
+                                <div>
+                                    <label for="weight" class="block text-sm font-medium text-gray-700">Weight (kg) *</label>
+                                    <input type="number" name="weight" id="weight" step="0.1" required
+                                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                </div>
+                                <div>
+                                    <label for="body_fat_percentage" class="block text-sm font-medium text-gray-700">Body Fat % (Optional)</label>
+                                    <input type="number" name="body_fat_percentage" id="body_fat_percentage" step="0.1"
+                                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                </div>
+                                <div>
+                                    <label for="photo" class="block text-sm font-medium text-gray-700">Progress Photo (Optional)</label>
+                                    <input type="file" name="photo" id="photo" accept="image/*"
+                                           class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                </div>
+                                <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm font-medium">
+                                    Save Log
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-            <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-8">
-                <!-- Weight Card -->
-                <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
-                    <div class="p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm font-medium text-gray-600">Current Weight</p>
-                                <p class="text-2xl font-bold text-gray-900 mt-1">{{ $latest->weight }} kg</p>
-                            </div>
-                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg">
-                                <i class="fas fa-weight text-2xl text-white"></i>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            @if($weightDiff < 0)
-                                <span class="text-green-600 text-sm font-medium"><i class="fas fa-arrow-down mr-1"></i>{{ abs($weightDiff) }} kg</span>
-                                <span class="text-gray-500 text-xs ml-1">since last check</span>
-                            @elseif($weightDiff > 0)
-                                <span class="text-red-600 text-sm font-medium"><i class="fas fa-arrow-up mr-1"></i>{{ $weightDiff }} kg</span>
-                                <span class="text-gray-500 text-xs ml-1">since last check</span>
-                            @else
-                                <span class="text-gray-500 text-sm">No change</span>
-                            @endif
+            <!-- History & Photos -->
+            <div class="md:col-span-2">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+                    <div class="p-6 bg-white border-b border-gray-200">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Recent Logs</h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Weight</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Body Fat</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @forelse($logs->sortByDesc('log_date') as $log)
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                {{ $log->log_date->format('M d, Y') }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                {{ $log->weight }} kg
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ $log->body_fat_percentage ? $log->body_fat_percentage . '%' : '-' }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <form action="{{ route('member.progress.destroy', $log) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">No logs yet. Start tracking today!</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- Body Fat Card -->
-                <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
-                    <div class="p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm font-medium text-gray-600">Body Fat</p>
-                                <p class="text-2xl font-bold text-gray-900 mt-1">{{ $latest->body_fat_percentage }}%</p>
-                            </div>
-                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 p-3 shadow-lg">
-                                <i class="fas fa-percentage text-2xl text-white"></i>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            @if($fatDiff < 0)
-                                <span class="text-green-600 text-sm font-medium"><i class="fas fa-arrow-down mr-1"></i>{{ abs($fatDiff) }}%</span>
-                                <span class="text-gray-500 text-xs ml-1">since last check</span>
-                            @elseif($fatDiff > 0)
-                                <span class="text-red-600 text-sm font-medium"><i class="fas fa-arrow-up mr-1"></i>{{ $fatDiff }}%</span>
-                                <span class="text-gray-500 text-xs ml-1">since last check</span>
-                            @else
-                                <span class="text-gray-500 text-sm">No change</span>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Muscle Mass Card -->
-                <div class="glass-card overflow-hidden rounded-xl transition hover:shadow-lg group">
-                    <div class="p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm font-medium text-gray-600">Muscle Mass</p>
-                                <p class="text-2xl font-bold text-gray-900 mt-1">{{ $latest->muscle_mass }} kg</p>
-                            </div>
-                            <div class="rounded-xl bg-gradient-to-br from-orange-500 to-red-600 p-3 shadow-lg">
-                                <i class="fas fa-dumbbell text-2xl text-white"></i>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            @if($muscleDiff > 0)
-                                <span class="text-green-600 text-sm font-medium"><i class="fas fa-arrow-up mr-1"></i>{{ $muscleDiff }} kg</span>
-                                <span class="text-gray-500 text-xs ml-1">since last check</span>
-                            @elseif($muscleDiff < 0)
-                                <span class="text-red-600 text-sm font-medium"><i class="fas fa-arrow-down mr-1"></i>{{ abs($muscleDiff) }} kg</span>
-                                <span class="text-gray-500 text-xs ml-1">since last check</span>
-                            @else
-                                <span class="text-gray-500 text-sm">No change</span>
-                            @endif
+                <!-- Photo Gallery -->
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 bg-white border-b border-gray-200">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Progress Photos</h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                            @forelse($logs->whereNotNull('photo_path') as $log)
+                                <div class="relative group aspect-w-1 aspect-h-1 rounded-lg overflow-hidden bg-gray-100">
+                                    <img src="{{ Storage::url($log->photo_path) }}" alt="Progress on {{ $log->log_date->format('M d') }}" class="object-cover w-full h-full">
+                                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-opacity flex items-end">
+                                        <div class="p-2 text-white opacity-0 group-hover:opacity-100 text-xs w-full bg-gradient-to-t from-black/60">
+                                            {{ $log->log_date->format('M d, Y') }} • {{ $log->weight }}kg
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="col-span-3 text-sm text-gray-500 text-center py-4">No photos uploaded yet.</p>
+                            @endforelse
                         </div>
                     </div>
                 </div>
             </div>
-        @endif
-
-        <!-- Progress History List -->
-        <div class="glass-card rounded-xl overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200 border-opacity-50">
-                <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                    <i class="fas fa-history text-orange-600 mr-2"></i>
-                    Progress History
-                </h3>
-            </div>
-
-            @if($progress->count() > 0)
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200 divide-opacity-30">
-                        <thead class="bg-white bg-opacity-40">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 transition-colors sortable"
-                                    data-column="date" onclick="sortProgressTable('date')">
-                                    Date
-                                    <i class="fas fa-sort ml-1 text-gray-400 sort-icon"></i>
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 transition-colors sortable"
-                                    data-column="weight" onclick="sortProgressTable('weight')">
-                                    Weight
-                                    <i class="fas fa-sort ml-1 text-gray-400 sort-icon"></i>
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 transition-colors sortable"
-                                    data-column="bodyfat" onclick="sortProgressTable('bodyfat')">
-                                    Body Fat
-                                    <i class="fas fa-sort ml-1 text-gray-400 sort-icon"></i>
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 transition-colors sortable"
-                                    data-column="muscle" onclick="sortProgressTable('muscle')">
-                                    Muscle Mass
-                                    <i class="fas fa-sort ml-1 text-gray-400 sort-icon"></i>
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 transition-colors sortable"
-                                    data-column="bmi" onclick="sortProgressTable('bmi')">
-                                    BMI
-                                    <i class="fas fa-sort ml-1 text-gray-400 sort-icon"></i>
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200 divide-opacity-30">
-                            @foreach($progress as $record)
-                            <tr class="hover:bg-white hover:bg-opacity-30 transition progress-row"
-                                data-date="{{ $record->record_date->format('Y-m-d') }}"
-                                data-weight="{{ $record->weight }}"
-                                data-bodyfat="{{ $record->body_fat_percentage }}"
-                                data-muscle="{{ $record->muscle_mass }}"
-                                data-bmi="{{ $record->bmi }}">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900">
-                                        {{ $record->record_date->format('M d, Y') }}
-                                    </div>
-                                    <div class="text-xs text-gray-500">
-                                        {{ $record->record_date->diffForHumans() }}
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ $record->weight }} kg</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ $record->body_fat_percentage }}%</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ $record->muscle_mass }} kg</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ $record->bmi }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="{{ route('member.progress.show', $record) }}" 
-                                       class="text-orange-600 hover:text-orange-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg transition">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="px-6 py-4 border-t border-gray-200 border-opacity-50">
-                    {{ $progress->links() }}
-                </div>
-            @else
-                <div class="text-center py-16">
-                    <div class="bg-gradient-to-br from-gray-100 to-gray-200 rounded-full p-6 w-24 h-24 flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-chart-line text-4xl text-gray-400"></i>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">No progress records found</h3>
-                    <p class="text-sm text-gray-600 mb-6">
-                        Your trainer hasn't added any progress records yet. Check back later after your assessment!
-                    </p>
-                </div>
-            @endif
         </div>
     </div>
 </div>
 
-@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// Table Sorting Functionality
-let currentSortColumn = null;
-let currentSortDirection = 'asc';
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('weightChart').getContext('2d');
+        const logs = @json($logs);
+        
+        const labels = logs.map(log => new Date(log.log_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }));
+        const data = logs.map(log => log.weight);
 
-function sortProgressTable(column) {
-    const tbody = document.querySelector('.progress-row')?.closest('tbody');
-    if (!tbody) return;
-    
-    const rows = Array.from(tbody.querySelectorAll('.progress-row'));
-    
-    // Toggle sort direction if same column
-    if (currentSortColumn === column) {
-        currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-        currentSortColumn = column;
-        currentSortDirection = 'asc';
-    }
-    
-    // Update sort icons
-    document.querySelectorAll('.sortable .sort-icon').forEach(icon => {
-        icon.className = 'fas fa-sort ml-1 text-gray-400 sort-icon';
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Weight (kg)',
+                    data: data,
+                    borderColor: 'rgb(59, 130, 246)',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.1,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false
+                    }
+                }
+            }
+        });
     });
-    
-    const currentHeader = document.querySelector(`.sortable[data-column="${column}"] .sort-icon`);
-    if (currentHeader) {
-        currentHeader.className = `fas fa-sort-${currentSortDirection === 'asc' ? 'up' : 'down'} ml-1 text-orange-600 sort-icon`;
-    }
-    
-    // Sort rows
-    rows.sort((a, b) => {
-        let aValue, bValue;
-        
-        switch(column) {
-            case 'date':
-                aValue = new Date(a.dataset.date);
-                bValue = new Date(b.dataset.date);
-                break;
-            case 'weight':
-            case 'bodyfat':
-            case 'muscle':
-            case 'bmi':
-                aValue = parseFloat(a.dataset[column]);
-                bValue = parseFloat(b.dataset[column]);
-                break;
-            default:
-                return 0;
-        }
-        
-        if (aValue < bValue) return currentSortDirection === 'asc' ? -1 : 1;
-        if (aValue > bValue) return currentSortDirection === 'asc' ? 1 : -1;
-        return 0;
-    });
-    
-    // Re-append sorted rows
-    rows.forEach(row => tbody.appendChild(row));
-}
 </script>
-@endpush
-
 @endsection

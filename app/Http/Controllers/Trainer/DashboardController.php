@@ -88,6 +88,12 @@ class DashboardController extends Controller
         $allMembers = User::members()->orderBy('name')->get();
         $allTrainers = User::trainers()->orderBy('name')->get();
 
+        // Fetch active announcements
+        $announcements = \App\Models\Announcement::where('active', true)
+            ->where('start_date', '<=', today())
+            ->where('end_date', '>=', today())
+            ->get();
+
         return view('trainer.dashboard', compact(
             'stats', 
             'todaySessions', 
@@ -96,7 +102,8 @@ class DashboardController extends Controller
             'recentAttendance',
             'activePlans',
             'allMembers',
-            'allTrainers'
+            'allTrainers',
+            'announcements'
         ));
     }
 
